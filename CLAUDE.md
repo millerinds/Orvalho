@@ -10,6 +10,8 @@ Antes de alterar código, leia integralmente:
 
 Depois leia `README.md`, `docs/DECISOES.md` e `docs/REGRAS-orvalho.md`.
 
+Publicação: repositório `millerinds/Orvalho`, branch `main`, GitHub Pages por Actions. Leia `docs/continuidade/PUBLICACAO.md`. Trabalhe em branches e faça PR para a `main`; não envie a branch local `historico-local`.
+
 Regras essenciais:
 
 - Preserve three.js r149, o Avatar Kit, o provador e a estética Frutiger Aero.

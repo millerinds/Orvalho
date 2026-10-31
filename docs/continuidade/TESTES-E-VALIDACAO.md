@@ -49,6 +49,11 @@ Além dos testes anteriores, o Hall passa a validar:
 - quatro empresas confirmadas na Incubadora;
 - erros de console e desempenho.
 
+## Publicação (31/10/2026)
+
+- **Local e online:** a suíte passou nos dois casos. Online, a mesma suíte roda com `ORVALHO_URL=https://millerinds.github.io/Orvalho/` e passou com 860 verificações e 0 falhas.
+- **Testar o site publicado:** use `ORVALHO_URL=<url> npm run teste:tudo` (vale também para `teste:avatar`, `teste:hall` e `teste:primeiro`).
+
 ## Correções do 1º andar, 2ª rodada (31/10/2026, Claude)
 
 `npm run teste:tudo` e `npm run teste:primeiro` passaram, sem erros de console: fluxo do avatar, Lab (3 corpos), Hall + 1º andar (3 corpos) e matriz do 1º andar.

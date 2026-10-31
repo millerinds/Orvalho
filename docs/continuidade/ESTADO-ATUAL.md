@@ -1,5 +1,12 @@
 # Estado atual do Orvalho
 
+> **Publicado em 31/10/2026:**
+> - repositório <https://github.com/millerinds/Orvalho>;
+> - jogo <https://millerinds.github.io/Orvalho/>;
+> - Kalil (`KalilMassignaniDaRosa`) é colaborador com permissão write.
+>
+> Ver `PUBLICACAO.md`.
+
 Data do handoff: 30/10/2026.
 
 ## Funciona
