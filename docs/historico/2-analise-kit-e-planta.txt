@@ -1,0 +1,128 @@
+Vou ler o kit inteiro, depois cruzar com as fotos para montar a planta em metros.
+
+Li o kit inteiro e medi o boneco rodando o próprio kit num navegador sem tela. As fotos vieram junto, então também fiz o passo 1: planta, lista e chutes. Ainda não modelei nada.
+
+Como o kit funciona
+
+Doll(canvas, o) é uma fábrica que entrega o boneco já montado dentro do próprio estúdio.
+
+O que cria: o renderer (pixelRatio ≤ 2, sRGB, sem tone mapping), a cena, uma câmera de 25°, o estúdio PMREM (cúpula + softboxes) e uma luz fraca.
+O boneco: um grupo fig com o tronco (torno sobre o spline de BODIES), a cabeça (esfera de raio 0,5 em headY) e dois pivôs de ombro com os braços pendurados.
+Animação: tudo acontece em render(t): respiração, balanço, pulinho a cada 9 s, piscar, olhar, aceno, braço subindo e o “pop” de gelatina. O loop() faz os lerps e chama o render.
+Saída: devolve set/start/stop/wave/spinTo/hover. O avatar e o provador são dois Doll separados, cada um com seu contexto WebGL e seu PMREM.
+
+Gelatina: é um MeshPhysicalMaterial com onBeforeCompile. A luz PBR roda normal; logo antes do tone mapping, o shader pinta por cima:
+
+luz interna: uGlow, mais forte embaixo (entre uTop e uBot, no espaço do objeto) e no centro;
+borda: mistura com uRim pelo Fresnel, então a silhueta escurece como vidro grosso;
+arco: o anel branco embaixo da cabeça;
+olhos: desenhados por SDF na frente da esfera, com uBlink, uLook e uTime.
+
+É como se a luz fosse de verdade e a gelatina, uma pintura por cima. O userData.acc diz de onde cada material tira a cor: vazio é o corpo, true é o acessório, um nome ('branco'…) é cor fixa.
+
+Contorno: é uma casca invertida. Um filho com a mesma geometria, BackSide, empurrado pela normal (position + normal * uOut), com cor de borda × 0,3. Funciona como um casaco preto um número maior vestido do avesso: de frente some, só aparece na borda. Daí vêm duas regras:
+
+quina viva rasga a casca, por isso só formas arredondadas;
+a espessura é em unidades locais, então cresce com o objeto e entorta com escala não uniforme.
+
+Acessórios: ACC guarda os metadados (tall, float, body) e BUILD tem uma função por peça.
+
+Onde monta: em coordenadas da cabeça (raio 0,5, frente +z) ou do corpo. Gravata e borboleta usam rAt(y) e são refeitas quando o corpo muda.
+piece(): toda parte passa por ela, que aplica a gelatina (com uTop/uBot tirados da caixa da peça) e um contorno de 0,022.
+Um por vez: setAcc tira o grupo antigo das listas e faz dispose.
+Movimento: anim(t) ou float. As pontas dos chapéus são vértices dobrados.
+Gorro pronto: já existe o natal, então o robô do lab pode usar o mesmo gorro.
+A medição muda a conversa da escala
+
+Medi a pose de repouso com Box3:
+
+	No kit (u)	A 1,70 m
+Altura (Jujuba)	2,15	1,70
+Largura com braços	2,10	1,66
+Tronco (largura × fundo)	1,13 × 0,96	0,89 × 0,76
+Cabeça	1,00	0,79
+Ombro	0,88	0,70
+Outros corpos: com o fator fixo de 0,79, ficam entre 1,66 m (Gota) e 1,77 m (Esguio). Sugiro manter o fator fixo: cada corpo fica com sua altura, como gente.
+Chapéus altos: cone, mago e interrogação levam ele a 2,12–2,17 m, então batem na porta.
+Número do REGRAS: os ~1,6 u de largura valem com o braço reto. Em repouso (0,36 rad) dá 2,10 u.
+
+A 1,70 m ele tem altura de gente e quase 4× a largura de uma pessoa (1,66 m contra ~0,45 m de ombro). O que salva é o formato: os braços ficam abaixo de 0,70 m e a cabeça acima de 0,91 m. A mesa (0,75 m) só esbarra no alto do tronco: o braço passa por baixo do tampo e a cabeça por cima. Com colisão por altura:
+
+corredor entre as mesas (1,04 m): passa;
+ao lado da cadeira da mesa azul (0,45 m): trava, a não ser que ele empurre a cadeira (ela tem rodinha);
+atrás das cadeiras do meio: não cabe;
+porta (se for de 0,90): o tronco tem 0,89, então só passa espremido, como gelatina.
+
+Minha aposta é manter 1,70 m. A outra opção é 1,30 m, a altura do robô: fica com 1,27 m de largura e sobra espaço, mas parece criança perto da porta. Na maquete de blocos faço os prints das duas lado a lado.
+
+Separar boneco e sala
+
+Na prova de conceito continua um HTML só, com cada bloco num <script> que se registra em window.Aero. No Flask, cada bloco vira um arquivo, o que já serve à CSP.
+
+aero/paleta.js       dados: PRESETS, FIXED, BODIES, ARMS, EYES, ACC + preset()
+aero/gelatina.js     jelly(), outline(), lathe(), piece(): o estojo de material, sem cena
+aero/acessorios.js   BUILD recebendo {piece, lathe, rAt, topo} em vez de closure
+aero/boneco.js       criarBoneco(estojo) → { root, set, update(t, dt), olharPara(v3), acenar, dispose }
+aero/palco.js        criarPalco(canvas) → renderer, câmera, estúdio, loop, pausa com a aba oculta
+aero/avatar-ui.js    o DOM que hoje mora no Doll: mouse → olhar, raiseBox, arrastar pra girar
+sala/sala.json       a planta (já existe; o SVG sai dele)
+sala/montar-sala.js  sala.json → THREE.Group (InstancedMesh, paredes cortáveis, céu)
+sala/andar.js        setas/WASD + clique no chão; colisão por altura
+provador.js          o provador atual, falando com qualquer boneco via set()
+
+O Doll(canvas, o) vira um embrulho de umas 10 linhas (palco + boneco + avatar-ui), então o Orvalho não muda. As regras que seguram essa divisão:
+
+root separado de fig: hoje o render() sobrescreve posição, giro e escala do fig a cada quadro. A sala mexe só no root (lugar, direção e escala 0,79) e o boneco anima o fig por dentro. A sala carrega o vaso; a planta balança sozinha.
+Um palco só: o boneco não tem requestAnimationFrame nem listener no document. Quem chama update é o palco. O provador abre um palco pequeno próprio, e a sala pausa enquanto ele está aberto.
+Olhar em 3D: hoje o olhar é calculado em pixels até a cabeça. Na sala o boneco gira, então o alvo vira um ponto 3D no espaço dele, com os mesmos limites (±0,42 rad de giro, ±0,28 de inclinação).
+Mesmo estúdio: a gelatina depende do PMREM e de NoToneMapping. A sala usa o mesmo ambiente, um pouco mais quente, e assim móvel e boneco brilham igual.
+Móvel em tamanho real: modelado em metros, nunca um cubo de 1 m esticado, senão o contorno fica torto. No InstancedMesh, o contorno também vira InstancedMesh, com a mesma instanceMatrix.
+A sala (rascunho para corrigir)
+
+A planta e a régua de alturas estão em planta-sala.svg. A régua desenha o boneco com os perfis do kit, na escala.
+
+Câmera: você pediu duas paredes cortadas, que é a câmera B (de canto). Sugiro testar também a A, de frente, cortando só a parede cinza. A sala é 2:1, encaixa em 16:9 e mostra janela, parede azul e porta ao mesmo tempo.
+
+Objeto	Qtd	L × P × A (m)	De onde veio
+Mesa (madeira, pé em T com rodízio)	3	1,60 × 0,60 × 0,75	posição do rabisco, medida padrão
+Cadeira (tela preta, base estrela)	3	Ø 0,62 · assento 0,47 · encosto 0,95	padrão
+Recarga TES Guardian	1	0,64 × 0,55 × 1,05	catálogo da TES (série K2)
+Armário baixo, 2 portas	1	0,90 × 0,45 × 0,75	foto
+Puff pera	1	Ø 0,90 × 0,65	rabisco + foto
+Lixeira inox de pedal	1	Ø 0,30 × 0,60	foto
+Quadro elétrico	1	0,40 × 0,50, de 1,45 a 1,95 m	foto
+Ar-condicionado split	1	0,85 × 0,30, topo a ~2,80 m	foto
+Monitores	3	~0,60 × 0,40	fotos, um por mesa
+Notebooks abertos	2	0,33 × 0,23	fotos (+1 fechado no TES)
+Gabinete de PC branco	1	0,22 × 0,45 × 0,48	foto
+Robô humanoide	1	sentado ~0,50 × 0,55 × 0,75	foto
+Suporte de TV com volante	1	~0,70 × 0,60 × 1,60	fotos
+Maleta preta (flight case)	1–2	~0,55 × 0,40 × 1,00	fotos
+Poste de energia (teto → mesa)	1	Ø 0,06	fotos
+Porta	1	0,90 × 2,10 + bandeira de vidro	padrão
+Vãos de vidro	5	janelas 1,15 e 1,00, porta da sacada 0,85; corredor ~1,00 e 0,90	marcas roxas do rabisco
+
+O que eu chutei:
+
+Mesas: 1,60 × 0,60 × 0,75. Pelo rabisco seriam 1,62 × 0,55.
+Porta: folha de 0,90 × 2,10. Não sei para que lado abre.
+Vidros: altura de ~2,60 m. As divisões eu arredondei a partir das marcas roxas.
+Piso e teto: piso de 60 × 60, e os 3,00 m contados até o forro.
+Itens fora do rabisco: a posição de tudo que está tracejado saiu das fotos.
+Robô: pelo formato parece um Unitree G1, que a Unitree lista com 1320 × 450 × 200 mm em pé. 
+unitree
+Cadeiras: sem braço.
+
+Perguntas:
+
+Quantos pisos cabem ao longo da parede da porta (3 m)? Isso confirma o piso e a medida de uma vez. Se tiver trena, o comprimento de uma mesa e a largura da porta resolvem o resto.
+O robô, o suporte de TV com volante e a maleta entram? Eles não estão no rabisco.
+As cortinas ficam meio abaixadas como na foto, ou recolhidas mostrando o céu?
+A “cara” do lab é o robô de gorro e a película de triângulos com degradê azul? Tem mais alguma coisa que todo mundo reconhece?
+
+Com as suas correções, faço a maquete de blocos com as duas escalas e as duas câmeras.
+
+Fontes:
+
+Unitree G1, ficha técnica
+Catálogo TES Guardian (PDF)

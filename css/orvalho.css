@@ -1,0 +1,439 @@
+/* Orvalho: estilos. Os blocos marcados "do kit" vêm do avatar-kit.html sem mudanças (tokens, céu, vidro, moldura, provador, botões). */
+
+/* ===== do kit: tokens, base, céu vivo, vidro ===== */
+/* Layout: céu vivo fixo ao fundo (Aero) → nav em vidro → herói acrílico com a esfera d'água como peça única → bento → faixa de categorias. Tema claro, deliberadamente único nesta maquete. */
+:root{
+  color-scheme: light;
+  --sky-deep:#0a5fb4; --sky:#2f9be8; --sky-mid:#7cc8f5; --sky-pale:#d6f0ff;
+  --aqua:#16bcc4; --aqua-deep:#0b8a95;
+  --leaf:#71c935; --leaf-deep:#3b8f17; --leaf-pale:#e6f8d4;
+  --ink:#0c2c4a; --ink-soft:#3c5d7a; --ice:#f6fbff; --white:#ffffff;
+  --coral:#ff8a5b; --warn:#f2a516; --bad:#e2506a;
+  --f-display:"Nunito", "Varela Round", system-ui, sans-serif;
+  --f-body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-num:"JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+  --r-card:24px; --edge:#0b3a6e; --edge-leaf:#2b6b0d; --edge-aqua:#06606a;
+}
+*{box-sizing:border-box}
+html{background:var(--sky-mid)}
+body{
+  margin:0; min-height:100vh; font-family:var(--f-body); font-size:16px; line-height:1.55; color:var(--ink);
+  background:linear-gradient(180deg,#0b62bd 0%,#2a93e4 26%,#7cc8f5 52%,#d4efff 74%,#eefaff 100%);
+  background-attachment:fixed; overflow-x:hidden;
+}
+/* ---------- cena ---------- */
+.scene{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden}
+.scene svg{position:absolute; inset:0; width:100%; height:100%}
+.sun{position:absolute; left:-12vw; top:-18vw; width:60vw; height:60vw; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.75) 0%,rgba(255,255,255,.25) 30%,rgba(255,255,255,0) 62%)}
+.bokeh{position:absolute; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),rgba(255,255,255,.25) 40%,rgba(180,230,255,.12) 70%,rgba(255,255,255,0) 72%);
+  border:1px solid rgba(255,255,255,.35); animation:float 14s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-22px)}}
+
+/* ---------- moldura ---------- */
+.wrap{position:relative; z-index:1; max-width:1180px; margin:0 auto;
+  padding-left:max(20px, env(safe-area-inset-left,0px)); padding-right:max(20px, env(safe-area-inset-right,0px));
+  padding-block:66px 120px}
+
+/* ---------- vidro líquido ---------- */
+.glass{
+  position:relative; isolation:isolate;
+  background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,.18));
+  -webkit-backdrop-filter:blur(22px) saturate(180%); backdrop-filter:blur(22px) saturate(180%);
+  border:3px solid rgba(11,58,110,.75);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.9), inset -1px -1px 0 rgba(255,255,255,.25), 6px 6px 0 rgba(11,58,110,.4);
+}
+.glass::before{content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1;
+  background:radial-gradient(120% 80% at 12% 0%,rgba(255,255,255,.7),rgba(255,255,255,0) 45%)}
+
+/* ===== do kit: ícones ===== */
+.icon-btn{width:40px; height:40px; display:grid; place-items:center; border-radius:50%; border:0; background:transparent; color:var(--ink); cursor:pointer}
+.icon-btn:hover{background:rgba(255,255,255,.5)}
+svg.i{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+
+/* ===== do kit: avatar de perfil, formatos, opções ===== */
+/* ---------- avatar de perfil (moldura acrílica com formatos) ---------- */
+/* camadas recortadas pelo mesmo clipPath (objectBoundingBox): contorno escuro → moldura gloss → borda da janela → janela */
+.avatar{position:absolute; left:-72px; top:-36px; width:144px; height:144px; z-index:2;
+  filter:drop-shadow(4px 4px 0 var(--edge)) drop-shadow(0 12px 16px rgba(8,60,130,.3));
+  transition:transform .15s ease, filter .15s ease}
+/* .av-open: o boneco e a caixinha dele (abre o provador); .av-pen: só troca o formato da janela */
+.av-open{position:absolute; inset:0; border:0; padding:0; background:none; cursor:pointer}
+.av-open:focus-visible{outline:none}
+.av-open:focus-visible .av-edge{background:#19c2c9}
+/* .av-body: caixa onde a forma é desenhada. No triângulo ela cresce para o boneco caber sem mudar de lugar. */
+.av-body{position:absolute; inset:0}
+.av-layer{position:absolute; clip-path:var(--clip-out)}
+.av-edge{inset:0; background:var(--edge)}
+.av-frame{inset:3px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.35) 38%,rgba(255,255,255,0) 52%),
+    linear-gradient(160deg,#bff1ff 0%,#4fc3ea 40%,#1690d6 75%,#0e6bb8 100%)}
+.av-win-edge{inset:13px; background:var(--edge); clip-path:var(--clip-in)}
+.av-win{inset:15px; clip-path:var(--clip-in); overflow:hidden;
+  /* estúdio cinza do mini-mundo 3D */
+  background:radial-gradient(85% 70% at 50% 36%,#ffffff 0%,#eef0f1 38%,#d3d7da 72%,#b7bcc0 100%)}
+.av-win canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+[data-shape="triangulo"] .av-win canvas{transform:translateX(7%)}
+[data-shape="feijao"] .av-win canvas{transform:translateX(12%)}
+[data-shape="feijao"] .av-win-edge{clip-path:url(#c-feijao-e)}
+[data-shape="feijao"] .av-win{clip-path:url(#c-feijao-in)}
+.av-win img{position:absolute; inset:6%; width:88%; height:88%; object-fit:contain; mix-blend-mode:multiply}
+.av-win::before{ /* profundidade: a caixinha */
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg,rgba(20,32,48,.32) 0%,rgba(20,32,48,0) 20%), linear-gradient(90deg,rgba(20,32,48,.14),rgba(20,32,48,0) 12%)}
+.av-win::after{ /* reflexo do vidro */
+  content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(125deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.12) 34%,rgba(255,255,255,0) 35%)}
+/* triângulo: caixa de 176px com o incentro no centro do avatar; o boneco fica exatamente onde está nos outros formatos */
+[data-shape="triangulo"] .av-win img{inset:4% 0 8% 10%; width:90%; height:88%}
+.av-pen{position:absolute; right:0; bottom:2px; z-index:3; width:30px; height:30px; padding:0; cursor:pointer; border-radius:50%; display:grid; place-items:center; color:#fff;
+  border:2.5px solid var(--edge); background:radial-gradient(circle at 35% 28%,#bfe8ff,#2f9be8 45%,#0a5fb4); box-shadow:inset 0 2px 3px rgba(255,255,255,.8)}
+.av-pen svg.i{width:15px; height:15px; stroke-width:2.4}
+.av-pen:hover{transform:scale(1.1)}
+.av-pen:focus-visible{outline:3px solid #19c2c9; outline-offset:2px}
+
+/* formatos: --clip-out (moldura) e --clip-in (janela) */
+.avatar, .shape-opt, .shape-thumb{--clip-out:url(#c-quadrado); --clip-in:url(#c-quadrado-in)}
+[data-shape="circulo"]{--clip-out:url(#c-circulo); --clip-in:url(#c-circulo)}
+[data-shape="d"]{--clip-out:url(#c-d); --clip-in:url(#c-d)}
+[data-shape="triangulo"]{--clip-out:url(#c-triangulo); --clip-in:url(#c-triangulo)}
+[data-shape="feijao"]{--clip-out:url(#c-feijao); --clip-in:url(#c-feijao)}
+[data-shape="pedra"]{--clip-out:url(#c-pedra); --clip-in:url(#c-pedra)}
+
+/* seletor de formato da janela (lápis) */
+.shape-pop{position:absolute; left:-72px; top:calc(100% + 60px); background:rgba(250,253,255,.98); z-index:40; width:min(330px,calc(100vw - 32px)); border-radius:22px; padding:16px}
+.shape-pop h2{font:800 1rem/1.2 var(--f-display); margin:0 0 4px}
+.shape-pop p{margin:0 0 12px; font-size:.86rem; color:var(--ink-soft)}
+.shape-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+/* opções do provador */
+.color-opt{aspect-ratio:1; width:100%; border-radius:50%; cursor:pointer; padding:0;
+  border:2px solid var(--c2);
+  background:radial-gradient(circle at 34% 26%,rgba(255,255,255,.95) 0 14%,rgba(255,255,255,0) 30%), radial-gradient(circle at 50% 85%,var(--c3),var(--c1) 55%,var(--c2) 100%);
+  transition:transform .12s}
+.color-opt:hover{transform:scale(1.08)}
+.color-opt[aria-checked="true"]{outline:3px solid var(--edge); outline-offset:2px}
+.shape-opt{display:grid; justify-items:center; gap:6px; padding:10px 4px 8px; border-radius:14px; border:2px solid transparent; background:rgba(255,255,255,.55);
+  font:600 .78rem var(--f-body); color:var(--ink); cursor:pointer}
+.shape-opt:hover{background:rgba(255,255,255,.85)}
+.shape-opt[aria-checked="true"]{border-color:var(--edge); background:#fff; box-shadow:3px 3px 0 var(--edge)}
+.shape-opt i{display:block; width:46px; height:46px; clip-path:var(--clip-out);
+  background:linear-gradient(180deg,rgba(255,255,255,.9) 0 30%,rgba(255,255,255,0) 50%), linear-gradient(160deg,#9fe6ff,#1690d6 70%,#0b3a6e)}
+
+
+/* ===== do kit: provador ===== */
+/* ---------- provador (guarda-roupa do boneco) ---------- */
+/* janela no estilo "player" com abinha: o palco do boneco fica por cima da moldura, saindo pela esquerda e por cima */
+.prov-back{position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:28px 24px 24px;
+  background:radial-gradient(120% 90% at 50% 30%,rgba(120,200,255,.28),rgba(6,40,90,.5));
+  -webkit-backdrop-filter:blur(8px) saturate(140%); backdrop-filter:blur(8px) saturate(140%);
+  animation:prov-fade .22s ease-out}
+.prov-back[hidden]{display:none}
+@keyframes prov-fade{from{opacity:0}}
+@keyframes prov-pop{from{opacity:0; transform:translateY(18px) scale(.96)}}
+.prov{position:relative; width:min(940px,100%); height:min(600px,calc(100vh - 52px)); animation:prov-pop .32s cubic-bezier(.2,.9,.3,1.15);
+  --c1:#1f4fe0; --c2:#0a1d78; --c3:#38d6ff}
+
+/* moldura prateada-azulada, borda grossa + sombra dura */
+.prov-frame{position:absolute; left:64px; top:28px; right:0; bottom:0; border-radius:34px;
+  border:4px solid var(--edge);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.95) 0,rgba(255,255,255,.4) 22px,rgba(255,255,255,0) 60px),
+    linear-gradient(180deg,#eef5fc 0%,#d3e3f2 48%,#bfd4e8 52%,#d4e3f1 100%);
+  box-shadow:inset 0 2px 0 #fff, inset 0 -3px 0 rgba(11,58,110,.12), 7px 7px 0 var(--edge), 0 30px 60px rgba(4,30,70,.35)}
+/* abinha do topo, emendada na moldura */
+.prov-tab{position:absolute; top:-30px; left:296px; right:18px; display:flex; justify-content:center; pointer-events:none}
+.prov-tab{gap:6px; align-items:flex-end}
+.prov-tab button{pointer-events:auto; display:flex; align-items:center; gap:8px; padding:7px 20px 6px; position:relative; cursor:pointer;
+  border:4px solid var(--edge); border-radius:20px 20px 0 0; font:900 1rem/1 var(--f-display); letter-spacing:.01em}
+.prov-tab button[aria-selected="true"]{z-index:2; margin-bottom:-4px; border-bottom:0; color:var(--edge); background:linear-gradient(180deg,#ffffff 0%,#f3f8fd 100%)}
+.prov-tab button[aria-selected="false"]{z-index:1; padding:6px 16px 5px; border-bottom:0; margin-bottom:-4px; color:var(--ink-soft);
+  background:linear-gradient(180deg,#e2edf7,#c9dbec); box-shadow:inset 0 -6px 8px -6px rgba(11,58,110,.35)}
+.prov-tab button[aria-selected="false"]:hover{color:var(--edge); background:linear-gradient(180deg,#eef5fb,#d5e4f1)}
+.prov-tab button:focus-visible{outline:3px solid #19c2c9; outline-offset:2px}
+.prov-tab button[aria-selected="true"]::before,.prov-tab button[aria-selected="true"]::after{ /* curvinhas onde a aba encontra a moldura */
+  content:""; position:absolute; bottom:0; width:18px; height:18px; background:transparent}
+.prov-tab button[aria-selected="true"]::before{left:-22px; border-bottom-right-radius:14px; box-shadow:6px 6px 0 #f3f8fd; border:4px solid var(--edge); border-top:0; border-left:0}
+.prov-tab button[aria-selected="true"]::after{right:-22px; border-bottom-left-radius:14px; box-shadow:-6px 6px 0 #f3f8fd; border:4px solid var(--edge); border-top:0; border-right:0}
+.prov-tab svg.i{width:18px; height:18px; stroke-width:2.2}
+
+.prov-x{position:absolute; top:7px; right:14px; z-index:3; width:34px; height:34px}
+
+/* botões redondos de vidro (fechar, aleatório, girar, acenar) */
+.gbtn{width:38px; height:38px; display:grid; place-items:center; border-radius:50%; cursor:pointer; color:var(--edge); padding:0;
+  border:3px solid var(--edge);
+  background:radial-gradient(circle at 50% 18%,#fff 0 22%,rgba(255,255,255,0) 52%), linear-gradient(180deg,#f4f9ff,#c2d8ee);
+  box-shadow:inset 0 -3px 5px rgba(11,58,110,.18), 2px 2px 0 var(--edge); transition:transform .12s, box-shadow .12s}
+.gbtn:hover{transform:translate(-1px,-1px); box-shadow:inset 0 -3px 5px rgba(11,58,110,.18), 3px 3px 0 var(--edge)}
+.gbtn:active{transform:translate(2px,2px); box-shadow:inset 0 -3px 5px rgba(11,58,110,.18), 0 0 0 var(--edge)}
+.gbtn svg.i{width:18px; height:18px; stroke-width:2.3}
+.gbtn.big{width:50px; height:50px; color:#fff;
+  background:radial-gradient(circle at 50% 16%,rgba(255,255,255,.95) 0 20%,rgba(255,255,255,0) 50%), radial-gradient(circle at 50% 90%,#7fe0ff,#1a86e6 55%,#0b4f9e)}
+.gbtn.big svg.i{width:22px; height:22px}
+
+/* palco do boneco: a abinha que sobrepõe a moldura */
+.prov-stage{position:absolute; left:0; top:0; width:340px; bottom:92px; z-index:2; border-radius:30px; padding:13px;
+  border:4px solid var(--edge);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.35) 18%,rgba(255,255,255,0) 30%),
+    linear-gradient(160deg,#bff1ff 0%,#4fc3ea 40%,#1690d6 75%,#0e6bb8 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.8), 7px 7px 0 var(--edge), 0 20px 40px rgba(4,30,70,.3)}
+.prov-win{position:relative; height:100%; border-radius:20px; overflow:hidden; border:3px solid var(--edge);
+  background:radial-gradient(80% 60% at 50% 34%,#ffffff 0%,#eef0f1 40%,#d3d7da 75%,#b7bcc0 100%);
+  box-shadow:inset 0 10px 18px rgba(20,32,48,.22); touch-action:none; cursor:grab}
+.prov-win:active{cursor:grabbing}
+.prov-win canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+.prov-win::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(125deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,.08) 30%,rgba(255,255,255,0) 31%)}
+.prov-hint{position:absolute; left:50%; bottom:12px; transform:translateX(-50%); z-index:1; white-space:nowrap; pointer-events:none;
+  font:600 .74rem/1 var(--f-mono,monospace); color:#5d6b78; background:rgba(255,255,255,.75); padding:6px 10px; border-radius:999px}
+
+/* tela branca à direita: opções + trilho de categorias */
+.prov-screen{position:absolute; z-index:1; left:296px; right:18px; top:48px; bottom:84px;
+  display:grid; grid-template-columns:1fr 118px; overflow:hidden; overflow:clip;
+  border:3px solid var(--edge); border-radius:20px;
+  background:linear-gradient(180deg,#ffffff 0%,#f4f9fe 100%);
+  box-shadow:inset 0 3px 8px rgba(11,58,110,.12)}
+.prov-pane{padding:20px 22px; overflow:auto; scrollbar-width:thin}
+.prov-pane h2{font:900 1.45rem/1.1 var(--f-display); margin:0 0 4px; color:var(--ink); letter-spacing:-.01em}
+.prov-pane p.sub{margin:0 0 16px; font-size:.9rem; color:var(--ink-soft)}
+.prov-rail[hidden]{display:none !important}
+.prov-rail{display:flex; flex-direction:column; gap:6px; padding:12px 10px; border-left:3px solid var(--edge);
+  background:linear-gradient(90deg,#e4eff9,#f2f7fc)}
+.cat{display:grid; justify-items:center; gap:5px; padding:10px 4px 8px; border-radius:16px; cursor:pointer;
+  border:2.5px solid transparent; background:transparent; color:var(--ink); font:700 .78rem/1.1 var(--f-body)}
+.cat svg.i{width:26px; height:26px; stroke-width:1.9; color:var(--sky-deep,#0a5fb4)}
+.cat:hover{background:rgba(255,255,255,.8)}
+.cat[aria-selected="true"]{background:#fff; border-color:var(--edge); box-shadow:3px 3px 0 var(--edge)}
+.cat[aria-disabled="true"]{opacity:.5; cursor:not-allowed}
+.cat small{font:600 .62rem/1 var(--f-mono,monospace); color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em}
+
+/* grades de opções */
+.opt-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:12px}
+.opt{display:grid; justify-items:center; gap:6px; padding:12px 6px 10px; border-radius:18px; cursor:pointer;
+  border:2.5px solid #cfe0ef; background:linear-gradient(180deg,#fff,#f1f7fd); color:var(--ink); font:700 .82rem/1.1 var(--f-body);
+  transition:transform .12s, box-shadow .12s, border-color .12s}
+.opt:hover{transform:translateY(-2px); border-color:#8fb7da}
+.opt[aria-checked="true"]{border-color:var(--edge); background:#fff; box-shadow:3px 3px 0 var(--edge)}
+.opt svg.thumb{width:64px; height:64px; overflow:visible}
+.opt .shape-thumb{width:58px; height:58px; clip-path:var(--clip-out); display:block;
+  background:linear-gradient(180deg,rgba(255,255,255,.9) 0 30%,rgba(255,255,255,0) 50%), linear-gradient(160deg,#9fe6ff,#1690d6 70%,#0b3a6e)}
+.prov .color-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(52px,1fr)); gap:12px; max-width:420px}
+.prov .color-opt{border-width:3px}
+.ui-sec + .ui-sec{margin-top:22px}
+.ui-sec h3{font:800 1rem/1.2 var(--f-display); margin:0 0 10px; color:var(--ink)}
+.tag{display:inline-block; margin-left:6px; padding:3px 8px; border-radius:999px; vertical-align:1px;
+  font:700 .62rem/1 var(--f-mono,monospace); text-transform:uppercase; letter-spacing:.06em; color:#7a4a00; background:#ffe3a3; border:1.5px solid #d99a20}
+.bg-thumb{display:block; width:76px; height:52px; border-radius:12px; border:2.5px solid var(--edge); box-shadow:inset 0 2px 0 rgba(255,255,255,.5)}
+.opt svg.cur-thumb{width:44px; height:44px; margin:4px 0}
+.acc-sec{margin-top:22px}
+.switch-row{position:relative; display:flex; align-items:center; gap:12px; margin-top:20px; padding:12px 14px; border-radius:16px; cursor:pointer;
+  border:2.5px solid #cfe0ef; background:linear-gradient(180deg,#fff,#f1f7fd)}
+.switch-row strong{display:block; font:800 .95rem/1.2 var(--f-display)}
+.switch-row small{display:block; font-size:.8rem; color:var(--ink-soft)}
+.switch-row input{position:absolute; left:14px; top:50%; opacity:0; width:1px; height:1px; margin:0}
+.switch-row .sw{flex:none; position:relative; width:50px; height:28px; border-radius:999px; border:2.5px solid var(--edge);
+  background:linear-gradient(180deg,#b8cde2,#e6eff7); box-shadow:inset 0 2px 4px rgba(11,58,110,.3); transition:background .2s}
+.switch-row .sw::after{content:""; position:absolute; top:2px; left:2px; width:19px; height:19px; border-radius:50%; border:2px solid var(--edge);
+  background:radial-gradient(circle at 40% 30%,#fff,#dbe8f4); transition:transform .2s cubic-bezier(.3,1.4,.5,1)}
+.switch-row input:checked + .sw{background:radial-gradient(60% 50% at 50% 20%,rgba(255,255,255,.8),rgba(255,255,255,0)), linear-gradient(180deg,#a6e86a,#4ea81c); border-color:var(--edge-leaf)}
+.switch-row input:checked + .sw::after{transform:translateX(22px); border-color:var(--edge-leaf)}
+.switch-row input:focus-visible + .sw{outline:3px solid #19c2c9; outline-offset:2px}
+.pane-sub{font:800 1rem/1.2 var(--f-display); margin:0 0 10px}
+.acc-sec h3{font:800 1rem/1.2 var(--f-display); margin:0 0 10px}
+.opt svg.thumb.acc{overflow:hidden}
+.soon{display:grid; place-items:center; gap:8px; text-align:center; padding:30px 10px; border:2.5px dashed #a9c6e0; border-radius:18px; color:var(--ink-soft)}
+.soon svg.i{width:34px; height:34px; color:#8fb7da}
+
+/* barra de baixo: controles redondos, trilho de girar, salvar */
+.prov-bar{position:absolute; left:18px; right:18px; bottom:14px; height:58px; z-index:1; display:flex; align-items:center; gap:10px; padding:0 8px 0 4px}
+.prov-bar .ctrls{display:flex; gap:8px}
+.spin{flex:1; display:flex; align-items:center; gap:10px; min-width:120px; font:600 .72rem/1 var(--f-mono,monospace); color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em}
+.spin input{flex:1; -webkit-appearance:none; appearance:none; height:22px; background:transparent; cursor:pointer}
+.spin input::-webkit-slider-runnable-track{height:12px; border-radius:999px; border:2.5px solid var(--edge);
+  background:linear-gradient(180deg,#b8cde2,#f5f9fd 60%,#dde9f4); box-shadow:inset 0 2px 3px rgba(11,58,110,.25)}
+.spin input::-moz-range-track{height:8px; border-radius:999px; border:2.5px solid var(--edge);
+  background:linear-gradient(180deg,#b8cde2,#f5f9fd 60%,#dde9f4)}
+.spin input::-webkit-slider-thumb{-webkit-appearance:none; width:34px; height:20px; margin-top:-6px; border-radius:999px; border:2.5px solid var(--edge-leaf);
+  background:radial-gradient(60% 50% at 50% 20%,rgba(255,255,255,.95),rgba(255,255,255,0)), linear-gradient(180deg,#a6e86a,#4ea81c)}
+.spin input::-moz-range-thumb{width:30px; height:16px; border-radius:999px; border:2.5px solid var(--edge-leaf);
+  background:linear-gradient(180deg,#a6e86a,#4ea81c)}
+.spin input:focus-visible{outline:3px solid #19c2c9; outline-offset:3px; border-radius:999px}
+.prov-bar .acts{display:flex; gap:10px}
+
+@media (max-width:760px){
+  .prov-back{padding:12px 10px; place-items:start center; overflow:auto}
+  .prov{height:auto}
+  .prov-stage{position:relative; width:auto; height:300px; margin:0 6px}
+  .prov-frame{position:relative; left:auto; top:auto; margin-top:-26px; padding:80px 12px 12px; border-radius:28px; display:flex; flex-direction:column; gap:12px}
+  .prov-tab{top:34px; left:14px; right:auto; justify-content:flex-start}
+  .prov-x{top:34px}
+  .prov-tab button{border-bottom:4px solid var(--edge) !important; margin-bottom:0 !important; border-radius:14px; padding:6px 12px !important; font-size:.9rem}
+  .prov-tab button[aria-selected="true"]::before,.prov-tab button[aria-selected="true"]::after{display:none}
+  .prov-screen{position:relative; inset:auto; grid-template-columns:1fr; height:auto}
+  .prov-rail{flex-direction:row; border-left:0; border-bottom:3px solid var(--edge); overflow-x:auto; order:-1}
+  .cat{flex:1 0 70px}
+  .prov-pane{max-height:46vh}
+  .prov-bar{position:relative; inset:auto; height:auto; flex-wrap:wrap; padding:0}
+  .spin{order:3; flex-basis:100%}
+  .prov-bar .acts{margin-left:auto}
+}
+@media (prefers-reduced-motion:reduce){ .prov,.prov-back{animation:none} .opt{transition:none} }
+
+/* ===== do kit: botões-gota e card acrílico ===== */
+/* ---------- botões-gota ---------- */
+.btn{position:relative; overflow:hidden; display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer;
+  font:700 1rem/1 var(--f-body); color:#fff; text-decoration:none; padding:14px 24px; border-radius:999px;
+  background:linear-gradient(180deg,#4fb6ff 0%,#1a86e6 48%,#0c64c2 52%,#1a7fd8 100%);
+  --e:var(--edge); border:3px solid var(--e);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7), inset 0 -2px 6px rgba(0,40,100,.35), 4px 4px 0 var(--e);
+  transition:transform .12s, box-shadow .12s}
+.btn::before{content:""; position:absolute; left:8%; right:8%; top:2px; height:46%; border-radius:999px 999px 40% 40%/999px 999px 100% 100%;
+  background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.12))}
+.btn > *{position:relative}
+.btn:hover{transform:translate(-1px,-1px); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), inset 0 -2px 6px rgba(0,40,100,.35), 5px 5px 0 var(--e)}
+.btn:active{transform:translate(3px,3px); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 1px 1px 0 var(--e)}
+.btn.leaf{background:linear-gradient(180deg,#a6e86a 0%,#62bd2a 48%,#3f9a14 52%,#5bb526 100%);
+  --e:var(--edge-leaf)}
+.btn.sm{padding:8px 15px; font-size:.9rem}
+.btn.sm{box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 3px 3px 0 var(--e)}
+.btn.ghost{color:var(--sky-deep); background:linear-gradient(180deg,#fff,#e9f6ff);
+  }
+.btn.ghost::before{opacity:.6}
+/* ---------- card de borda grossa (assinatura) ---------- */
+/* contorno sólido grosso + sombra dura deslocada (herança do Quiz Toon), com gloss Aero por dentro */
+.acrylic{
+  --e:var(--edge); --tint:rgba(214,240,255,.65);
+  position:relative; border-radius:var(--r-card); border:4px solid var(--e);
+  background:linear-gradient(180deg,#ffffff 0%,var(--ice) 55%,var(--tint) 100%);
+  box-shadow:inset 0 2px 0 #fff, inset 0 -10px 24px -14px rgba(10,80,150,.25), 7px 7px 0 var(--e);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.acrylic::after{ /* gloss em arco */
+  content:""; position:absolute; inset:0 0 auto 0; height:42%; border-radius:calc(var(--r-card) - 4px) calc(var(--r-card) - 4px) 50% 50%/calc(var(--r-card) - 4px) calc(var(--r-card) - 4px) 22% 22%;
+  background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0)); pointer-events:none}
+.acrylic > *{position:relative; z-index:1}
+a.acrylic, .acrylic.lift{cursor:pointer}
+.acrylic.lift:hover, a.acrylic:hover{transform:translate(-2px,-2px); box-shadow:inset 0 2px 0 #fff, inset 0 -10px 24px -14px rgba(10,80,150,.25), 9px 9px 0 var(--e)}
+.acrylic.lift:active, a.acrylic:active{transform:translate(4px,4px); box-shadow:inset 0 2px 0 #fff, 3px 3px 0 var(--e)}
+.acrylic.leaf{--e:var(--edge-leaf); --tint:rgba(225,247,203,.75)}
+.acrylic.aqua{--e:var(--edge-aqua); --tint:rgba(205,248,246,.7)}
+:focus-visible{outline:3px solid #19c2c9; outline-offset:3px; border-radius:12px}
+.btn:focus-visible,.nav a:focus-visible{border-radius:999px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important; transition:none!important}
+}
+
+/* =====================================================================
+   Novo: tela inicial, jogo, HUD, aviso de interação e painel informativo
+   ===================================================================== */
+[hidden]{display:none !important}
+.prov-bar .acts .btn.ghost{color:var(--sky-deep)}
+
+/* ---------- tela inicial ---------- */
+.inicio{position:relative; z-index:1; min-height:100vh; display:grid; place-items:center;
+  padding:max(24px, env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-right,0px)) 32px max(16px, env(safe-area-inset-left,0px))}
+.home{width:min(920px,100%); display:grid; grid-template-columns:auto 1fr; gap:40px; align-items:center; padding:44px 44px 40px}
+.home-av{position:relative; width:220px; height:220px; justify-self:center}
+.home-av .avatar{position:relative; left:auto; top:auto; width:220px; height:220px}
+.home-av .avatar:hover{transform:translate(-2px,-2px)}
+.home-av .av-pen{width:40px; height:40px; right:4px; bottom:6px}
+.home-av .av-pen svg.i{width:18px; height:18px}
+.home-av .shape-pop{left:50%; transform:translateX(-50%); top:calc(100% + 18px)}
+.home-av-hint{position:absolute; left:50%; bottom:-34px; transform:translateX(-50%); white-space:nowrap;
+  font:600 .72rem/1 var(--f-num); text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft)}
+.kicker{display:flex; align-items:center; gap:8px; font-weight:600; color:var(--sky-deep); font-size:.95rem; margin:0 0 10px}
+.kicker .dot{width:9px; height:9px; border-radius:50%; background:var(--aqua); box-shadow:0 0 0 4px rgba(22,188,196,.2)}
+.home h1{font:900 clamp(2.6rem,6vw,4.2rem)/1 var(--f-display); margin:0 0 12px; letter-spacing:-.02em; color:var(--ink)}
+.home .lede{margin:0 0 24px; color:var(--ink-soft); font-size:1.08rem; max-width:40ch}
+.actions{display:flex; flex-wrap:wrap; gap:12px}
+.facts{display:flex; flex-wrap:wrap; gap:8px 18px; margin:26px 0 0; padding:0; list-style:none; color:var(--ink-soft); font-size:.9rem}
+.facts li{display:flex; align-items:center; gap:7px}
+kbd{display:inline-grid; place-items:center; min-width:24px; height:24px; padding:0 6px; border-radius:7px; border:2px solid var(--edge);
+  background:linear-gradient(180deg,#fff,#dcebf8); box-shadow:0 2px 0 var(--edge); font:700 .72rem/1 var(--f-num); color:var(--edge)}
+.btn svg.i{width:20px; height:20px; stroke-width:2.2}
+@media (max-width:760px){
+  .home{grid-template-columns:1fr; padding:30px 22px 28px; gap:44px; text-align:center}
+  .home .lede{margin-inline:auto}
+  .kicker,.actions,.facts{justify-content:center}
+}
+
+/* ---------- jogo ---------- */
+body.em-jogo{overflow:hidden}
+.jogo{position:fixed; inset:0; z-index:5; background:#cfe9fb}
+.jogo canvas{position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; cursor:grab}
+.jogo canvas.girando{cursor:grabbing}
+.hud-top{position:absolute; left:0; right:0; top:0; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; pointer-events:none;
+  padding:max(14px, env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-right,0px)) 0 max(16px, env(safe-area-inset-left,0px))}
+.hud-top > *{pointer-events:auto}
+.hud-brand{display:flex; align-items:center; gap:10px; padding:8px 18px 8px 12px; border-radius:999px;
+  font:900 1.15rem/1 var(--f-display); color:var(--sky-deep)}
+.hud-brand small{font:600 .7rem/1 var(--f-num); text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); padding-left:10px; border-left:2px solid rgba(11,58,110,.25)}
+.hud-brand .drop{width:22px; height:26px}
+.hud-acts{display:flex; gap:10px}
+.hud-acts .gbtn{width:46px; height:46px}
+.hud-acts .gbtn svg.i{width:21px; height:21px}
+.hud-dica{position:absolute; left:50%; bottom:max(18px, env(safe-area-inset-bottom,0px)); transform:translateX(-50%); display:flex; flex-wrap:wrap; justify-content:center; gap:6px 16px;
+  padding:10px 18px; border-radius:20px; color:var(--ink); font-size:.86rem; max-width:calc(100% - 32px); transition:opacity .4s ease}
+.hud-dica span{display:flex; align-items:center; gap:6px; white-space:nowrap}
+.hud-dica.some{opacity:0; pointer-events:none}
+
+/* aviso flutuante: bolha que aparece perto do equipamento */
+.aviso{position:absolute; left:0; top:0; z-index:3; display:flex; align-items:center; gap:8px; padding:7px 14px 7px 8px; border-radius:999px; cursor:pointer;
+  border:3px solid var(--edge-aqua); color:var(--ink); font:800 .92rem/1 var(--f-display); white-space:nowrap;
+  background:radial-gradient(120% 90% at 30% 0%,rgba(255,255,255,.95),rgba(255,255,255,0) 55%), linear-gradient(180deg,#f2fffe,#bdf0ee);
+  box-shadow:inset 0 2px 0 #fff, 4px 4px 0 var(--edge-aqua); transform:translate(-50%,-100%); animation:aviso-in .25s cubic-bezier(.3,1.4,.5,1)}
+.aviso kbd{border-color:var(--edge-aqua); color:var(--edge-aqua); box-shadow:0 2px 0 var(--edge-aqua)}
+.aviso::after{content:""; position:absolute; left:50%; bottom:-11px; width:14px; height:14px; transform:translateX(-50%) rotate(45deg);
+  background:#c3f1ef; border-right:3px solid var(--edge-aqua); border-bottom:3px solid var(--edge-aqua)}
+@keyframes aviso-in{from{opacity:0; transform:translate(-50%,-80%) scale(.85)}}
+
+/* painel informativo (Aero): card acrílico de borda grossa sobre o jogo */
+.painel-back{position:absolute; inset:0; z-index:6; display:grid; place-items:center; padding:24px 16px;
+  background:radial-gradient(120% 90% at 50% 30%,rgba(120,200,255,.18),rgba(6,40,90,.38)); animation:prov-fade .2s ease-out}
+.painel{width:min(560px,100%); max-height:calc(100vh - 48px); overflow:auto; padding:28px 30px 26px; animation:prov-pop .3s cubic-bezier(.2,.9,.3,1.15)}
+.painel .x{position:absolute; top:14px; right:14px; z-index:2}
+.painel .kicker{color:var(--aqua-deep); margin-bottom:8px}
+.painel h2{font:900 1.7rem/1.1 var(--f-display); margin:0 0 6px; color:var(--ink); padding-right:44px}
+.painel .demo{display:inline-block; margin:6px 0 14px; padding:4px 10px; border-radius:999px; font:700 .66rem/1.2 var(--f-num); text-transform:uppercase; letter-spacing:.06em;
+  color:#7a4a00; background:#ffe3a3; border:1.5px solid #d99a20}
+.painel p{margin:0 0 12px; color:var(--ink-soft)}
+.painel ul{margin:0 0 14px; padding:0; list-style:none; display:grid; gap:8px}
+.painel li{display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:14px; border:2px solid #cdeeed; background:rgba(255,255,255,.7)}
+.painel li b{font-weight:700; color:var(--ink); min-width:7.5em}
+.painel .fonte{font:600 .74rem/1.4 var(--f-num); color:var(--ink-soft); margin:14px 0 0}
+/* conversa com uma pessoa do espaço: diálogo na base da tela, cena visível em cima */
+.painel-back.conversa{place-items:end center; padding-bottom:22px; background:linear-gradient(to top,rgba(6,40,90,.34),rgba(6,40,90,0) 55%)}
+.painel-back.conversa .painel{width:min(640px,100%); max-height:40vh; padding:20px 26px 18px}
+.painel-back.conversa .painel h2{font-size:1.35rem}
+.painel-back.conversa .painel ul{margin-bottom:4px}
+
+/* cabine do elevador: transição controlada sem descarregar o ambiente ou o avatar */
+/* painel da cabine à direita: as portas abrindo e fechando continuam visíveis na cena */
+.elevador-ui{position:absolute;inset:0;z-index:9;display:grid;place-items:center end;padding:20px 4vw;background:linear-gradient(to left,rgba(8,17,28,.5),rgba(8,17,28,0) 62%)}
+@media (max-width:700px){.elevador-ui{place-items:end center}}
+.elevador-cabine{position:relative;width:min(400px,100%);padding:30px;border:5px solid rgba(255,255,255,.85);border-radius:32px;background:linear-gradient(145deg,#f5f8fa,#cbd5dc);box-shadow:0 28px 90px rgba(0,0,0,.35),inset 0 0 0 3px #8a9aa5;color:var(--ink)}
+.elevador-visor{position:absolute;top:22px;right:66px;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:12px;background:#15181d;color:#ffb36b;font:800 1.2rem/1 var(--f-num);box-shadow:inset 0 0 0 2px #2d333b}
+.elevador-visor i{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;opacity:0}
+.elevador-visor.sobe i{border-bottom:10px solid #ffb36b;opacity:1;animation:elev-pisca .5s infinite alternate}
+.elevador-visor.desce i{border-top:10px solid #ffb36b;opacity:1;animation:elev-pisca .5s infinite alternate}
+@keyframes elev-pisca{from{opacity:.35}to{opacity:1}}
+.elevador-cabine h2{margin:0 0 6px;font:900 1.8rem/1.1 var(--f-display)}
+.elevador-cabine .kicker{margin:0 0 6px;color:var(--aqua-deep);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.elevador-estado{min-height:2.8em;margin:0 0 18px;color:var(--ink-soft)}
+.elevador-andares{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.elevador-andares button{display:flex;align-items:center;gap:12px;padding:12px;border:3px solid #91a7b5;border-radius:18px;background:#fff;color:var(--ink);font:800 1rem var(--f-body);cursor:pointer}
+.elevador-andares b{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#1b3448;color:#fff;font:900 1.1rem var(--f-num)}
+.elevador-andares button:disabled{cursor:not-allowed;opacity:.48}.elevador-andares button.atual{border-color:var(--lime);opacity:.72}
+.elevador-nota{margin:16px 0 0;font-size:.78rem;color:var(--ink-soft)}
+.elevador-fechar{position:absolute;right:16px;top:14px;width:40px;height:40px;border:0;border-radius:50%;background:#fff;color:var(--ink);font:800 1.5rem/1 var(--f-body);cursor:pointer}
+
+/* véu de entrada: gota que respira enquanto a sala monta */
+.veu{position:fixed; inset:0; z-index:50; display:grid; place-content:center; justify-items:center; gap:16px; color:#fff;
+  background:linear-gradient(180deg,#0b62bd 0%,#2a93e4 40%,#7cc8f5 75%,#d4efff 100%); transition:opacity .5s ease}
+.veu.some{opacity:0; pointer-events:none}
+.veu p{margin:0; font:800 1.2rem/1 var(--f-display); text-shadow:0 2px 8px rgba(0,40,100,.3)}
+.veu svg{width:64px; height:74px; animation:respira 1.4s ease-in-out infinite}
+@keyframes respira{50%{transform:scale(1.08) translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){ .veu svg,.aviso{animation:none} }

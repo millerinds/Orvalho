@@ -1,0 +1,27 @@
+C01	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.09.jpeg
+C02	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.10.jpeg
+C03	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.10 (1).jpeg
+C04	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.11.jpeg
+C05	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.11 (1).jpeg
+C06	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.12.jpeg
+C07	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.12 (1).jpeg
+C08	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.12 (2).jpeg
+C09	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.13.jpeg
+C10	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.14.jpeg
+C11	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.14 (1).jpeg
+C12	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.14 (2).jpeg
+C13	referencia/fotos-hall-correcoes/lote1/WhatsApp Image 2026-10-30 at 14.23.19.jpeg
+C14	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29.jpeg
+C15	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29 (1).jpeg
+C16	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29 (2).jpeg
+C17	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29 (3).jpeg
+C18	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29 (4).jpeg
+C19	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29 (5).jpeg
+C20	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29 (6).jpeg
+C21	referencia/fotos-hall-correcoes/lote2/WhatsApp Image 2026-10-30 at 14.29.29 (7).jpeg
+D01	referencia/fotos-hall-correcoes/lote3/WhatsApp Image 2026-10-30 at 15.10.35.jpeg
+D02	referencia/fotos-hall-correcoes/lote3/WhatsApp Image 2026-10-30 at 15.10.35 (1).jpeg
+D03	referencia/fotos-hall-correcoes/lote3/WhatsApp Image 2026-10-30 at 15.10.36.jpeg
+D04	referencia/fotos-hall-correcoes/lote3/WhatsApp Image 2026-10-30 at 15.10.36 (1).jpeg
+D05	referencia/fotos-hall-correcoes/lote3/WhatsApp Image 2026-10-30 at 15.10.37.jpeg
+D06	referencia/fotos-hall-correcoes/lote3/WhatsApp Image 2026-10-30 at 15.10.37 (1).jpeg

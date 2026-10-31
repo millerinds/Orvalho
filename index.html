@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orvalho · Lab de IA</title>
+<meta name="description" content="Explore o Laboratório de IA em 3D, com um bonequinho de vidro-gelatina no estilo Frutiger Aero.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 26 30%27%3E%3Cpath d=%27M13 1C13 1 2 13 2 19.5A11 11 0 0 0 24 19.5C24 13 13 1 13 1z%27 fill=%27%232f9be8%27 stroke=%27%230a4f9c%27/%3E%3Cellipse cx=%279%27 cy=%2715%27 rx=%273%27 ry=%275%27 fill=%27%23fff%27 opacity=%27.8%27 transform=%27rotate(20 9 15)%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Nunito:wght@700;800;900&display=swap">
+<link rel="stylesheet" href="css/orvalho.css">
+</head>
+<body>
+
+<div class="scene" aria-hidden="true">
+  <div class="sun"></div>
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="sw" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <linearGradient id="sw2" x1="0" x2="1"><stop offset="0" stop-color="#b8f0ff" stop-opacity="0"/><stop offset=".6" stop-color="#d9fbff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fe05a"/><stop offset=".5" stop-color="#5cb825"/><stop offset="1" stop-color="#2e7a12"/></linearGradient>
+      <linearGradient id="hill2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c3f08a"/><stop offset="1" stop-color="#6cc832"/></linearGradient>
+      <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
+    </defs>
+    <g fill="none" stroke-linecap="round">
+      <path d="M-120 540 C 260 380, 640 700, 1560 300" stroke="url(#sw)" stroke-width="26" opacity=".35" filter="url(#soft)"/>
+      <path d="M-120 540 C 260 380, 640 700, 1560 300" stroke="url(#sw)" stroke-width="2.5"/>
+      <path d="M-120 600 C 300 470, 700 760, 1560 380" stroke="url(#sw2)" stroke-width="1.5"/>
+      <path d="M-120 470 C 380 300, 820 620, 1560 210" stroke="url(#sw2)" stroke-width="1"/>
+    </g>
+    <path d="M-40 820 C 300 730, 620 760, 900 790 S 1300 770, 1480 720 L1480 940 L-40 940 Z" fill="url(#hill2)" opacity=".9"/>
+    <path d="M-40 860 C 380 760, 900 830, 1480 790 L1480 940 L-40 940 Z" fill="url(#hill)"/>
+    <path d="M-40 860 C 380 760, 900 830, 1480 790" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+  </svg>
+  <span class="bokeh" style="width:120px;height:120px;left:78%;top:14%"></span>
+  <span class="bokeh" style="width:54px;height:54px;left:88%;top:36%;animation-delay:-4s"></span>
+  <span class="bokeh" style="width:80px;height:80px;left:6%;top:58%;animation-delay:-7s"></span>
+  <span class="bokeh" style="width:34px;height:34px;left:62%;top:8%;animation-delay:-2s" data-d></span>
+  <span class="bokeh" style="width:22px;height:22px;left:44%;top:30%;animation-delay:-9s" data-d></span>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="c-quadrado" clipPathUnits="objectBoundingBox"><path d="M.24,0 H.76 Q1,0 1,.24 V.76 Q1,1 .76,1 H.24 Q0,1 0,.76 V.24 Q0,0 .24,0 Z"/></clipPath>
+    <clipPath id="c-quadrado-in" clipPathUnits="objectBoundingBox"><path d="M.03,0 H.97 Q1,0 1,.03 V.97 Q1,1 .97,1 H.03 Q0,1 0,.97 V.03 Q0,0 .03,0 Z"/></clipPath>
+    <clipPath id="c-circulo" clipPathUnits="objectBoundingBox"><path d="M.5,0 A.5,.5 0 1 1 .5,1 A.5,.5 0 1 1 .5,0 Z"/></clipPath>
+    <clipPath id="c-d" clipPathUnits="objectBoundingBox"><path d="M.1,0 H.48 A.52,.5 0 0 1 .48,1 H.1 Q0,1 0,.9 V.1 Q0,0 .1,0 Z"/></clipPath>
+    <clipPath id="c-triangulo" clipPathUnits="objectBoundingBox"><path d="M.04,.37 C.16,.17 .46,.02 .76,.02 C.92,.01 .99,.08 1,.22 C1.01,.4 1.01,.6 1,.78 C.99,.92 .92,.99 .76,.98 C.46,.98 .16,.83 .04,.63 C-.01,.55 -.01,.45 .04,.37 Z"/></clipPath>
+    <clipPath id="c-feijao" clipPathUnits="objectBoundingBox"><path d="M.54,.02 C.84,.02 1,.25 1,.52 C1,.8 .82,.98 .54,.98 C.34,.98 .17,.92 .09,.82 C.04,.75 .07,.69 .15,.67 C.25,.64 .32,.59 .32,.5 C.32,.41 .25,.36 .15,.33 C.06,.3 .04,.22 .09,.15 C.18,.05 .34,.02 .54,.02 Z"/></clipPath>
+    <clipPath id="c-feijao-e" clipPathUnits="objectBoundingBox"><path d="M0.0846,0.8192 L0.1095,0.8471 L0.1432,0.8740 L0.1851,0.8993 L0.2294,0.9199 L0.2794,0.9378 L0.3345,0.9527 L0.3942,0.9641 L0.4579,0.9717 L0.5816,0.9748 L0.6327,0.9701 L0.6803,0.9615 L0.7244,0.9492 L0.7699,0.9313 L0.8111,0.9093 L0.8482,0.8834 L0.8778,0.8572 L0.9075,0.8241 L0.9335,0.7870 L0.9532,0.7506 L0.9717,0.7057 L0.9844,0.6620 L0.9936,0.6149 L0.9988,0.5643 L0.9999,0.5113 L0.9966,0.4550 L0.9889,0.4009 L0.9768,0.3492 L0.9627,0.3057 L0.9431,0.2599 L0.9196,0.2176 L0.8925,0.1790 L0.8619,0.1443 L0.8317,0.1168 L0.7986,0.0926 L0.7625,0.0717 L0.7231,0.0543 L0.6801,0.0405 L0.6334,0.0308 L0.5892,0.0258 L0.5161,0.0246 L0.4308,0.0279 L0.3594,0.0345 L0.2946,0.0446 L0.2368,0.0585 L0.1866,0.0760 L0.1442,0.0967 L0.1091,0.1206 L0.0830,0.1470 L0.0773,0.1640 L0.0812,0.1737 L0.1019,0.1859 L0.1897,0.2186 L0.2421,0.2465 L0.2941,0.2851 L0.3369,0.3322 L0.3617,0.3730 L0.3787,0.4164 L0.3886,0.4652 L0.3902,0.5128 L0.3831,0.5667 L0.3679,0.6134 L0.3429,0.6592 L0.3084,0.7012 L0.2663,0.7373 L0.2153,0.7688 L0.1563,0.7954 Z"/></clipPath>
+    <clipPath id="c-feijao-in" clipPathUnits="objectBoundingBox"><path d="M0.0804,0.1511 L0.1694,0.1855 L0.2222,0.2109 L0.2740,0.2444 L0.3140,0.2792 L0.3492,0.3214 L0.3774,0.3710 L0.3944,0.4201 L0.4035,0.4784 L0.4021,0.5380 L0.3914,0.5911 L0.3725,0.6393 L0.3428,0.6875 L0.2986,0.7355 L0.2425,0.7772 L0.1769,0.8114 L0.1004,0.8393 L0.1199,0.8570 L0.1604,0.8855 L0.2061,0.9095 L0.2595,0.9307 L0.3135,0.9468 L0.3794,0.9608 L0.4432,0.9694 L0.5769,0.9742 L0.6287,0.9700 L0.6769,0.9619 L0.7214,0.9500 L0.7672,0.9326 L0.8041,0.9138 L0.8417,0.8891 L0.8753,0.8606 L0.9050,0.8284 L0.9311,0.7922 L0.9533,0.7519 L0.9716,0.7071 L0.9844,0.6636 L0.9988,0.5655 L0.9965,0.4552 L0.9782,0.3543 L0.9625,0.3051 L0.9428,0.2592 L0.9195,0.2170 L0.8925,0.1786 L0.8622,0.1442 L0.8322,0.1170 L0.7952,0.0902 L0.7590,0.0700 L0.7143,0.0513 L0.6707,0.0386 L0.5845,0.0262 L0.4605,0.0272 L0.3228,0.0402 L0.2166,0.0648 L0.1689,0.0831 L0.1295,0.1045 L0.0918,0.1337 Z"/></clipPath>
+    <clipPath id="c-pedra" clipPathUnits="objectBoundingBox"><path d="M.08,.03 C.3,0 .5,.01 .62,.03 C.72,.05 .77,.1 .83,.19 L.97,.42 C1,.5 1,.62 .99,.76 C.98,.93 .94,1 .83,.99 C.6,.97 .32,1 .16,.95 C.05,.91 .03,.8 .02,.6 C.01,.4 0,.2 .02,.1 C.03,.05 .05,.04 .08,.03 Z"/></clipPath>
+  </defs>
+</svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19zM14 7l3 3"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15a.8.8 0 0 0 1.2.7l12-7.5a.8.8 0 0 0 0-1.4l-12-7.5A.8.8 0 0 0 7 4.5z"/></symbol>
+  <symbol id="i-books" viewBox="0 0 24 24"><path d="M4 4h4v16H4zM10 4h4v16h-4zM15.5 5.2l3.8-1 4 15.5-3.8 1z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20h18M5 16l5-5 4 3 6-7"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4zM16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3 7h3.5c4 0 6 10 10 10H21M3 17h3.5c1.6 0 2.8-1.6 3.8-3.5M14 10.5C15 8.6 16 7 17.5 7H21M18 4l3 3-3 3M18 14l3 3-3 3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 9 11 4 20 4c0 9-5 15-15 15zM5 19l8-8"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7 15h10"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+  <symbol id="i-hanger" viewBox="0 0 24 24"><path d="M10 6.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.8-.8 1.4V11M12 11 3.4 17a1 1 0 0 0 .6 1.8h16a1 1 0 0 0 .6-1.8z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-body" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-5 3-8.5 7-8.5s7 3.5 7 8.5z"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s-6.5 7-6.5 11.5a6.5 6.5 0 0 0 13 0C18.5 10 12 3 12 3z"/><path d="M9 14.5a3 3 0 0 0 3 3"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="6"/><rect x="7" y="7" width="10" height="10" rx="1.5"/></symbol>
+  <symbol id="i-hat" viewBox="0 0 24 24"><path d="M7 15V8.5a5 5 0 0 1 10 0V15M3 15.5c0 1.7 4 3 9 3s9-1.3 9-3-4-2.5-9-2.5-9 .8-9 2.5z"/></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r=".6"/><circle cx="15" cy="9" r=".6"/><circle cx="12" cy="12" r=".6"/><circle cx="9" cy="15" r=".6"/><circle cx="15" cy="15" r=".6"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11M11 10V4a1.5 1.5 0 0 1 3 0v7M14 10.5V6a1.5 1.5 0 0 1 3 0v8c0 4-2.5 7-6.5 7-2.5 0-4-1.2-5.3-3.2L3.6 15a1.5 1.5 0 0 1 2.4-1.8L8 15"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></symbol>
+  <symbol id="i-screen" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2.5"/><path d="M9 20h6M12 16v4"/><path d="M13 8.5l3.5 3.5-1.6.3.9 1.9-1 .5-.9-1.9-1 1.1z" fill="currentColor" stroke-width="1"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="9.5" r="1.8"/><path d="M3.5 17l5-4.5 4 3.5 3-2.5 5 4"/></symbol>
+  <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M6 3.5v15l4-4 3 6.5 2.6-1.2-3-6.4H18z"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><path d="M5 21V4.5A1.5 1.5 0 0 1 6.5 3h11A1.5 1.5 0 0 1 19 4.5V21M3 21h18M15 12.5v.01"/></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></symbol>
+</svg>
+
+<!-- ====== Tela inicial ====== -->
+<main class="inicio" id="inicio">
+  <section class="home acrylic" aria-labelledby="home-t">
+    <div class="home-av">
+  <div class="avatar" id="avatar" data-shape="quadrado">
+   <button class="av-open" type="button" id="avatar-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="provador" aria-label="Seu perfil. Abrir o provador do boneco">
+    <span class="av-body">
+      <span class="av-layer av-edge"></span>
+      <span class="av-layer av-frame"></span>
+      <span class="av-layer av-win-edge"></span>
+      <span class="av-layer av-win"><canvas class="av-3d" hidden></canvas><img alt="" src="data:image/webp;base64,UklGRowXAABXRUJQVlA4IIAXAADQbgCdASrwAPAAPj0ci0QiIaEjKDP7IGAHiUAakUOP4bqPvI+x/JL2pLg/j/wz+TXmAeeUbbsr/hf4b8p+2n5gn6lf73rMeZL9k/2g94H0bf4D7QPkD/rn+Z///YkegN+6Hprft98LX9a/3/7h+07//7sbzFqhl3X/uf7vyZ8BH8b/mn+tzBrvT/yv7l6701DIA4LygL+jfQw/8v9R6Hvp/2Ev1z9Mz2J/t77NhtKRyVTyMLLLXQ7MUuDL0E12knruKp/PNnNwcq3lFeYnJbkzu2KlppSvD1BTkou7pfIiWf1HkJkdub/mkl31/g+fX2w8oUcXy2xoa3zeHzTFKSF9s9IkkGM9LyIZl/c4lyz1eW02+g7l37IAgbs5IvCt7kdP6LpXUP7YfySQabV77k3WIx7ZFBg3HDRAv0AVNrbI20TmaFAotHC+KL7VSIRhpY4+kWjXENOhxH/0qe+TGDHiCN9B3XzdLTjrtt9lpoAr+9CqTbsKdMNORPQVy9XwPefq4j6S0+yWNYPKH1yLp///zv8n2OMucvHfxylsPruCj+82/O3pp1f2JJP+kOkz+r80HcnhTANxQ2btjnhrWGSRq0FZ6l0akpgZSIhnfPDKxsvGwMN3H5wzRO4mGJ5gRiYLF1WqCnblN3iaUeuLqFwhRc0EHH6BTcc86HX70vxqRCwmAaM+KnEAKgSG3W7Y8WH/hstwoz/hGrBOSVOd85TTR3cOok4kCzbh9uH2VVHVOp9C8TRkqbdxM+opesJj6+MtPi9OBdqG8nfN9htoktdd4zcEiC8qJrcDPwBaZ/eJcVjyn1sGQYYAo6HccU/yQDW566FV0ImsGEapmP760xMo6/QP7D0tTUKsBfaHpYpc6OsikHslm4EKuGnbKF1uokrCmL7S/T6dh302+Bdl53qI42sjUSE9yWJsUXz5AMMxV5rG6k5NwKrKrFFQGJgE/FyHiBJCFhP6U+Tz8ilovIqbsjoJ1aSAlF9InOKfi6/i06btlDp3Xutz7ClkrX9h8Pv+FgUPsdk9jgrNSSDG9NMjQwNmZTnqC1AGf4G8AijJqahfZk//drCn4XaroYHGQSJt5KYxhO54SoNGOTiRTxie1Twsm7y/FrKL5VORHkc354eUyZka/SVHBIoWmbonoOTFPQY5uUwUAqu5Ftg0/MhNh7mxBhb/opt3NyC0+ogAAP7+iRgvLCWxpwKNEE5zLvvTHQL0DASfotlGOQ4pTnNvU1II7dX9qhHQGeo99/04qC85wXB9Kjcvw+tNuPvWJQx9xhRb1j1rQkrHvLt99RzxjDU+82UK+kJAPv+VXmgE2p1uq8j994j4+gCbdDiPq6cigIqUTd1jTU2AhlTgylseEgeNFLpT//H0z4/wJczOcWKITUfs43CuHquUaK3K2OvGgPv6gaAzTwZdp/bWc+3ovcIGpLTXw5bW9AF0nsmWy7fmVI9SApcLEXkrxw75CK3SiZ5+TnrIRkC51uCls5yckaypF9y7j8s2o6KocNPgZrRBu+K64JkOJ90fmlMxCLaTDlBZsuWnq0obemA8w1IvU7L3JXlTjo+Fji8hw/rMdQZX8Qz0feE/Q2pRGwUZhF2cHFW1O2ap+fQCPIrh5eOks8IQ0k8oampJlR7JOK3NlP6WveBj4fXabySnUFtNWOsrPsBXjtfNFyrOFZHlInan8uJVnkfTdzpOnLhdCkwimNlZTQal5WEhrKfRdI+LZg2GBEs4o9cZwdo1x/EetWCxqxlMfk8tAG8n/GwC/R51AMaVmuRZY+b3P48m0/cOoAEYaKQKBX3wIYYdBOMwzPkHfXFhAdi3DXM0fKJJxgzZSdCI6yb1TwNJTxKX5N6cY2PBPPh7krkaKJxsT9gdf83EAMZ1IEfQbRSoOwJlZ58Hyt7F9aQNBsnjDhcUevIXW5kdkBl5byMn0GQT9oemJnOYmE0fTkoh6yAJCw3XOtNoj+Ru4/+vPBedD6KK9iMfOY1ZDjW+SgOl/2Pnw3cTxItmMwE471onMm4ISPtQ+/AX3McypnsieMkwc6/oCJXq/a9DwW9TDL4rZ6E9xNHPfUvbXAIj5/2sBkzIif1OMkn93sUmupUx5O2oHLsxWwIe9sesCBuPyKgTMtvW5HcqXmE6XwQTG63iFFikwSyX+b8lvulIKQAIDYxxiKWxhCy5cD31cuxo5w4Kc6OW31yDDcOO4AIqRdmFE7dzIvX1Fmuc+pUNBJ4wpIbA5K0nN6LedbMmoAAcmYFlxkqz1v/TxLciFoFZBN4eHcb/2gwwIfWQS7jnFzFUscsv2UoIDcNfcflILC1Vr9w0MzW6bdX8lRpZAlVPCE2juBo8wdg2a+Y31WUkqZ9LIjg06O5HLTgHMG4Q/ONMRMDGVQChbu+AYsMl16hKiX621+LIMANPawsEZRz2UjfJQnM2Z8ZNdwNbgcUCa05umFXq6jigpkNyHyG8FtFyTrdLUaRF2M6Nl9CcwWNH/DBSzhsWAcNCVq9ZTeTDfCPA54waZTQi24d7lIGv32ushA413gGVBm858+2MWS/5er0cw+Q3Yngm/6jxZnl0MKVhKNkmzLCNtDfYf8V388s0AAL6VKVLWR9Cg0PzzKFc/BHXufqLP/0v1UdmrkuePEtrYYe23p3lFnTNwbcOLRjsTUvXmnIXXPvCCYbnHJDNMxbpouQBpN3Vd5ECySa8XKBkuP4hz2lEzKPdVQNNXOK0U8l17Q0YokMt8meHp+yePHYExrtntCDKXt1hjW0jeMdmEzZvljYQVwkGbgsYcxAcMeKyKePROLDfB2Ic/AjtVKN1W7xyMp+oDEXhzjoej7ov9WbeGqZBS1jk7ROk+AAU+l3Yaw5b0GZdvU2//tLP3xdlWgjwx4ys1hu2/mc6yZY5n+33gatdgewD/oKHJiKaAFZMSUnwz1gwPVecHAn37FoIXhtCU9avzSDUQ0Foo9Fss/WaMjxBWncI4Cc5suzQQdRXOANn+7GeZR8Z0froP9TGUsNKgmoLgjI4x/F/A/rRAvFLQEfU0Z/zf+bALqZIuIi+kSiHpWY9mkSGLMh6X/K/RPGUwVg4E4kkDLOg/MOeqi8plKVDBrP5elxVr+2HmHtatmfVTj722+0jvAADsU/EdSXaJ9ugvWmXForryuMOzqN44XWMUULNv9d0JS9i9k0FW8Plsn10blaA5B/yPGYjHJfynKVW+5wZIvCh9VzFxM1RY6UFiDRhj5WD1cLDzN/5rsdDpN96GuWROZu4Eb19DkUf3j70r1IQ99w+BrKz3W+XgbCAuk+8h6dMEH8Eo9RnMPPVKCBMmQVC2zeGpzwYPn3E3OHFeKLUGmQwNbQ5vrmzA4H284vETg6rBOCWqzzfUIy5Qi+aKvssDaymvyicoHrLM4MtnFC/rUN305wNZBbNYRxpXQsdxoPV9WaoaL9uFIReW+vM+BHbKoiJTa3qcdxRJvNVbwVjkp0KnMKnf6h5tvl+20JeO+QAB7kzLUdAtcRlvtDGI8H/+rmsmnsQTQZffG+HzVHvwozws+f4kYBhK6qx1YO/WsYlJbxpqhn38lq5lFOdusVK/kvmS3YHcPLu2Q5Aq0ju6EYDlPlJTuS5joGmeo/p7+jNpWTgKC3WJzPsth9GiYPQJ1PAv3ux8cyBrBepGacLywa7GbTJvYuEv2Xh7oGtgeVuJWoRUXKv0jOE/RH2+MiZuVEr1BEpPytL10Fi/f5dYwoD3nic0EGXm2f5V2ia6f074fodItQWDmh9iIKSqlLfTbjs4G6y8HAQ768zVIFvK2r5MukWHUsUzg+iXSzO4XC/8OWyoSofBcqzQulpX8gRgYYBiTDNBWx+n6HTP0iX++ggGLk3ju5JeF3Bfrp/ajOAt+VwSItuD+6nQbLvZdEgC4r4zeprssD+VvooI2yPPYyRq3YfD2NmmuDtaonrbfpl0PzS2SNNMfBCRUcq7Oq/6gdnSJjpVyr1Wp9CLr/Y4z+cMmx9IWEO4HW+NYebSP8aei/MMgeCl42GH9BJVaKNzMwfKG21xkWK/fjH6M8m/KOJe8vVVZTIdWeoxKeFWMd/ipt/4/KWG+VzemXe8N73sXEvpi3/GbcoEBmy9el7LAD4HwP/xYe2P/hkgm8tPMzDBJ/eR3+dJG+oB3BzhvMr5ZItZx+0HeGmwzYkMn3LE/hmJh6TqqU5E4ZMRfa8ps7XKZ/exo8QsQCtLXmQdFJGKlKPT4EPK65Z3V1XkRd8H+UcWErDemiaqavtdc5VAx6z3jzXIG97aTOfzLFc9/oAegYDlNjk8fwrL1YQW3fF7BTgIhPuGbOTcI3ndotjiv5dLGzal4JRUfXnw13SgkEE5SIJJ5HJYgqIKvHySjj4Atp2sJZUnomQdax9cw/jJgRDJMQyv+pX47OP+FGkOvIzrtuQDvgB4Mixsn9vmNYXI/+D/H/zCEy2gMdGlrcrIidOT+Q6MVPY1TjNbG2R/u6ofRGG80XPR12Eu1T5Kjcb9pUDjG/CKX/7RLk0kWYAUCIg0GNQ+nIBkHQKrhjKmpsYEce9VxcGrtHVLMNAYA0/gkM3T/Kqdc35QujhmK/gaKwkIYL6U1h1bdtqxvEHWG6AMttuI+OwmQvLtK8aCM21e2yEJDdtYdpetgTMNQ9nB9ShL1iCI1hOt7l2pI8sXp06pmuJDqoexjJDSEWPnAWQWTHpRYNpMR9P53zj6Yf/01xM8KBsWcHSW3xN86l5VT7vqdKeeoK6xBTEek+TNtX61JeK+wlhwDZZtCpnYz4tE4Sc1ch5p95AWUlf1rP37nPFORP96TNo/b1xFKkr1o2VhoeU5HOvYsTcPOKN8uXE+2mLruBdYTYXuOWvWJporP3k69Mwce0e0MA27WahzhAjAhp+BcDLmio+DThHcuJJsMPG/86ZEFE2YdIXCWcQ+SRiRgfF32jb+yc9t2oKaifBuvtQXJgIc5Cn6eyOhfR2qm111Adsh7mhrvYpp3pfSP+BSaRSLuNniO7W5tr+9jIgoK5cIJcCGMIwwaYX8RtmR5KZcoP+0xHSPKqwfqIfJuNdC2Pf8UgNBVrOpA9y60yCKE9/RVD1rleIu2GdQaHPDNTtJ7Q3Sz/xXqWpEJ6oY1O2xyPpYmg+1L9+li9TNYUKG+ioy0R0u/Td1Com5Hwtc/8F5bZX1UttrqnVFtg2iY6r9PABulTMXYyb+/aaboOOy0NSPatbd7vS1lOs0kcP+t85HBe1SOHNZ/GjO9bPlze1HHrNbLLD4eRSp3giFXMjofo4g9K2Fz+9AvWIpFyVRQt8em1BUKOmy30u5Y3dqIpx1QZgSJ6Jk3XSTyy/b2rXj/O9mSIsJzQs2dXpMFVxX4hBPacJ3JsDOKmIrk48vSUVwhbg2+oYMGGIGKySZNggiqJt30OdvoxFIN/76HyEcaEkxJ5v/+AzAZafJSjbqaeIe0sJfJZ47czvhRL4zRS4UyA0L8j1bHJj1ie+I+uL4JQiyS1+8GrJjhuih64rY4SJbsZPeInMkngK6boSEnjOptbjWPflEqLsqIuUuXMB8XxlU6GMnal8DrrTWIO5TTAfz52cw+BHvVPsW2vXtlgSxlcTrV7oNHXwixH5px9tjOLMhAJvMpBgmQYuu/yhnOKpVFUg54TVuRnj/C4BYP8XmSOCK1DQOFnz1NoUbzoHn12T/5Fr9ypc6YE9AgEjcEkB13kaT8yPmseGU1S7Z5CsMcpxtf4rMUJq51FrQT3hhClLJ2Q5flYFQxkDTb6UydRlKIPFxkEYSof4BcesdNEqvV0wDsPxvFNjRtgfQcmXlaG79uje/j5MKf9yI+HSkENyghoAaLF8CZ0kvr+eKxQ4lajzjQYGqbpGW3axbnngD3jkFBZ42XbfwtZnVbyEV3Gn57aqI2PchNhzajkpTDuVeZ2s/xCss28xIvyCRtCewflPMPzfeHFW0jonyf2MFb9xBQN+Rsx4HO1p+//xvzPAJ+dLO6QEOOW3/LZGjzEzm/WAnI41QvLIwSv5D/HJu5THmXXXH129CTq+0w1sRZBGOw3k61yAR51iqWqgXP4ovUa0qKSbDc0VJrDYp3sM9imZ7gNrE95YPoA2jJs6XYfkMoPzpdPdkOOuZSz+3SyFNcIHyPnLit9/dvaKdpOGdv5zzOrEvQH/PYbuExxFlYwrRNxSksnW5QrTNiMFk+gppUMVc0LC7ftuB0aWCOgJAQFrbOB8w83PBmSynrYzZreoPmLpZ/bOoqVIhoh0/ehNu5gkZcI78EMEV17e9lc3vv4csNHHOnHH+qd8ViT9DH5G3vr2zsUUnOFFQHUIO0AjApBSz3n8VC7UbeSfuN4hTElrb09LdkVPfX2JrrPg6V4lGf4zLpEM3l4ZhGkzvTAw2cJ0OKCaXFNXA0a/crRPwSY6uXLCwgUdHvgdmAxL9VrI1GM+c8OfX8WYG3vfPm/hLmHlpi7cPMoNX/OK7IWqxF8JibgT3q1pUp2/302eqexnsamSLJO/eQ98H9BAjNueOlqMhdmQhveFkSqhzKak3KIJNyz4RsPgLp712mzua/qLYNbutLacNneMmB06nEMMMYJ0HEFRQMVredlHX+442ES4LJ1n4VGK4vkJkccRCJf3FouJ3Y4y0r9I0HuHhCQX+M3mWr6bO2C8NI/V8XXKF1GMGCnvr9MA02EtYHmVlmKCXXBG17FWCV3sXHpp0wj+kLcGrHXdVyNwFSBmuNtDZsn6kzqD6ZejVUsEYkCrpnNi/qXvZaWRxMM2D0OL8/vfP/T1MgTwTDdeMWU/fYO8loIY/sJGv5JCcac2i/Kf+4lBZIVwbGzCEYjAGXnMXETJKmP5wRoXOLvZwUeS3xpobzVzhSWxQWU7H0c3ZOK8w61sox1CcqFO2v6ZOudGQCRZSS4Tn+4agL1R+ueUs00u8r031sNgKhHVpKnoZmqesQvJZWD86D1V4DE/X/z1ELymfu0B5tSs6MrKHlXMZsq17lz1kBIzbEG1+NUSi0LhAgUVimDy0324pFzWvn1AbKxGQJWbXjGnBk3mpoq6lz9hgRJJ396+vjm8v0D50wLGJ0HN0ZHL+8la3SxiuRph+rhvcyqE2B5jrz6ExCGjUIAvd5Er+3dFg17Rp5Vc+tcb0mJ6w6SFTgfL1CBCUlfFPyrUYF2RYavFLvrfuZQH9Jy9Mcg0S9Hq3I1juiSsV9SqvucPEWIyIM/GYsFClKuIf//+b/aB7/pAE8jydaQWEthJKvfWu3BzMmZN4ea8K3OAuaNLbj53zkwqrhFISPIgJ6y/Ajay/PF/um/lRUFX3bkDBMYENwAA3Yz7ny7pn6V+zcDjofngg0auC9jQ3KWDlNe+vrrIiNbEN3N8F+Zfn6YRCoiev5U0uUokzSIu0JEEmU3Pyt8NS9BI8fJLPmasv24coNx3Oz7k+iFVtAiVeSQ9ybdHzqvwSLk0/WmutWDxkVWgfch/d4o/rUXkUrZzbRsBxFaMFQgizZS0wFzWuT54+ITcqOvc6fGCcXjf4JhZFA19e2+1iSIzT5ivBc8vJkac+PWOAFjZTd8yfyvUl/pT7lw3V+as3m+Mw9DiR2/2HmLxC896dTmchWlt/Q2KuuDJ0bWEIKUpwJyb2VeT0CVVtbTJLl65g9Fvu+MDQ3+DiSWPd9Ohoz4ywMczWYxne7e/r+VKlJPPK8mKQF+aj1Gc/rDalOC1+H96t3gR8iSmnMvIxw02Kv02BGf5CDRyX3tSc4LKj980N18KTvNe6pHkhmZ02TF/xvKHtwT2nw65LClB7Ma1ozzbTUwC7Ixy/u1j5IrELUsues/9PzR/ZvbcJ18Dyu3mptgY9KSe1ydUJtFVDboa9TpWD+TvGPL4b124SW6JS2Dmo/raQ49OGcc366RQ+PjqXv3ODpMld9zVFq/+OWWWk7GbU9x8UiX/WlAYntTsSrB0TWXwVaycFciM1B/aPFMuHFiee7/r2KaHFrIn/5AUz2j08RawDCiO6m0DLj0xn+hdRw5LFgziwZAdJNCAFQ3va8FF2bUP3oDFczE5XhTyFZ181+6eYg3s42cAAAAA"></span>
+    </span>
+   </button>
+    <button class="av-pen" type="button" id="shape-btn" aria-haspopup="true" aria-expanded="false" aria-controls="shape-pop" aria-label="Trocar formato da janela" title="Trocar formato da janela"><svg class="i"><use href="#i-pencil"/></svg></button>
+  </div>
+  <div class="shape-pop glass" id="shape-pop" hidden>
+    <h2>Formato da janela</h2>
+    <p>Muda a moldura e a janela juntas.</p>
+    <div class="shape-grid" role="radiogroup" aria-label="Formato">
+      <button type="button" class="shape-opt" role="radio" aria-checked="true" data-shape="quadrado"><i></i>Quadrado</button>
+      <button type="button" class="shape-opt" role="radio" aria-checked="false" data-shape="circulo"><i></i>Círculo</button>
+      <button type="button" class="shape-opt" role="radio" aria-checked="false" data-shape="d"><i></i>Meia-lua</button>
+      <button type="button" class="shape-opt" role="radio" aria-checked="false" data-shape="triangulo"><i></i>Triângulo</button>
+      <button type="button" class="shape-opt" role="radio" aria-checked="false" data-shape="feijao"><i></i>Feijão</button>
+      <button type="button" class="shape-opt" role="radio" aria-checked="false" data-shape="pedra"><i></i>Pedra</button>
+    </div>
+  </div>
+      <span class="home-av-hint">clique para personalizar</span>
+    </div>
+    <div class="home-txt">
+      <p class="kicker"><span class="dot"></span>Polo Inovale · protótipo</p>
+      <h1 id="home-t">Orvalho</h1>
+      <p class="lede">Explore o Laboratório de Inteligência Artificial em 3D com o seu bonequinho de vidro-gelatina.</p>
+      <div class="actions">
+        <button type="button" class="btn leaf" id="btn-entrar"><svg class="i"><use href="#i-play"/></svg><span>Entrar no Orvalho</span></button>
+        <button type="button" class="btn" id="btn-continuar" hidden><svg class="i"><use href="#i-chev"/></svg><span>Continuar exploração</span></button>
+        <button type="button" class="btn ghost" id="btn-personalizar"><svg class="i"><use href="#i-hanger"/></svg><span>Personalizar personagem</span></button>
+      </div>
+      <ul class="facts">
+        <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> andar</li>
+        <li><svg class="i"><use href="#i-move"/></svg> arraste para girar a câmera</li>
+        <li><kbd>E</kbd> interagir</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<!-- ====== Jogo ====== -->
+<section class="jogo" id="jogo" hidden aria-label="Laboratório de IA em 3D">
+  <canvas id="jogo-canvas" tabindex="0" aria-label="Cena 3D. Use W, A, S, D para andar e arraste para girar a câmera."></canvas>
+  <div class="hud-top">
+    <div class="hud-brand glass">
+      <svg class="drop" viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1C13 1 2 13 2 19.5A11 11 0 0 0 24 19.5C24 13 13 1 13 1z" fill="url(#dg)" stroke="#0a4f9c" stroke-opacity=".5"/><ellipse cx="9" cy="15" rx="3" ry="5" fill="#fff" opacity=".8" transform="rotate(20 9 15)"/></svg>
+      Orvalho <small id="hud-sala">Lab de IA</small>
+    </div>
+    <div class="hud-acts">
+      <button type="button" class="gbtn" id="hud-prov" aria-label="Abrir o provador (P)" title="Provador (P)"><svg class="i"><use href="#i-hanger"/></svg></button>
+      <button type="button" class="gbtn" id="hud-casa" aria-label="Voltar para o início" title="Início"><svg class="i"><use href="#i-house"/></svg></button>
+    </div>
+  </div>
+  <div class="hud-dica glass" id="hud-dica">
+    <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> andar</span>
+    <span><kbd>Shift</kbd> correr</span>
+    <span><kbd>Espaço</kbd> pular</span>
+    <span><svg class="i"><use href="#i-move"/></svg> arraste para girar · roda aproxima</span>
+    <span><kbd>E</kbd> interagir</span>
+    <span><kbd>P</kbd> provador</span>
+  </div>
+  <button type="button" class="aviso" id="aviso" hidden><kbd>E</kbd><span></span></button>
+  <div class="painel-back" id="painel" hidden>
+    <article class="painel acrylic aqua" role="dialog" aria-modal="true" aria-labelledby="painel-t">
+      <button type="button" class="gbtn x" id="painel-x" aria-label="Fechar" title="Fechar (Esc)"><svg class="i"><use href="#i-x"/></svg></button>
+      <p class="kicker"><span class="dot"></span><span id="painel-k"></span></p>
+      <h2 id="painel-t"></h2>
+      <span class="demo" id="painel-demo" hidden>Conteúdo demonstrativo</span>
+      <div id="painel-c"></div>
+    </article>
+  </div>
+</section>
+
+<div class="veu some" id="veu" hidden>
+  <svg viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1C13 1 2 13 2 19.5A11 11 0 0 0 24 19.5C24 13 13 1 13 1z" fill="url(#dg)" stroke="#fff" stroke-width="1.2"/><ellipse cx="9" cy="15" rx="3" ry="5" fill="#fff" opacity=".8" transform="rotate(20 9 15)"/></svg>
+  <p>Entrando no Orvalho…</p>
+</div>
+
+<!-- ====== Provador: abre ao clicar no avatar ====== -->
+<div class="prov-back" id="provador" hidden>
+  <div class="prov" role="dialog" aria-modal="true" aria-label="Provador">
+    <div class="prov-stage">
+      <div class="prov-win" id="prov-win">
+        <canvas aria-label="Prévia do boneco. Arraste para girar." role="img"></canvas>
+        <span class="prov-hint">arraste para girar</span>
+      </div>
+    </div>
+    <div class="prov-frame">
+      <div class="prov-tab" role="tablist" aria-label="Seções">
+        <button type="button" role="tab" id="tab-prov" data-mode="prov" aria-selected="true"><svg class="i"><use href="#i-hanger"/></svg>Provador</button>
+        <button type="button" role="tab" id="tab-ui" data-mode="ui" aria-selected="false" tabindex="-1"><svg class="i"><use href="#i-screen"/></svg>Interface</button>
+      </div>
+      <button type="button" class="gbtn prov-x" id="prov-close" aria-label="Salvar e fechar" title="Salvar e fechar"><svg class="i"><use href="#i-x"/></svg></button>
+      <div class="prov-screen">
+        <div class="prov-pane" id="prov-pane" role="tabpanel" aria-labelledby="cat-olhos" tabindex="0"></div>
+        <div class="prov-rail" id="rail-prov" data-mode="prov" role="tablist" aria-label="Categorias" aria-orientation="vertical">
+          <button type="button" class="cat" role="tab" id="cat-olhos" data-cat="olhos" aria-selected="true"><svg class="i"><use href="#i-eye"/></svg>Olhos</button>
+          <button type="button" class="cat" role="tab" id="cat-corpo" data-cat="corpo" aria-selected="false" tabindex="-1"><svg class="i"><use href="#i-body"/></svg>Corpo</button>
+          <button type="button" class="cat" role="tab" id="cat-cores" data-cat="cores" aria-selected="false" tabindex="-1"><svg class="i"><use href="#i-drop"/></svg>Cores</button>
+          <button type="button" class="cat" role="tab" id="cat-acess" data-cat="acess" aria-selected="false" tabindex="-1"><svg class="i"><use href="#i-hat"/></svg>Acessórios</button>
+        </div>
+        <div class="prov-rail" id="rail-ui" data-mode="ui" role="tablist" aria-label="Categorias" aria-orientation="vertical" hidden>
+          <button type="button" class="cat" role="tab" id="cat-fundo" data-cat="fundo" aria-selected="true"><svg class="i"><use href="#i-image"/></svg>Fundo</button>
+          <button type="button" class="cat" role="tab" id="cat-mouse" data-cat="mouse" aria-selected="false" tabindex="-1"><svg class="i"><use href="#i-cursor"/></svg>Mouse</button>
+        </div>
+      </div>
+      <div class="prov-bar">
+        <div class="ctrls">
+          <button type="button" class="gbtn big" id="prov-rand" aria-label="Combinação aleatória" title="Aleatório"><svg class="i"><use href="#i-dice"/></svg></button>
+          <button type="button" class="gbtn" id="prov-wave" aria-label="Acenar" title="Acenar"><svg class="i"><use href="#i-hand"/></svg></button>
+          <button type="button" class="gbtn" id="prov-reset" aria-label="Voltar de frente" title="De frente"><svg class="i"><use href="#i-reset"/></svg></button>
+        </div>
+        <label class="spin">Girar <input type="range" id="prov-spin" min="-180" max="180" step="1" value="0" aria-label="Girar boneco"></label>
+        <div class="acts">
+        <div class="acts">
+          <button type="button" class="btn sm ghost" id="prov-cancel"><span>Cancelar</span></button>
+          <button type="button" class="btn sm ghost" id="prov-save"><svg class="i"><use href="#i-check"/></svg><span>Salvar</span></button>
+          <button type="button" class="btn sm leaf" id="prov-enter"><svg class="i"><use href="#i-play"/></svg><span>Entrar no Orvalho</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- gradiente da gota (logo), usado no HUD e no véu -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="dg" cx="35%" cy="40%" r="70%"><stop offset="0" stop-color="#c9f3ff"/><stop offset=".5" stop-color="#2f9be8"/><stop offset="1" stop-color="#0a4f9c"/></radialGradient></defs></svg>
+
+<script src="vendor/three-r149.min.js"></script>
+<script src="src/orvalho.js"></script>
+<script src="src/boneco/paleta.js"></script>
+<script src="src/boneco/gelatina.js"></script>
+<script src="src/boneco/estudio.js"></script>
+<script src="src/boneco/boneco.js"></script>
+<script src="src/boneco/vitrine.js"></script>
+<script src="src/ui/provador.js"></script>
+<script src="src/mundo/colisao.js"></script>
+<script src="src/mundo/formas.js"></script>
+<script src="src/mundo/moveis.js"></script>
+<script src="src/mundo/npcs.js"></script>
+<script src="src/mundo/sala.js"></script>
+<script src="src/mundo/camera.js"></script>
+<script src="src/mundo/interacao.js"></script>
+<script src="src/mundo/elevador.js"></script>
+<script src="src/mundo/jogo.js"></script>
+<script src="ambientes/lab-ia/lab-ia.js"></script>
+<script src="ambientes/lab-ia/conteudo.js"></script>
+<script src="ambientes/hall-inovale/moveis-hall.js"></script>
+<script src="ambientes/hall-inovale/hall-inovale.js"></script>
+<script src="ambientes/hall-inovale/conteudo.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>

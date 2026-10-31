@@ -1,0 +1,33 @@
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+
+# ---------- material institucional e de trabalho: fica só no computador local, não é publicado ----------
+# O jogo não usa nenhuma destas imagens (tudo é gerado em código). Publicar exige autorização do Polo Inovale.
+FOTOS HALL/
+*.zip
+*.pdf
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.heic
+referencia/*
+!referencia/avatar-kit.html
+docs/hall/comparacoes/
+docs/hall/planta-hall-v*.svg
+docs/hall/planta-hall-v*.png
+docs/hall/planta-hall-v*.json
+docs/hall/*.png
+docs/hall/*.svg
+
+# ---------- artefatos dos testes (gerados a cada execução) ----------
+testes/*.png
+testes/relatorio-*.json
+
+# ---------- local ----------
+.env
+.env.*
+*.log
+.claude/
