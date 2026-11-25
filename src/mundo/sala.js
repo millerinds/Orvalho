@@ -76,7 +76,11 @@
       function bloco(u0, u1, v0, v1){
         v1 = Math.min(v1, Hp);
         if (u1 - u0 < 0.005 || v1 - v0 < 0.005) return;
-        var m = new THREE.Mesh(guarda(new THREE.BoxGeometry(u1 - u0, v1 - v0, T)), mat);
+        var bg = guarda(new THREE.BoxGeometry(u1 - u0, v1 - v0, T));
+        /* parede com textura: cada pedaço mostra só o seu trecho da textura da parede inteira (antes cada pedaço repetia
+           a textura toda e os trechos estreitos sobre as portas saíam espremidos) */
+        if (mat.map) { var buv = bg.attributes.uv; for (var bi = 0; bi < buv.count; bi++) buv.setXY(bi, (u0 + buv.getX(bi) * (u1 - u0)) / Lw, (v0 + buv.getY(bi) * (v1 - v0)) / Hp); }
+        var m = new THREE.Mesh(bg, mat);
         m.position.copy(Ld.pos((u0 + u1) / 2, (v0 + v1) / 2, -T / 2)); m.rotation.y = Ld.rot; grupo.add(m);
       }
       var vaos = (p.vaos || []).map(function(v){
@@ -282,9 +286,18 @@
     /* ---------- pilares redondos (colidem e barram a câmera) ---------- */
     var PL = def.pilares || [];
     if (PL.length) {
-      var pgs = PL.map(function(p){ var g = F.cilindro(p.d / 2, p.ate || H, 0.02, 28); g.translate(p.x, 0, p.z); col.bloqueiaCamera(p.x, p.z, p.d / 2); return g; });
-      grupo.add(new THREE.Mesh(guarda(F.mesclar(pgs)), std(CORES.pilar || '#c4b8a3', { roughness: 0.55 })));
+      /* "cor" opcional por pilar (3º andar: brancos junto à SCL, cor de areia no hall de estar); uma malha por cor */
+      var porCor = {};
+      PL.forEach(function(p){ var g = F.cilindro(p.d / 2, p.ate || H, 0.02, 28); g.translate(p.x, p.y0 || 0, p.z); if (!p.fora) col.bloqueiaCamera(p.x, p.z, p.d / 2); (porCor[p.cor || CORES.pilar || '#c4b8a3'] = porCor[p.cor || CORES.pilar || '#c4b8a3'] || []).push(g); });
+      Object.keys(porCor).forEach(function(c){ grupo.add(new THREE.Mesh(guarda(F.mesclar(porCor[c])), std(c, { roughness: 0.55 }))); });
     }
+
+    /* ---------- pisos sobrepostos (ex.: piso de madeira de uma sala), com textura opcional ---------- */
+    (def.pisos || []).forEach(function(pz){
+      var r = pz.r, w = r[2] - r[0], d = r[3] - r[1], mp = std(pz.cor || '#ffffff', { roughness: pz.rugosidade || 0.5 });
+      if (pz.textura === 'madeira') mp.map = guarda(F.madeira([w / (pz.regua || 3.6), d / (pz.largura || 0.6)]));
+      var pm = new THREE.Mesh(guarda(new THREE.PlaneGeometry(w, d)), mp); pm.rotation.x = -Math.PI / 2; pm.position.set(r[0] + w / 2, (pz.y || 0) + 0.004, r[1] + d / 2); grupo.add(pm);
+    });
 
     var NIV = def.niveis, TERREO = NIV ? [-1, 2] : null, escadasNav = [];
     col.nivel(TERREO); // daqui em diante (blocos, escadas, painéis, móveis): térreo
@@ -362,7 +375,13 @@
       var ax = p.a[0], az = p.a[1], bx = p.b[0], bz = p.b[1], Lp = Math.hypot(bx - ax, bz - az), h = p.y1 - p.y0, ang = Math.atan2(-(bz - az), bx - ax);
       var cx = (ax + bx) / 2, cz = (az + bz) / 2, mat;
       function plano(pw, ph, yc, m, ro){ var pl2 = new THREE.Mesh(guarda(new THREE.PlaneGeometry(pw, ph)), m); pl2.rotation.y = ang; pl2.position.set(cx, yc, cz); pl2.renderOrder = ro || 0; grupo.add(pl2); return pl2; }
-      if (p.y0 < 0.5) col.segmento(ax, az, bx, bz); // divisória que chega ao chão também colide
+      /* divisória que chega ao chão também colide; no vão de uma porta que abre ('vao') quem colide é a própria folha */
+      if (p.y0 < 0.5) {
+        var vaosPorta = (p.portas || []).filter(function(pt){ return pt[3] === 'vao'; }).map(function(pt){ return [pt[0], pt[1]]; }).sort(function(a, b){ return a[0] - b[0]; });
+        var s0c = 0, ux0 = (bx - ax) / Lp, uz0 = (bz - az) / Lp;
+        vaosPorta.forEach(function(v){ if (v[0] > s0c) col.segmento(ax + ux0 * s0c, az + uz0 * s0c, ax + ux0 * v[0], az + uz0 * v[0]); s0c = v[1]; });
+        if (Lp > s0c) col.segmento(ax + ux0 * s0c, az + uz0 * s0c, bx, bz);
+      }
       if (p.tipo === 'parede' || p.tipo === 'janelas') {
         mat = std(p.cor || '#eef2f5', { roughness: 0.85, side: THREE.DoubleSide });
         if (p.textura === 'madeira') mat.map = guarda(F.madeira([Lp / 3.6, h / 1.2]));
@@ -458,12 +477,13 @@
       col.nivel(NIV ? (y0 > 3 ? [3, 99] : [-1, 2]) : null);
       var segAberta = col.segmento(oa[0], oa[1], open.x, open.z), segFechada = col.segmento(pd.a[0], pd.a[1], pd.b[0], pd.b[1]);
       col.nivel(null); segAberta.off = true;
-      portasA.push({ id: pd.id, piv: piv, base: piv.rotation.y, sentido: sentido, ang: 0, cx: (pd.a[0] + pd.b[0]) / 2, cz: (pd.a[1] + pd.b[1]) / 2, y: y0, segAberta: segAberta, segFechada: segFechada });
+      portasA.push({ id: pd.id, piv: piv, base: piv.rotation.y, sentido: sentido, ang: 0, cx: (pd.a[0] + pd.b[0]) / 2, cz: (pd.a[1] + pd.b[1]) / 2, y: y0, segAberta: segAberta, segFechada: segFechada, trancada: !!pd.trancada });
     });
     if (portasA.length) animados.push(function(t, cam, jog){
       if (!jog) return;
       portasA.forEach(function(pa){
-        var perto = Math.abs((jog.y || 0) - pa.y) < 1.2 && Math.hypot(jog.x - pa.cx, jog.z - pa.cz) < 1.7;
+        /* "trancada": folha de verdade (arte, caixilho, puxador) que não abre — salas fechadas de empresas */
+        var perto = !pa.trancada && Math.abs((jog.y || 0) - pa.y) < 1.2 && Math.hypot(jog.x - pa.cx, jog.z - pa.cz) < 1.7;
         pa.ang += ((perto ? 1 : 0) - pa.ang) * 0.12;
         pa.segFechada.off = pa.ang > 0.55; pa.segAberta.off = pa.ang < 0.35;
         pa.piv.rotation.y = pa.base - pa.sentido * pa.ang * Math.PI / 2; // girar em -y leva a folha para o lado de dentro (normal à esquerda)
@@ -759,15 +779,16 @@
         },
         pisoEm: function(x, z, y){ var m = mzEm(x, z, -0.1); return m && y > m.piso - 0.3 ? m.piso : 0; },
         /* usado pela malha de navegação do térreo; o piso superior é consultado por alturaPiso/areas. */
-        dentroDaSala: function(x, z){ return (x >= 0 && x <= W && z >= 0 && z <= D) || ANX0.some(function(a){ return dentroR(a.r, x, z); }); },
+        /* "fechadas": salas dentro do retângulo que não são navegáveis (portas trancadas; ex.: empresas do 3º andar) */
+        dentroDaSala: function(x, z){ if ((def.fechadas || []).some(function(f){ return dentroR(f.r, x, z); })) return false; return (x >= 0 && x <= W && z >= 0 && z <= D) || ANX0.some(function(a){ return dentroR(a.r, x, z); }); },
         nav: (NIV && NIV.superior ? NIV.superior.areas : []).reduce(function(n, r){ return { x0: Math.min(n.x0, r[0]), z0: Math.min(n.z0, r[1]), x1: Math.max(n.x1, r[2]), z1: Math.max(n.z1, r[3]) }; }, ANX.reduce(function(n, a){ return { x0: Math.min(n.x0, a.r[0]), z0: Math.min(n.z0, a.r[1]), x1: Math.max(n.x1, a.r[2]), z1: Math.max(n.z1, a.r[3]) }; }, { x0: 0, z0: 0, x1: W, z1: D })) },
       alturaPiso: alturaPiso,
       elevador: elev,
       /* para planejar rotas nos testes: roda fn como se todas as portas estivessem abertas (elas abrem ao chegar perto) */
-      comPortasAbertas: function(fn){ var est = portasA.map(function(p){ return [p.segFechada.off, p.segAberta.off]; }); portasA.forEach(function(p){ p.segFechada.off = true; p.segAberta.off = false; });
+      comPortasAbertas: function(fn){ var est = portasA.map(function(p){ return [p.segFechada.off, p.segAberta.off]; }); portasA.forEach(function(p){ if (p.trancada) return; p.segFechada.off = true; p.segAberta.off = false; });
         try { return fn(); } finally { portasA.forEach(function(p, i){ p.segFechada.off = est[i][0]; p.segAberta.off = est[i][1]; }); } },
       /* estado das portas que abrem (testes e depuração): ângulo 0 = fechada, 1 = aberta */
-      portas: function(){ return portasA.map(function(p){ return { id: p.id, x: p.cx, z: p.cz, y: p.y, aberta: +p.ang.toFixed(3), solida: !p.segFechada.off }; }); },
+      portas: function(){ return portasA.map(function(p){ return { id: p.id, x: p.cx, z: p.cz, y: p.y, aberta: +p.ang.toFixed(3), solida: !p.segFechada.off, trancada: p.trancada }; }); },
       temNiveis: !!NIV,
       atualizar: function(t, camPos, jogador){ for (var i = 0; i < animados.length; i++) animados[i](t, camPos, jogador); },
       dispose: function(){

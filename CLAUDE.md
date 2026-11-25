@@ -15,6 +15,7 @@ Publicação: repositório `millerinds/Orvalho`, branch `main`, GitHub Pages por
 Regras essenciais:
 
 - Preserve three.js r149, o Avatar Kit, o provador e a estética Frutiger Aero.
+- O 3º andar (ambiente `terceiro-andar`, com o Lab integrado) segue `docs/terceiro-andar/planta-3o-andar-v0.json` e está documentado em `docs/continuidade/EXPANSAO-TERCEIRO-ANDAR.md`.
 - A planta atual do Hall é `docs/hall/planta-hall-v2.json`; mantenha JSON, SVG, PNG e cena consistentes. Os arquivos gerados ficam fora do Git: rode `python3 docs/hall/gerar-planta-v2.py docs/hall` para recriá-los.
 - Fotos, PDF e demais referências institucionais nunca vão para o GitHub (ver `.gitignore`).
 - Não invente salas/interiores sem referência fotográfica ou planta.

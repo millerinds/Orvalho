@@ -335,7 +335,9 @@
       { id: 'emergencia-1-oeste', a: [12.0, 14.6], b: [13.0, 14.6], y: 4.2, altura: 2.1, arte: 'emergencia' },
       { id: 'emergencia-1-leste', a: [30.35, 14.6], b: [31.35, 14.6], y: 4.2, altura: 2.1, arte: 'emergencia' }
     ],
-    elevador: { x: 14.6, largura: 1.1, altura: 2.2, fundo: 1.4, paradas: [{ piso: 0, y: 0, z: 15.0 }, { piso: 1, y: 4.2, z: 14.6 }] },
+    /* paradas do elevador no Hall; o 3º andar declara a dele no próprio ambiente. "chegada": onde o boneco fica ao sair */
+    elevador: { x: 14.6, largura: 1.1, altura: 2.2, fundo: 1.4, paradas: [{ piso: 0, y: 0, z: 15.0, chegada: { x: 14.6, y: 0, z: 13.75, rumo: PI } },
+                                                                           { piso: 1, y: 4.2, z: 14.6, chegada: { x: 14.6, y: 4.2, z: 13.15, rumo: PI } }] },
     placas: [
       { arte: 'salas', x: 32.5, y: 2.45, z: 14.96, w: 1.3, h: 0.24, rot: PI },
       { arte: 'incendio', x: 16.0, y: 1.65, z: 14.96, w: 0.5, h: 0.21, rot: PI },
@@ -395,7 +397,7 @@
     },
 
     entrada: { x: 14.75, z: 4.2, rumo: 0, camYaw: PI },
-    chegadas: { 'lab-ia': { x: 14.6, z: 13.95, rumo: PI, camYaw: 1.3 } },
+    chegadas: { 'lab-ia': { x: 14.6, z: 13.95, rumo: PI, camYaw: 1.3 }, 'terceiro-andar': { x: 14.6, z: 13.75, rumo: PI, camYaw: PI / 2 + 0.45 } },
 
     interativos: [
       { id: 'recepcao', x: 20.4, y: 1.25, z: 7.95, raio: 1.9, rotulo: 'Recepção', conteudo: 'recepcao' },

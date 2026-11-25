@@ -117,6 +117,19 @@ Registro das escolhas feitas na primeira versão jogável (30/10/2026), com o mo
 - O vidro fixo nunca cobre o vão de uma porta que abre.
 - Os interiores da sala de reuniões com servidor e do estúdio de podcast seguem a descrição do usuário. Os painéis de interação são demonstrativos e não têm especificações técnicas.
 
+## 25/11/2026 · 3º andar e Lab IA integrado (Claude)
+
+- **Um ambiente por andar:** o 3º andar é um ambiente próprio, ligado ao Hall pelo elevador, que troca de ambiente durante a viagem (guia do VR: carregar por andar). Dentro dele o piso fica em y = 0; a cota real estimada é +12,6 m.
+- **Coordenadas da planta v0 no arquivo:** os dados do 3º andar ficam nas coordenadas da planta (as do Hall) e são convertidos por `X()`/`Z()` (ambiente = planta − (3, 3)). Assim, planta, documentação e cena usam os mesmos números.
+- **Lab como sala do 3º andar:**
+  - `lab-ia.js` é a fonte única da mobília e das interações; o andar a importa girada;
+  - adaptação de jogabilidade: 6,0 m de fundo (real) × 4,8 m de largura (+1,6 m tomados da sala A, sem nome);
+  - o Lab avulso continua registrado por compatibilidade, e os saves dele são convertidos.
+- **Materiais do Lab:** piso, forro, rodapé, pintura, vidro e película iguais aos do prédio. A parede azul, identidade do Lab, ficou, num tom mais fiel às fotos.
+- **Salas das empresas e salas sem foto:** fechadas, com portas de verdade que não abrem (`trancada`), e vistas pelo vidro, como no 1º andar. Interior genérico onde não há foto, sem nome nem marca inventados.
+- **Marcas legíveis** (SCL Automação, Salus, Athostec, Unimed Meio Oeste SC): nome e composição simplificada, sem URL nem QR code. Nomes ilegíveis ficam pendentes.
+- **Escadas entre andares:** não ligadas. A segunda escada do 1º andar está ~5 m fora da posição do PDF, e o 2º andar não existe.
+
 ## 31/10/2026 · Ajustes finos do 1º andar
 
 - Paredes compartilhadas por ambientes com acabamentos diferentes têm espessura. Elementos de parede (painéis acústicos) nunca encostam no plano da parede.

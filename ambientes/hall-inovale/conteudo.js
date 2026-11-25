@@ -50,8 +50,8 @@ Orvalho.conteudo['hall-inovale'] = {
     itens: []
   },
   'elevador': {
-    demo: false, kicker: 'Elevador', titulo: 'Térreo e 1º andar',
-    texto: 'Chame a cabine, entre e escolha o pavimento. Nesta versão, somente o térreo e o 1º andar estão disponíveis; os demais permanecem bloqueados.',
+    demo: false, kicker: 'Elevador', titulo: 'Térreo, 1º e 3º andar',
+    texto: 'Chame a cabine, entre e escolha o pavimento. O 3º andar leva ao corredor onde fica o Laboratório de Inteligência Artificial. O 2º andar ainda não está disponível nesta versão.',
     itens: []
   },
   'keila': {

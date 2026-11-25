@@ -27,8 +27,8 @@ Orvalho.conteudo['lab-ia'] = {
     fonte: 'Edite em ambientes/lab-ia/conteudo.js'
   },
   'porta': {
-    demo: false, kicker: 'Saída', titulo: 'Corredor do Polo Inovale',
-    texto: 'Por esta porta o visitante vai chegar aos outros espaços do Polo. O caminho real até o hall ainda não está documentado; por enquanto a passagem é uma ligação provisória.',
+    demo: false, kicker: 'Saída', titulo: 'Corredor do 3º andar',
+    texto: 'O laboratório fica no 3º andar do Polo Inovale, de frente para a SCL Automação e para a escada de emergência. Pela porta se chega ao corredor do andar; o elevador leva ao térreo e ao 1º andar.',
     itens: []
   }
 };

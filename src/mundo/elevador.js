@@ -1,9 +1,14 @@
-/* Elevador interno do Hall: portas que abrem de verdade, cabine visível, seleção de pavimento e viagem no mesmo ambiente.
-   Só térreo e 1º andar estão habilitados; os demais botões permanecem informativos.
+/* Elevador do prédio: portas que abrem de verdade, cabine visível e seleção de pavimento.
+   Térreo, 1º e 3º andar estão habilitados (o 2º ainda não foi modelado). Térreo e 1º ficam no mesmo ambiente (Hall);
+   o 3º andar é outro ambiente: o jogo troca de ambiente durante a viagem (ver jogo.js, abrirElevador).
    criar3D(cfg, ctx): monta folhas e cabine em cada parada (cfg.paradas) e devolve { porta(piso, aberta), atualizar(dt) }.
    abrir(atual, h): painel; h = { portas(piso, aberta), mover(piso), fim() } — a cena continua desenhando por trás. */
 (function(O){
   var camada, estado, botoes, visor, aberto = false, timers = [];
+  /* andares do painel: piso, sigla do visor, nome e se já existe no jogo */
+  var ANDARES = [{ piso: 0, sigla: 'T', nome: 'Térreo', ok: true }, { piso: 1, sigla: '1', nome: '1º andar', ok: true },
+                 { piso: 2, sigla: '2', nome: '2º andar', ok: false }, { piso: 3, sigla: '3', nome: '3º andar', ok: true }];
+  function andar(p){ return ANDARES.filter(function(a){ return a.piso === p; })[0] || ANDARES[0]; }
 
   O.elevador = {
     criar3D: function(cfg, ctx){
@@ -60,7 +65,7 @@
       estado.textContent = 'Portas abrindo…'; mostrarVisor(atual, '');
       h.portas(atual, true);
       timers.push(setTimeout(function(){ if (aberto) estado.textContent = 'Portas abertas — entre e escolha o andar.'; }, 650));
-      botoes.forEach(function(bt){ bt.disabled = +bt.dataset.piso === atual; bt.classList.toggle('atual', +bt.dataset.piso === atual); });
+      botoes.forEach(function(bt){ var p = +bt.dataset.piso; bt.disabled = p === atual || !andar(p).ok; bt.classList.toggle('atual', p === atual); });
       function sair(){ if (!aberto) return; aberto = false; camada.hidden = true; limpar(); h.fim(); }
       camada.querySelector('.elevador-fechar').onclick = function(){ h.portas(atual, false); sair(); };
       botoes.forEach(function(bt){
@@ -69,18 +74,19 @@
           var destino = +bt.dataset.piso, sobe = destino > atual;
           botoes.forEach(function(b){ b.disabled = true; });
           estado.textContent = 'Portas fechando…'; h.portas(atual, false);
-          timers.push(setTimeout(function(){ estado.textContent = 'Em viagem para o ' + (destino ? '1º andar' : 'térreo') + '…'; mostrarVisor(atual, sobe ? 'sobe' : 'desce'); }, 650));
+          timers.push(setTimeout(function(){ estado.textContent = 'Em viagem para o ' + andar(destino).nome.replace('Térreo', 'térreo') + '…'; mostrarVisor(atual, sobe ? 'sobe' : 'desce'); }, 650));
           timers.push(setTimeout(function(){ mostrarVisor(destino, sobe ? 'sobe' : 'desce'); }, 1250));
           timers.push(setTimeout(function(){ h.mover(destino); h.portas(destino, true); mostrarVisor(destino, ''); estado.textContent = 'Chegamos. Portas abrindo…'; }, 1650));
           timers.push(setTimeout(sair, 2100));
         };
       });
     },
-    aberto: function(){ return aberto; }
+    aberto: function(){ return aberto; },
+    andares: ANDARES
   };
 
   function limpar(){ timers.forEach(clearTimeout); timers = []; }
-  function mostrarVisor(piso, sentido){ visor.querySelector('b').textContent = piso ? '1' : 'T'; visor.className = 'elevador-visor' + (sentido ? ' ' + sentido : ''); }
+  function mostrarVisor(piso, sentido){ visor.querySelector('b').textContent = andar(piso).sigla; visor.className = 'elevador-visor' + (sentido ? ' ' + sentido : ''); }
   function monta(){
     if (camada) return;
     camada = document.createElement('div'); camada.className = 'elevador-ui'; camada.hidden = true;
@@ -89,11 +95,8 @@
       '<div class="elevador-visor" aria-hidden="true"><i></i><b>T</b></div>' +
       '<p class="kicker">Elevador</p><h2 id="elevador-titulo">Escolha o andar</h2>' +
       '<p class="elevador-estado" aria-live="polite">Portas abertas.</p><div class="elevador-andares">' +
-      '<button type="button" data-piso="0"><b>T</b><span>Térreo</span></button>' +
-      '<button type="button" data-piso="1"><b>1</b><span>1º andar</span></button>' +
-      '<button type="button" disabled><b>2</b><span>Indisponível</span></button>' +
-      '<button type="button" disabled><b>3</b><span>Indisponível</span></button>' +
-      '</div><p class="elevador-nota">Os pavimentos superiores ainda não estão disponíveis nesta versão.</p></section>';
+      ANDARES.map(function(a){ return '<button type="button" data-piso="' + a.piso + '"' + (a.ok ? '' : ' disabled') + '><b>' + a.sigla + '</b><span>' + (a.ok ? a.nome : 'Indisponível') + '</span></button>'; }).join('') +
+      '</div><p class="elevador-nota">O 2º andar ainda não está disponível nesta versão.</p></section>';
     document.getElementById('jogo').appendChild(camada);
     estado = camada.querySelector('.elevador-estado'); botoes = camada.querySelectorAll('[data-piso]'); visor = camada.querySelector('.elevador-visor');
   }

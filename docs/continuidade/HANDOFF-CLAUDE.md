@@ -1,5 +1,11 @@
 # Handoff para o Claude
 
+> **Atualização de 25/11/2026 (Claude), 3º andar:**
+> - o 3º andar (ático) é um ambiente explorável (`ambientes/terceiro-andar/`) e o Lab IA virou uma sala dele;
+> - o elevador troca de ambiente entre o Hall e o 3º andar;
+> - leia `EXPANSAO-TERCEIRO-ANDAR.md` antes de mexer no 3º andar, no Lab ou no elevador;
+> - a análise e a planta aprovadas estão em `docs/terceiro-andar/`.
+
 > **Atualização de 30/10/2026 (Claude):**
 > - o 1º andar foi refeito pelas fotos e pelas duas fotos novas do térreo (X46, X47);
 > - a Keila agora atende pela frente do balcão;

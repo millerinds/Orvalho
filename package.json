@@ -8,8 +8,10 @@
     "teste:navegacao:gota": "node testes/navegacao.js --corpo=gota",
     "teste:navegacao:esguio": "node testes/navegacao.js --corpo=esguio",
     "teste:hall": "node testes/navegacao.js --ambiente=hall-inovale",
+    "teste:terceiro": "node testes/navegacao.js --ambiente=terceiro-andar",
+    "teste:lab": "node testes/navegacao.js --ambiente=lab-ia",
     "teste:primeiro": "node testes/primeiro-andar.js",
-    "teste:tudo": "node testes/fluxo-avatar.js && node testes/navegacao.js && node testes/navegacao.js --corpo=gota && node testes/navegacao.js --corpo=esguio && node testes/navegacao.js --ambiente=hall-inovale && node testes/navegacao.js --ambiente=hall-inovale --corpo=gota && node testes/navegacao.js --ambiente=hall-inovale --corpo=esguio"
+    "teste:tudo": "node testes/fluxo-avatar.js && node testes/navegacao.js --ambiente=terceiro-andar && node testes/navegacao.js --ambiente=terceiro-andar --corpo=gota && node testes/navegacao.js --ambiente=terceiro-andar --corpo=esguio && node testes/navegacao.js --ambiente=lab-ia && node testes/navegacao.js --ambiente=hall-inovale && node testes/navegacao.js --ambiente=hall-inovale --corpo=gota && node testes/navegacao.js --ambiente=hall-inovale --corpo=esguio"
   },
   "devDependencies": {
     "playwright-core": "1.56.0"

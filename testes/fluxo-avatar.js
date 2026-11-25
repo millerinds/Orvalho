@@ -90,7 +90,7 @@ function chromiumPath() {
     await page.waitForFunction(() => Orvalho.jogo.ativo());
     await page.waitForTimeout(900);
     estado = await page.evaluate(() => ({ corpo: localStorage.getItem('orvalho-avatar-corpo'), raio: Orvalho.jogo._debug().raio, ambiente: Orvalho.jogo._debug().amb.def.id }));
-    ok(estado.corpo === 'esguio' && estado.raio < raioGota && estado.ambiente === 'lab-ia', 'Continuar restaura avatar e ambiente da exploração');
+    ok(estado.corpo === 'esguio' && estado.raio < raioGota && estado.ambiente === 'terceiro-andar', 'Continuar restaura avatar e ambiente da exploração (3º andar, onde fica o Lab)');
     ok(erros.length === 0, erros.length ? `console contém erros: ${erros.join(' | ')}` : 'console sem erros');
 
     const relatorio = { data: new Date().toISOString(), falhas, erros, estadoFinal: estado };
