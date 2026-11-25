@@ -240,9 +240,11 @@
     if (salvo) cam3.restaurar(salvo); else if (ponto.camYaw != null) cam3.restaurar({ yaw: ponto.camYaw });
     player.root.position.set(st.x, st.y, st.z); player.root.rotation.y = st.rumo;
   }
-  /* troca de ambiente sem sair do jogo: o mesmo boneco (mesma configuração), véu enquanto a cena monta */
+  /* troca de ambiente sem sair do jogo: o mesmo boneco (mesma configuração), véu enquanto a cena monta.
+     ponto (opcional): onde chegar, em vez de chegadas[de]/entrada (ex.: diante do elevador no andar escolhido);
+     aoChegar (opcional): chamado com a cena nova pronta (ex.: abrir as portas do elevador no destino). */
   var veu = document.getElementById('veu');
-  function irPara(id){
+  function irPara(id, ponto, aoChegar){
     if (!O.ambientes.lista[id] || (amb && amb.def.id === id)) return;
     var de = amb ? amb.def.id : null, txt = veu.querySelector('p');
     if (inter) inter.fechar();
@@ -251,11 +253,12 @@
     parar();
     requestAnimationFrame(function(){ requestAnimationFrame(function(){
       carregarAmbiente(id);
-      var def = amb.def, chegada = (def.chegadas && def.chegadas[de]) || def.entrada;
+      var def = amb.def, chegada = ponto || (def.chegadas && def.chegadas[de]) || def.entrada;
       posicionar(chegada, null);
       player.update(t, 0); cam3.atualizar(st, 0, amb.colisao, amb.limites);
       renderer.compile(scene, camera); renderer.render(scene, camera);
       salvar(); iniciar(); canvas.focus();
+      if (aoChegar) aoChegar();
       veu.classList.add('some'); setTimeout(function(){ veu.hidden = true; txt.textContent = 'Entrando no Orvalho…'; }, 520);
     }); });
   }
@@ -283,25 +286,48 @@
     camera.lookAt(olharS);
   }
 
-  /* deslocamento vertical no mesmo Hall: preserva aparência, câmera e estado do ambiente.
-     A cena continua desenhando (portas abrindo e fechando); só o controle do boneco fica travado. */
+  /* elevador: preserva aparência, câmera e estado. A cena continua desenhando (portas abrindo e fechando); só o controle
+     do boneco fica travado. Cada ambiente declara as paradas dele (def.elevador.paradas: piso, y, z, chegada). Térreo e
+     1º andar estão no Hall (mesmo ambiente, muda só a cota); o 3º andar é outro ambiente: troca durante a viagem. */
   var travado = false, fecharPortas = 0;
+  var CAM_ELEV = { yaw: Math.PI / 2 + 0.45, pitch: 0.18, dist: 3.2 };   // de lado, ao longo do corredor: vê o boneco e as portas
+  function paradaDe(def, piso){ var e = def && def.elevador; return e ? (e.paradas || []).filter(function(p){ return p.piso === piso; })[0] : null; }
+  function ambienteDoPiso(piso){ var ids = Object.keys(O.ambientes.lista); for (var i = 0; i < ids.length; i++) if (paradaDe(O.ambientes.lista[ids[i]], piso)) return ids[i]; return null; }
+  function chegadaElevador(def, pa){ return pa.chegada || { x: def.elevador.x, y: pa.y, z: pa.z - 1.3, rumo: Math.PI }; }
+  function pisoElevador(){   // parada do ambiente atual mais próxima da cota do boneco
+    var ps = (amb && amb.def.elevador && amb.def.elevador.paradas) || [];
+    return ps.reduce(function(m, p){ return !m || Math.abs(p.y - st.y) < Math.abs(m.y - st.y) ? p : m; }, null);
+  }
+  function agendarFecharElevador(piso){
+    clearTimeout(fecharPortas);
+    fecharPortas = setTimeout(function(){ if (amb && amb.elevador && !travado) amb.elevador.porta(piso, false); }, 1800);
+  }
   function abrirElevador(){
-    if (!amb || amb.def.id !== 'hall-inovale' || travado) return;
+    if (!amb || !amb.elevador || travado || !pisoElevador()) return;
     if (sentado) levantar();
     keys = {}; travado = true; if (!running) iniciar();
-    var atual = st.y > 3 ? 1 : 0, el = amb.elevador;
+    var atual = pisoElevador().piso;
     clearTimeout(fecharPortas);
     O.elevador.abrir(atual, {
-      portas: function(piso, aberta){ if (el) el.porta(piso, aberta); },
+      portas: function(piso, aberta){ if (amb.elevador) amb.elevador.porta(piso, aberta); },
       mover: function(piso){
-        var p = piso ? { x: 14.6, y: 4.2, z: 13.15, rumo: Math.PI } : { x: 14.6, y: 0, z: 13.75, rumo: Math.PI };
-        posicionar(p, null); cam3.restaurar({ yaw: Math.PI / 2 + 0.45, pitch: 0.18, dist: 3.2 }); // de lado, ao longo do corredor: vê o boneco e as portas player.update(t, 0); cam3.atualizar(st, 0, amb.colisao, amb.limites); salvar();
+        var pa = paradaDe(amb.def, piso);
+        if (pa) {   // mesmo ambiente: só muda a cota
+          posicionar(chegadaElevador(amb.def, pa), null); cam3.restaurar(CAM_ELEV);
+          player.update(t, 0); cam3.atualizar(st, 0, amb.colisao, amb.limites); salvar();
+          return;
+        }
+        var id = ambienteDoPiso(piso); if (!id) return;
+        var def = O.ambientes.lista[id];
+        irPara(id, chegadaElevador(def, paradaDe(def, piso)), function(){
+          cam3.restaurar(CAM_ELEV); cam3.atualizar(st, 0, amb.colisao, amb.limites);
+          if (amb.elevador) amb.elevador.porta(piso, true);   // no destino, as portas abrem com o boneco já na frente
+          agendarFecharElevador(piso);
+        });
       },
       fim: function(){
         travado = false; keys = {}; canvas.focus();
-        var piso = st.y > 3 ? 1 : 0;
-        fecharPortas = setTimeout(function(){ if (el && !travado) el.porta(piso, false); }, 1800);
+        var p = pisoElevador(); if (p) agendarFecharElevador(p.piso);
       }
     });
   }
@@ -315,8 +341,13 @@
     try { localStorage.setItem(CHAVE, JSON.stringify({ amb: amb.def.id, x: +st.x.toFixed(3), y: +st.y.toFixed(3), z: +st.z.toFixed(3), rumo: +st.rumo.toFixed(3), yaw: +c.yaw.toFixed(3), pitch: +c.pitch.toFixed(3), dist: +c.dist.toFixed(2) })); } catch (e) {}
     if (sentado) { st.x = sx; st.z = sz; }
   }
+  /* saves de um ambiente que mudou de lugar (ex.: o Lab avulso, hoje dentro do 3º andar) passam pela migração dele */
   function lerSalvo(){
-    try { var s = JSON.parse(localStorage.getItem(CHAVE)); if (s && O.ambientes.lista[s.amb] && isFinite(s.x) && isFinite(s.z)) return s; } catch (e) {}
+    try {
+      var s = JSON.parse(localStorage.getItem(CHAVE)), mig = O.ambientes.migracoes || {};
+      if (s && mig[s.amb] && isFinite(s.x) && isFinite(s.z)) s = mig[s.amb](s);
+      if (s && O.ambientes.lista[s.amb] && isFinite(s.x) && isFinite(s.z)) return s;
+    } catch (e) {}
     return null;
   }
 
@@ -324,7 +355,7 @@
     entrar: function(o){
       if (!renderer && !init()) { alert('Seu navegador não conseguiu abrir o 3D (WebGL).'); return; }
       var salvo = o.continuar ? lerSalvo() : null;
-      carregarAmbiente(salvo ? salvo.amb : (o.ambiente || 'lab-ia'));
+      carregarAmbiente(salvo ? salvo.amb : (o.ambiente || O.ambientes.inicial || 'lab-ia'));
       /* a aparência escolhida entra antes do primeiro quadro: nunca aparece o boneco padrão */
       player.set(o.cfg, true); raioDoCorpo();
       posicionar(salvo || amb.entrada, salvo);

@@ -23,7 +23,7 @@ function chromiumPath(){if(process.env.CHROMIUM)return process.env.CHROMIUM;cons
     ok(salas.every(s=>s.piso===4.2&&s.folga>=base.raio-.002),`${corpo}: ACIOC, Incubadora, Administrativo e corredor comportam o colisor`);
     await page.evaluate(()=>Orvalho.jogo.usarElevador());await page.waitForSelector('.elevador-ui:not([hidden])');
     const bloqueados=await page.locator('.elevador-andares button:disabled').count();await page.click('[data-piso="1"]');await page.waitForTimeout(2050);
-    const alto=await page.evaluate(()=>Orvalho.jogo._debug().st.y);ok(alto>4.15&&bloqueados===3,`${corpo}: elevador sobe e bloqueia pavimentos indisponíveis`);
+    const alto=await page.evaluate(()=>Orvalho.jogo._debug().st.y);ok(alto>4.15&&bloqueados===2,`${corpo}: elevador sobe e bloqueia o andar atual e o 2º (o 3º está liberado)`);
     await page.evaluate(()=>{const d=Orvalho.jogo._debug();Object.assign(d.st,{x:44.3,y:4.2,z:15.6,rumo:1.57,vx:0,vz:0});d.player.root.position.set(44.3,4.2,15.6);d.cam.yaw=-1.2;});await page.waitForTimeout(700);
     await page.screenshot({path:path.join(__dirname,`primeiro-andar-matriz-${corpo}.png`)});
     await page.evaluate(()=>Orvalho.jogo.usarElevador());await page.waitForSelector('.elevador-ui:not([hidden])');await page.click('[data-piso="0"]');await page.waitForTimeout(2050);

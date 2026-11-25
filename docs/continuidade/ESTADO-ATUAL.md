@@ -1,5 +1,13 @@
 # Estado atual do Orvalho
 
+> **3º andar explorável e Lab IA integrado (25/11/2026, Fase B):**
+> - leia `EXPANSAO-TERCEIRO-ANDAR.md` (implementação) e `docs/terceiro-andar/ANALISE-3O-ANDAR.md` (análise e planta v0);
+> - o jogo começa no 3º andar (ambiente `terceiro-andar`), dentro do Lab, que agora é uma sala da fachada (planta x 25,4–30,2) com a porta para o corredor da SCL;
+> - o elevador liga térreo, 1º e 3º andar (o 2º segue indisponível);
+> - o Lab ficou com 6,0 × 4,8 m e com os materiais do prédio; o Lab avulso (`lab-ia`) continua registrado por compatibilidade;
+> - empresas com nome legível: SCL Automação, Salus, Athostec e Unimed Meio Oeste SC (salas fechadas, vistas pelo vidro);
+> - o PDF da raiz é a planta oficial do ático; conversão para o jogo: `x = 44 − x_pdf`, `z = 20 − y_pdf`.
+
 > **Publicado em 31/10/2026:**
 > - repositório <https://github.com/millerinds/Orvalho>;
 > - jogo <https://millerinds.github.io/Orvalho/>;
@@ -12,7 +20,7 @@ Data do handoff: 30/10/2026.
 ## Funciona
 
 - Fluxo inicial, provador, Avatar Kit e persistência da aparência.
-- Lab de IA navegável, com cinco interações e ligação provisória ao Hall.
+- Lab de IA navegável, com quatro interações, agora como sala do 3º andar (25/11/2026): a porta abre para o corredor e o elevador leva ao Hall.
 - Hall navegável no térreo com os três corpos (Jujuba, Gota e Esguio).
 - Cafeteria Pin na parede interna, na mesma linha do elevador e da escada de emergência.
 - Nexo alinhada à parede interna e à passagem “Acesso às salas 1, 2 e 3”.
@@ -57,7 +65,7 @@ Data do handoff: 30/10/2026.
 - Salas das empresas e salas fechadas do corredor não são navegáveis.
 - A Nexo permanece fechada. O volume visível e os móveis documentados foram preservados, sem criar usos ou salas adicionais.
 - A porta envidraçada no fim do corredor dos banheiros é fechada.
-- O Lab continua como ambiente separado; o elevador não declara um pavimento para ele.
+- 3º andar: salas das empresas e salas sem foto ficam fechadas (vistas pelo vidro); o salão do fundo tem interior neutro; as escadas de emergência não ligam os andares (ver `EXPANSAO-TERCEIRO-ANDAR.md`).
 - Medidas verticais e profundidade do térreo continuam estimadas por fotos.
 - Logos de terceiros continuam genéricos; o logo INOVALE é aproximado.
 
@@ -66,7 +74,7 @@ Data do handoff: 30/10/2026.
 - Planta oficial do térreo e do 1º andar, sobretudo a largura da ala leste e as divisas entre núcleo, salas e Administrativo.
 - Fotos do interior das salas fechadas do corredor e da ordem real das salas das empresas.
 - Medidas com trena: profundidade do hall, pé-direito, nível do primeiro andar e largura/comprimento da escada.
-- Caminho real até o Lab de IA.
+- Medidas do 3º andar com trena (profundidade do Lab, largura do corredor), uso e extensão do salão e nomes ilegíveis das salas A, B e X.
 - Arquivo oficial do logo INOVALE e autorização para marcas de terceiros.
 - Conteúdo institucional definitivo dos painéis marcados como demonstração.
 

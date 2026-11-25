@@ -90,6 +90,7 @@ function noNavegador() {
   }
   /* cobertura: fração do piso livre alcançável a partir da entrada */
   window.__cobertura = function (r) {
+    const am = D().amb; if (am.comPortasAbertas && !window.__dentroPortas) { window.__dentroPortas = true; try { return am.comPortasAbertas(() => window.__cobertura(r)); } finally { window.__dentroPortas = false; } }   // as portas abrem ao chegar perto (as trancadas não)
     const G = grade(r), e = D().amb.entrada, a = maisPerto(G, e.x, e.z), B = bfs(G, a[0], a[1]);
     let livres = 0, alc = 0; const ilhas = [];
     for (let n = 0; n < G.livre.length; n++) if (G.livre[n]) { livres++; if (B.dist[n] >= 0) alc++; else ilhas.push(G.pos(n % G.nx, (n / G.nx) | 0)); }
@@ -162,22 +163,63 @@ function noNavegador() {
 const CONF = {
   'lab-ia': {
     corredores: {
-      'corredor principal (entre as fileiras)': [[0.4, 1.95], [6.8, 1.95], 1.30],
-      'corredor de fundo (atrás das cadeiras 2 e 3)': [[1.9, 4.3], [6.0, 4.3], 0.90],
-      'zona da janela (lado oeste)': [[0.9, 0.4], [0.9, 4.0], 1.30],
-      'zona da porta (lado leste)': [[6.15, 0.4], [6.15, 3.6], 1.30],
-      'passagem cadeira 1 ↔ mesas 2/3': [[4.30, 1.0], [4.30, 2.9], 1.30, 'vertical']
+      'corredor principal (entre as fileiras)': [[0.4, 1.95], [5.6, 1.95], 1.30],
+      'corredor de fundo (atrás das cadeiras 2 e 3)': [[1.5, 4.3], [4.6, 4.3], 0.90],
+      'zona da janela (lado oeste)': [[0.62, 0.4], [0.62, 4.0], 1.20],
+      'zona da porta (lado leste)': [[5.25, 0.4], [5.25, 3.6], 1.30],
+      'passagem cadeira 1 ↔ mesas 2/3': [[3.75, 1.0], [3.75, 2.9], 1.30, 'vertical']
     },
     paradas: [
-      { nome: 'entrada → monitor 1 (bancada da parede azul)', alvo: [3.75, 1.55], olhar: [4.40, 0.31], interativo: 'Projeto de exemplo A' },
-      { nome: '→ carrinho de recarga', alvo: [2.62, 1.20], olhar: [2.62, 0.40], interativo: 'Estação de recarga' },
-      { nome: '→ zona da janela', alvo: [0.85, 2.3] },
-      { nome: '→ fundo, atrás das cadeiras: monitor 2', alvo: [2.85, 4.32], olhar: [2.80, 2.84], interativo: 'Projeto de exemplo B' },
-      { nome: '→ monitor 3 (pelo corredor de fundo)', alvo: [4.35, 4.32], olhar: [4.30, 2.84], interativo: 'Projeto de exemplo C' },
-      { nome: '→ canto do puff (fundo da sala)', alvo: [5.75, 4.35] },
-      { nome: '→ zona da porta', alvo: [6.4, 2.6] },
-      { nome: '→ volta pelo meio, curvando entre as bancadas', alvo: [1.4, 1.9] },
-      { nome: '→ retorno à entrada e porta', alvo: [6.55, 0.95], olhar: [7.12, 0.70], interativo: 'Corredor do Polo Inovale' }
+      { nome: 'entrada → monitor 1 (bancada da parede azul)', alvo: [3.2, 1.55], olhar: [3.85, 0.31], interativo: 'Projeto de exemplo A' },
+      { nome: '→ carrinho de recarga', alvo: [2.07, 1.20], olhar: [2.07, 0.40], interativo: 'Estação de recarga' },
+      { nome: '→ zona da janela', alvo: [0.62, 2.3] },
+      { nome: '→ fundo, atrás das cadeiras: monitor 2', alvo: [2.3, 4.32], olhar: [2.25, 2.84], interativo: 'Projeto de exemplo B' },
+      { nome: '→ monitor 3 (pelo corredor de fundo)', alvo: [3.8, 4.32], olhar: [3.75, 2.84], interativo: 'Projeto de exemplo C' },
+      { nome: '→ canto do puff (fundo da sala)', alvo: [4.5, 4.38] },
+      { nome: '→ zona da porta', alvo: [5.4, 2.6] },
+      { nome: '→ volta pelo meio, curvando entre as bancadas', alvo: [1.0, 1.9] },
+      { nome: '→ retorno à porta', alvo: [5.45, 0.95], olhar: [5.92, 0.70], interativo: 'Corredor do 3º andar' }
+    ]
+  },
+  /* 3º andar: coordenadas do ambiente = planta v0 − (3, 3). O Lab está girado: x = 27,2 − z_lab, z = x_lab. */
+  'terceiro-andar': {
+    corredores: {
+      'corredor da SCL (frentes de vidro ↔ poltronas)': [[23.6, 7.0], [29.9, 7.0], 1.40],
+      'corredor junto ao sofá azul e ao pilar': [[20.0, 7.4], [23.3, 7.4], 1.40],
+      'hall de estar: entre os sofás e o núcleo': [[8.0, 10.0], [22.5, 10.0], 1.40],
+      'passagem para a porta externa': [[7.3, 1.0], [7.3, 5.8], 1.40, 'x'],
+      'salão: da porta dupla à TV': [[31.2, 5.75], [38.6, 5.75], 2.00],
+      'Lab: corredor principal (entre as fileiras)': [[25.25, 0.4], [25.25, 5.6], 1.30],
+      'Lab: corredor de fundo (atrás das cadeiras 2 e 3)': [[22.9, 1.5], [22.9, 4.6], 0.90],
+      'Lab: zona da janela': [[26.8, 0.62], [23.2, 0.62], 1.20],
+      'Lab: zona da porta': [[26.8, 5.25], [23.6, 5.25], 1.30]
+    },
+    paradas: [
+      { nome: 'entrada (Lab) → monitor 1 (bancada da parede azul)', alvo: [25.65, 3.2], olhar: [26.89, 3.85], interativo: 'Projeto de exemplo A' },
+      { nome: '→ carrinho de recarga', alvo: [26.0, 2.07], olhar: [26.8, 2.07], interativo: 'Estação de recarga' },
+      { nome: '→ zona da janela do Lab', alvo: [24.9, 0.62] },
+      { nome: '→ fundo do Lab, atrás das cadeiras: monitor 2', alvo: [22.88, 2.3], olhar: [24.36, 2.25], interativo: 'Projeto de exemplo B' },
+      { nome: '→ monitor 3 (pelo corredor de fundo)', alvo: [22.88, 3.8], olhar: [24.36, 3.75], interativo: 'Projeto de exemplo C' },
+      { nome: '→ canto do puff', alvo: [22.82, 4.5] },
+      { nome: '→ zona da porta do Lab', alvo: [24.6, 5.4] },
+      { nome: '→ sai do Lab (a porta abre ao chegar perto)', alvo: [26.45, 7.0] },
+      { nome: '→ painel do Lab no corredor', alvo: [25.45, 7.1], olhar: [25.45, 6.2], interativo: 'Laboratório de Inteligência Artificial' },
+      { nome: '→ SCL Automação (vista do corredor)', alvo: [26.9, 7.3], olhar: [26.9, 8.95], interativo: 'SCL Automação' },
+      { nome: '→ atravessa a porta dupla do salão', alvo: [32.2, 7.5] },
+      { nome: '→ salão: diante da TV', alvo: [38.3, 5.75] },
+      { nome: '→ salão: entre as bancadas e o pilar', alvo: [36.0, 9.6] },
+      { nome: '→ volta ao corredor', alvo: [25.0, 7.4] },
+      { nome: '→ escada de emergência (lado do palco): porta abre e dá na antecâmara', alvo: [22.2, 12.3] },
+      { nome: '→ de volta ao hall de estar', alvo: [19.5, 10.0] },
+      { nome: '→ nicho do banheiro PCD', alvo: [17.3, 12.2] },
+      { nome: '→ Salus (porta adesivada)', alvo: [18.7, 7.2], olhar: [18.7, 6.05], interativo: 'Salus' },
+      { nome: '→ Athostec', alvo: [14.2, 6.7], olhar: [13.3, 6.05], interativo: 'Athostec' },
+      { nome: '→ hall de estar: entre o sofá e a mesa de centro', alvo: [10.65, 7.75] },
+      { nome: '→ Unimed (porta)', alvo: [7.6, 10.4], olhar: [6.55, 10.7], interativo: 'Unimed Meio Oeste SC' },
+      { nome: '→ elevador', alvo: [11.3, 10.4], olhar: [11.3, 11.4], interativo: 'Térreo, 1º e 3º andar' },
+      { nome: '→ escada de emergência (lado do café): antecâmara', alvo: [9.5, 12.3] },
+      { nome: '→ passagem da porta externa', alvo: [7.3, 1.6] },
+      { nome: '→ volta ao Lab (entra pela porta)', alvo: [25.6, 3.5] }
     ]
   },
   'hall-inovale': {
@@ -197,7 +239,7 @@ const CONF = {
       { nome: '→ café, entre as mesas', alvo: [7.5, 5.4] },
       { nome: '→ balcão da cafeteria Pin', alvo: [4.3, 12.65], olhar: [4.3, 13.25], interativo: 'Café do hall' },
       { nome: '→ corredor sob o mezanino (entre pilares)', alvo: [12.2, 13.6] },
-      { nome: '→ porta do elevador', alvo: [14.6, 14.2], olhar: [14.6, 14.7], interativo: 'Térreo e 1º andar' },
+      { nome: '→ porta do elevador', alvo: [14.6, 14.2], olhar: [14.6, 14.7], interativo: 'Térreo, 1º e 3º andar' },
       { nome: '→ escada de emergência: porta abre e dá na antecâmara (lixeiras fora do vão)', alvo: [12.75, 15.7] },
       { nome: '→ de volta ao corredor sob o mezanino', alvo: [12.75, 13.4] },
       { nome: '→ totem de orientação', alvo: [23.0, 7.4], olhar: [22.63, 8.4], interativo: 'Onde fica cada coisa' },
@@ -260,7 +302,7 @@ async function virarPara(page, x, z) {
   await page.evaluate(c => { localStorage.clear(); localStorage.setItem('orvalho-avatar-cor', 'azul'); localStorage.setItem('orvalho-avatar-corpo', c); }, CORPO);
   await page.reload(); await page.waitForTimeout(500);
   await page.click('#btn-entrar'); await page.waitForTimeout(1800);
-  if (AMBIENTE !== 'lab-ia') { await page.evaluate(a => Orvalho.jogo.irPara(a), AMBIENTE); await page.waitForTimeout(2500); }
+  if (await page.evaluate(() => Orvalho.jogo.ambienteAtual()) !== AMBIENTE) { await page.evaluate(a => Orvalho.jogo.irPara(a), AMBIENTE); await page.waitForTimeout(2500); }
   await page.evaluate(noNavegador);
   rel.ambiente = await page.evaluate(() => Orvalho.jogo.ambienteAtual());
   console.log('Ambiente:', rel.ambiente);
@@ -360,7 +402,7 @@ async function virarPara(page, x, z) {
     ok(corredorAlto.x < 41.5 && corredorAlto.y > 4.15, `percorreu o corredor do 1º andar (x=${corredorAlto.x.toFixed(2)})`);
 
     /* testa o guarda-corpo e um trecho sólido da frente envidraçada */
-    await page.evaluate(() => { const d = Orvalho.jogo._debug(); Object.assign(d.st,{x:39,y:4.2,z:13.1,vx:0,vz:0}); d.player.root.position.set(39,4.2,13.1); d.cam.yaw = 0; });
+    await page.evaluate(() => { const d = Orvalho.jogo._debug(); Object.assign(d.st,{x:40.5,y:4.2,z:13.1,vx:0,vz:0}); d.player.root.position.set(40.5,4.2,13.1); d.cam.yaw = 0; }); // x 40,5: vidro fixo do podcast (em x 39 fica o vão da porta, que abre)
     await page.keyboard.down('KeyW'); await page.waitForTimeout(800); await page.keyboard.up('KeyW'); await page.waitForTimeout(300);
     const guarda = await page.evaluate(() => { const d = Orvalho.jogo._debug(); return { z: d.st.z, y: d.st.y, r: d.raio }; });
     ok(guarda.z >= 11.7 + guarda.r - 0.03 && guarda.y > 4.15, `guarda-corpo impediu queda (z=${guarda.z.toFixed(2)}, y=${guarda.y.toFixed(2)})`);
@@ -390,7 +432,7 @@ async function virarPara(page, x, z) {
     await page.evaluate(() => { const d=Orvalho.jogo._debug(); Object.assign(d.st,{x:14.6,y:0,z:13.7,rumo:Math.PI}); d.player.root.position.set(14.6,0,13.7); Orvalho.jogo.usarElevador(); });
     await page.waitForSelector('.elevador-ui:not([hidden])');
     const indisponiveis = await page.locator('.elevador-andares button:disabled').count();
-    ok(indisponiveis === 3, `seletor mostra o térreo atual e mantém 2º/3º indisponíveis (${indisponiveis} botões desabilitados)`);
+    ok(indisponiveis === 2, `seletor mostra o térreo atual, mantém o 2º indisponível e libera o 3º (${indisponiveis} botões desabilitados)`);
     await page.click('[data-piso="1"]'); await page.waitForTimeout(2200);
     const elevou = await page.evaluate(() => { const d=Orvalho.jogo._debug(); return {amb:Orvalho.jogo.ambienteAtual(),y:d.st.y,cfg:JSON.stringify(d.player.cfg())}; });
     ok(elevou.amb==='hall-inovale' && elevou.y>4.15 && elevou.cfg===antes, `elevador chegou ao 1º andar (y=${elevou.y.toFixed(2)}), aparência preservada`);
@@ -563,6 +605,112 @@ async function virarPara(page, x, z) {
     const pisoEsc = await page.evaluate(() => { const d = Orvalho.jogo._debug(); return d.amb.alturaPiso(d.st.x, d.st.z, d.st.y); });
     ok(r4.aterrissou && Math.abs(r4.y - pisoEsc) < 0.02, `pulo na escada: pousou na rampa (y ${r4.y.toFixed(2)} = piso ${pisoEsc.toFixed(2)})`);
     await por(20, 0, 5, 0); await page.waitForTimeout(300);
+
+    const fps = await page.evaluate(() => new Promise(res => { let n = 0; const t0 = performance.now(); (function f(){ n++; if (performance.now() - t0 < 2000) requestAnimationFrame(f); else res(n / 2); })(); }));
+    const inf = await page.evaluate(() => { const i = Orvalho.jogo._debug().info.render; return { calls: i.calls, tris: i.triangles }; });
+    rel.desempenho = { fps, ...inf }; console.log(`     desempenho: ${fps} fps · ${inf.calls} chamadas de desenho · ${inf.tris} triângulos`);
+  }
+  if (AMBIENTE === 'terceiro-andar') {
+    /* coordenadas da planta v0 → ambiente */
+    const L = (x, z) => [+(x - 3).toFixed(3), +(z - 3).toFixed(3)];
+    const por = (x, z, yaw, rumo) => page.evaluate(([x, z, yaw, rumo]) => { const d = Orvalho.jogo._debug(); Object.assign(d.st, { x, y: 0, z, vx: 0, vz: 0, jy: 0, vy: 0 }); if (rumo != null) d.st.rumo = rumo; d.player.root.position.set(x, 0, z); if (yaw != null) d.cam.yaw = yaw; }, [x, z, yaw, rumo]);
+    const estado = () => page.evaluate(() => { const d = Orvalho.jogo._debug(); return { x: d.st.x, y: d.st.y, z: d.st.z, r: d.raio, folga: d.amb.colisao.folga(d.st, d.st.y) }; });
+
+    console.log('\n10. 3º andar: portas, vidros e paredes');
+    const defsPortas = await page.evaluate(() => Orvalho.jogo._debug().amb.def.portasAnimadas.map(p => ({ id: p.id, a: p.a, b: p.b, sentido: p.abre === 'direita' ? -1 : 1, trancada: !!p.trancada })));
+    for (const pd of defsPortas) {
+      /* lado de fora: o oposto ao lado para onde a folha abre */
+      const r0 = await page.evaluate(pd => { const d = Orvalho.jogo._debug(), mx = (pd.a[0] + pd.b[0]) / 2, mz = (pd.a[1] + pd.b[1]) / 2, dx = pd.b[0] - pd.a[0], dz = pd.b[1] - pd.a[1], Lq = Math.hypot(dx, dz), nx = -dz / Lq * pd.sentido, nz = dx / Lq * pd.sentido;
+        const fx = mx - nx * 1.0, fz = mz - nz * 1.0; Object.assign(d.st, { x: fx, y: 0, z: fz, vx: 0, vz: 0 }); d.player.root.position.set(fx, 0, fz); return { mx, mz, nx, nz }; }, pd);
+      await page.waitForTimeout(800);
+      const perto = await page.evaluate(([pd, r0]) => { const d = Orvalho.jogo._debug(), c = d.amb.colisao, p = d.amb.portas().find(q => q.id === pd.id);
+        return { ang: p.aberta, solida: p.solida, folga: Math.min(c.folga({ x: r0.mx, z: r0.mz }, 0), c.folga({ x: r0.mx + r0.nx * 0.4, z: r0.mz + r0.nz * 0.4 }, 0), c.folga({ x: r0.mx - r0.nx * 0.4, z: r0.mz - r0.nz * 0.4 }, 0)) }; }, [pd, r0]);
+      if (pd.trancada) { ok(perto.ang < 0.01 && perto.solida, `porta ${pd.id} (sala fechada): continua fechada e sólida com o boneco a 1 m`); continue; }
+      await page.evaluate(([pd, r0]) => { const d = Orvalho.jogo._debug(), fx = r0.mx - r0.nx * 4, fz = r0.mz - r0.nz * 4; Object.assign(d.st, { x: fx, z: fz }); d.player.root.position.set(fx, 0, fz); }, [pd, r0]);
+      await page.waitForTimeout(900);
+      const longe = await page.evaluate(pd => Orvalho.jogo._debug().amb.portas().find(q => q.id === pd.id), pd);
+      ok(perto.ang > 0.9 && !perto.solida && perto.folga >= base.raio - 0.002 && longe.aberta < 0.05 && longe.solida,
+        `porta ${pd.id}: abre perto (${perto.ang.toFixed(2)}, vão com folga ${perto.folga.toFixed(2)} m) e fecha longe (${longe.aberta.toFixed(2)}, sólida)`);
+    }
+    /* vidros e portas fechadas: andar contra eles não atravessa */
+    const empurra = async (nome, p, yaw, eixo, limite, sinal) => {
+      await por(p[0], p[1], yaw); await page.waitForTimeout(250);
+      await page.keyboard.down('KeyW'); await page.waitForTimeout(1300); await page.keyboard.up('KeyW'); await page.waitForTimeout(300);
+      const s = await estado(), v = eixo === 'x' ? s.x : s.z;
+      ok(sinal > 0 ? v >= limite + s.r - 0.03 : v <= limite - s.r + 0.03, `${nome}: não atravessou (${eixo} = ${v.toFixed(2)}, vidro em ${limite})`);
+    };
+    await empurra('vidro do Lab fora da porta', L(26.5, 10.2), 0, 'z', 6.0, 1);
+    await empurra('vidro da sala A (película vermelha)', L(31.9, 10.0), 0, 'z', 6.0, 1);
+    await empurra('vidro da SCL Automação', L(32.8, 11.0), Math.PI, 'z', 9.0, -1);
+    await empurra('porta adesivada da Salus (fechada)', L(21.7, 10.0), 0, 'z', 6.0, 1);
+    await empurra('vidro jateado da Unimed', L(11.2, 12.8), Math.PI / 2, 'x', 6.5, 1);
+    /* sem paredes invisíveis: pontos abertos do corredor, do estar, do salão e do Lab comportam o colisor */
+    const abertos = [[12.0, 12.8], [20.0, 11.0], [24.0, 12.5], [28.0, 10.4], [32.9, 10.5], [36.0, 8.0], [41.0, 6.0], [28.2, 7.2], [28.6, 4.5], [10.3, 6.0], [14.3, 13.2]];
+    const folgas = await page.evaluate(ps => ps.map(p => Orvalho.jogo._debug().amb.colisao.folga({ x: p[0] - 3, z: p[1] - 3 }, 0)), abertos);
+    ok(folgas.every(f => f >= base.raio + 0.05), `nenhuma colisão invisível nos ${abertos.length} pontos abertos (folga mínima ${Math.min(...folgas).toFixed(2)} m)`);
+    /* nenhuma sala fechada tem vão sem folha: cada porta 'vao' das frentes de vidro tem uma folha (que abre ou trancada) */
+    const semFolha = await page.evaluate(() => { const d = Orvalho.jogo._debug().amb.def; const out = [];
+      d.paineis.forEach(p => (p.portas || []).filter(pt => pt[3] === 'vao').forEach(pt => { const L = Math.hypot(p.b[0] - p.a[0], p.b[1] - p.a[1]), ux = (p.b[0] - p.a[0]) / L, uz = (p.b[1] - p.a[1]) / L, mx = p.a[0] + ux * (pt[0] + pt[1]) / 2, mz = p.a[1] + uz * (pt[0] + pt[1]) / 2;
+        /* folhas no vão: o centro de cada folha cai dentro dele (porta simples ou dupla) e elas somam a largura do vão */
+        const fol = d.portasAnimadas.filter(q => { const cx = (q.a[0] + q.b[0]) / 2 - p.a[0], cz = (q.a[1] + q.b[1]) / 2 - p.a[1], s = cx * ux + cz * uz, e = Math.abs(-cx * uz + cz * ux); return e < 0.1 && s > pt[0] && s < pt[1]; });
+        const larg = fol.reduce((m, q) => m + Math.hypot(q.b[0] - q.a[0], q.b[1] - q.a[1]), 0);
+        if (Math.abs(larg - (pt[1] - pt[0])) > 0.12) out.push([+mx.toFixed(2), +mz.toFixed(2)]); }));
+      return out; });
+    ok(semFolha.length === 0, `todo vão de porta das divisórias tem folha${semFolha.length ? ': faltam em ' + JSON.stringify(semFolha) : ''}`);
+    await page.screenshot({ path: path.join(__dirname, `terceiro-andar-corredor-${CORPO}.png`) });
+
+    console.log('\n11. Sentar e levantar (sofás do estar e sofá azul)');
+    const assentos = await page.evaluate(() => Orvalho.jogo._debug().amb.assentos.map(a => ({ id: a.id, x: a.x, y: a.y || 0, z: a.z, saida: a.saida, altura: a.altura })));
+    for (const a of assentos) {
+      await page.evaluate(a => { const d = Orvalho.jogo._debug(); Object.assign(d.st, { x: a.saida.x, y: 0, z: a.saida.z, rumo: Math.atan2(a.x - a.saida.x, a.z - a.saida.z) }); d.player.root.position.set(d.st.x, 0, d.st.z); }, a);
+      await page.waitForTimeout(700);
+      const bolha = await page.isVisible('#aviso') ? await page.textContent('#aviso span') : null;
+      await page.keyboard.press('KeyE'); await page.waitForTimeout(1100);
+      const sent = await page.evaluate(() => { const d = Orvalho.jogo._debug(); return { sentado: Orvalho.jogo.sentado(), x: d.player.root.position.x, z: d.player.root.position.z }; });
+      await page.keyboard.press('KeyE'); await page.waitForTimeout(700);
+      const lev = await page.evaluate(() => { const d = Orvalho.jogo._debug(); return { sentado: Orvalho.jogo.sentado(), folga: d.amb.colisao.folga(d.st, 0), raio: d.raio }; });
+      ok(bolha === 'Sentar' && sent.sentado && Math.hypot(sent.x - a.x, sent.z - a.z) < 0.02 && !lev.sentado && lev.folga >= lev.raio - 0.002, `${a.id}: sentou e levantou em lugar livre (folga ${lev.folga.toFixed(2)} m)`);
+    }
+
+    console.log('\n12. Persistência e migração do Lab avulso');
+    await por(...L(20.0, 11.0), -Math.PI / 2); await page.keyboard.down('KeyW'); await page.waitForTimeout(700); await page.keyboard.up('KeyW'); await page.waitForTimeout(2300);
+    const salvo = await page.evaluate(() => JSON.parse(localStorage.getItem('orvalho-jogo')));
+    const antesRel = await estado();
+    ok(salvo && salvo.amb === 'terceiro-andar' && Math.hypot(salvo.x - antesRel.x, salvo.z - antesRel.z) < 0.3, `autosave registrou o 3º andar e a posição (${salvo && salvo.x}, ${salvo && salvo.z})`);
+    await page.reload(); await page.waitForTimeout(600); await page.click('#btn-continuar'); await page.waitForTimeout(2200);
+    const rest = await page.evaluate(() => ({ amb: Orvalho.jogo.ambienteAtual(), st: Orvalho.jogo._debug().st }));
+    ok(rest.amb === 'terceiro-andar' && Math.hypot(rest.st.x - salvo.x, rest.st.z - salvo.z) < 0.3, `continuar restaurou o 3º andar e a posição (${rest.st.x.toFixed(2)}, ${rest.st.z.toFixed(2)})`);
+    await page.reload(); await page.waitForTimeout(600);   // o save antigo entra depois do reload (ao sair, o jogo grava a posição atual)
+    await page.evaluate(() => localStorage.setItem('orvalho-jogo', JSON.stringify({ amb: 'lab-ia', x: 3.0, y: 0, z: 2.0, rumo: 0, yaw: 0.5, pitch: 0.4, dist: 2.9 })));
+    await page.click('#btn-continuar'); await page.waitForTimeout(2200);
+    const mig = await page.evaluate(() => ({ amb: Orvalho.jogo.ambienteAtual(), st: Orvalho.jogo._debug().st }));
+    ok(mig.amb === 'terceiro-andar' && mig.st.x > 22.4 && mig.st.x < 27.2 && mig.st.z > 0 && mig.st.z < 6.0, `save antigo do Lab avulso abre o Lab do 3º andar (${mig.st.x.toFixed(2)}, ${mig.st.z.toFixed(2)})`);
+    await page.evaluate(noNavegador);
+
+    console.log('\n13. Elevador: 3º andar ↔ Hall');
+    const cfg0 = await page.evaluate(() => JSON.stringify(Orvalho.jogo._debug().player.cfg()));
+    await por(...L(14.3, 13.15), 0, Math.PI); await page.waitForTimeout(400);
+    await page.evaluate(() => Orvalho.jogo.usarElevador()); await page.waitForSelector('.elevador-ui:not([hidden])'); await page.waitForTimeout(500);
+    const desab = await page.locator('.elevador-andares button:disabled').count();
+    const aberta3 = await page.evaluate(() => Orvalho.jogo._debug().amb.elevador.aberta(3));
+    ok(desab === 2 && aberta3 > 0.5, `no 3º andar o painel bloqueia o andar atual e o 2º (${desab} desabilitados) e as portas abrem (${aberta3.toFixed(2)})`);
+    await page.click('[data-piso="0"]'); await page.waitForTimeout(4200);
+    const noHall = await page.evaluate(() => { const d = Orvalho.jogo._debug(); return { amb: Orvalho.jogo.ambienteAtual(), x: d.st.x, y: d.st.y, z: d.st.z, cfg: JSON.stringify(d.player.cfg()), portas: d.amb.elevador.aberta(0) }; });
+    ok(noHall.amb === 'hall-inovale' && noHall.y < 0.03 && Math.hypot(noHall.x - 14.6, noHall.z - 13.75) < 0.3 && noHall.cfg === cfg0, `desceu ao térreo do Hall diante do elevador (${noHall.x.toFixed(2)}, ${noHall.z.toFixed(2)}), aparência preservada`);
+    await page.screenshot({ path: path.join(__dirname, `terceiro-andar-elevador-hall-${CORPO}.png`) });
+    await page.waitForTimeout(600);
+    await page.evaluate(() => Orvalho.jogo.usarElevador()); await page.waitForSelector('.elevador-ui:not([hidden])'); await page.click('[data-piso="3"]'); await page.waitForTimeout(3000);
+    const de3 = await page.evaluate(() => { const d = Orvalho.jogo._debug(); return { amb: Orvalho.jogo.ambienteAtual(), x: d.st.x, z: d.st.z, cfg: JSON.stringify(d.player.cfg()), portas: d.amb.elevador.aberta(3) }; });
+    ok(de3.amb === 'terceiro-andar' && Math.hypot(de3.x - 11.3, de3.z - 10.15) < 0.3 && de3.cfg === cfg0 && de3.portas > 0.3, `voltou ao 3º andar diante do elevador (${de3.x.toFixed(2)}, ${de3.z.toFixed(2)}), portas abrindo (${de3.portas.toFixed(2)})`);
+    await page.waitForTimeout(2600);
+    const fechou = await page.evaluate(() => Orvalho.jogo._debug().amb.elevador.aberta(3));
+    ok(fechou < 0.05, `portas do elevador do 3º andar fecham sozinhas depois da chegada (${fechou.toFixed(2)})`);
+    /* do 1º andar direto para o 3º */
+    await page.evaluate(() => Orvalho.jogo.usarElevador()); await page.waitForSelector('.elevador-ui:not([hidden])'); await page.click('[data-piso="1"]'); await page.waitForTimeout(4200);
+    const no1 = await page.evaluate(() => ({ amb: Orvalho.jogo.ambienteAtual(), y: Orvalho.jogo._debug().st.y }));
+    ok(no1.amb === 'hall-inovale' && no1.y > 4.15, `do 3º andar ao 1º andar do Hall (y = ${no1.y.toFixed(2)})`);
+    await page.evaluate(() => Orvalho.jogo.usarElevador()); await page.waitForSelector('.elevador-ui:not([hidden])'); await page.click('[data-piso="3"]'); await page.waitForTimeout(3600);
+    ok(await page.evaluate(() => Orvalho.jogo.ambienteAtual()) === 'terceiro-andar', 'do 1º andar de volta ao 3º andar');
 
     const fps = await page.evaluate(() => new Promise(res => { let n = 0; const t0 = performance.now(); (function f(){ n++; if (performance.now() - t0 < 2000) requestAnimationFrame(f); else res(n / 2); })(); }));
     const inf = await page.evaluate(() => { const i = Orvalho.jogo._debug().info.render; return { calls: i.calls, tris: i.triangles }; });

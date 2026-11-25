@@ -43,11 +43,63 @@ Além dos testes anteriores, o Hall passa a validar:
 - persistência e restauração de `y`;
 - descida ao térreo;
 - elevador térreo ↔ primeiro andar mantendo aparência e ambiente;
-- 2º e 3º pavimentos indisponíveis no seletor;
+- 2º pavimento indisponível no seletor (o 3º passou a funcionar em 25/11/2026);
 - ACIOC Hub, Incubadora e Administrativo com piso/folga navegáveis;
 - cadastro dos NPCs Keila, Dagliê e Danimara;
 - quatro empresas confirmadas na Incubadora;
 - erros de console e desempenho.
+
+## 3º andar e Lab integrado (25/11/2026, Claude)
+
+`npm run teste:tudo` passou a rodar, nesta ordem:
+
+1. fluxo do avatar;
+2. 3º andar com Jujuba, Gota e Esguio (`--ambiente=terceiro-andar`);
+3. Lab avulso (`--ambiente=lab-ia`);
+4. Hall com os três corpos.
+
+`npm run teste:primeiro` continua à parte. Scripts novos: `teste:terceiro` e `teste:lab`.
+
+**Cenário do 3º andar** (`testes/navegacao.js`, coordenadas do ambiente = planta − (3, 3)):
+
+- **Auditoria:** colisores dos móveis novos e do Lab importado contra a geometria visível (≤ 4 cm).
+- **Larguras livres:** corredor da SCL, junto ao sofá azul, hall de estar, passagem da porta externa, salão e as quatro zonas do Lab.
+- **Cobertura:** calculada com as portas que abrem abertas, sem atravessar as trancadas; as salas fechadas (`fechadas`) ficam fora.
+- **Percurso real com o teclado:** monitores do Lab → saída pela porta → painel do Lab → SCL → porta dupla → salão → antecâmara da escada do lado do palco → nicho PCD → Salus → Athostec → estar → Unimed → elevador → antecâmara da escada do lado do café → passagem da porta externa → volta ao Lab, com as interações.
+- **Portas:** as que abrem (Lab, porta dupla do salão, escadas de emergência) abrem perto e fecham longe; as trancadas (empresas, salas genéricas, SCL) continuam fechadas e sólidas.
+- **Vidros e portas fechadas:** andar contra o vidro do Lab, da sala A, da SCL, da Unimed e contra a porta da Salus não atravessa.
+- **Sem paredes invisíveis:** 11 pontos abertos com folga.
+- **Vãos de porta:** todo vão de porta das divisórias tem folha.
+- **Assentos:** sentar e levantar nos sofás do estar e no sofá azul.
+- **Persistência:** autosave e "Continuar" no 3º andar; save antigo do Lab avulso abre o Lab do 3º andar.
+- **Elevador:** 3º → térreo do Hall → 3º; 3º → 1º → 3º. Painel com o andar atual e o 2º bloqueados, chegada diante do elevador, aparência preservada, portas abrindo no destino e fechando sozinhas.
+- **Console e desempenho.**
+
+**Resultado em 25/11/2026** (rodado em blocos, porque a suíte inteira passa de 10 min nesta máquina): tudo passou, sem erros de console.
+
+| Cenário | Jujuba | Gota | Esguio |
+|---|---:|---:|---:|
+| Fluxo do avatar | 9 ✔ | — | — |
+| 3º andar + Lab integrado | 141 ✔ (167,9 m², 100%) | 141 ✔ (163,2 m², 100%) | 141 ✔ (184,5 m², 100%) |
+| Lab avulso (6,0 m) | 33 ✔ (100%) | — | — |
+| Hall + 1º andar | 253 ✔ (100%) | 253 ✔ (100%) | 253 ✔ (100%) |
+| Matriz do 1º andar (`teste:primeiro`) | passou | passou | passou |
+
+- No 3º andar, a folga mínima durante os percursos foi igual ao colisor nos três corpos: nenhuma penetração.
+- Desempenho no host de teste:
+  - 3º andar: ~250 chamadas de desenho e 0,95 M triângulos;
+  - Hall: ~470 chamadas e 1,57 M triângulos;
+  - os dois a 61 fps, que é o limite da tela desta máquina.
+
+**Validação visual:** montagens foto × jogo (corredor, frente do Lab, estar, núcleo, salas, salão) e Lab antes × depois, em `docs/terceiro-andar/comparacoes/fase-b/`.
+
+**Alterações em testes existentes:**
+
+- O jogo começa no 3º andar: o teste só chama `irPara` quando o ambiente atual não é o pedido.
+- O fluxo do avatar espera "Continuar" de volta no 3º andar.
+- O seletor do elevador agora tem 2 botões desabilitados (o andar atual e o 2º), em `navegacao.js` e em `primeiro-andar.js`; o painel do elevador do Hall se chama "Térreo, 1º e 3º andar".
+- O Lab avulso usa as coordenadas novas (6,0 m).
+- **Defeito anterior corrigido no teste:** "vidro do 1º andar permaneceu sólido fora da porta" falhava já no `HEAD` original (z = 14,68 numa cópia limpa). O teste empurrava em x = 39, dentro do vão da porta do podcast, que abre desde a 3ª rodada de 31/10. Agora empurra em x = 40,5, no vidro fixo.
 
 ## Publicação (31/10/2026)
 

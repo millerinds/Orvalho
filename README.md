@@ -2,7 +2,7 @@
 
 Experiência 3D no navegador, em estilo Frutiger Aero: o visitante personaliza o próprio bonequinho de vidro-gelatina (o provador do Orvalho) e explora, em terceira pessoa, o **Laboratório de Inteligência Artificial** e o **Hall do Polo Inovale**. O Hall inclui cafeteria Pin, Nexo, banheiros corrigidos, escada principal e o 1º andar refeito pelas fotos: ACIOC Hub sobre o café, núcleo, Administrativo e, numa ala leste sobre o palco, a Incubadora Joaçaba. Também tem NPCs com conversa e elevador com portas animadas entre o térreo e o 1º andar. Consulte `docs/continuidade/ESTADO-ATUAL.md`.
 
-O Lab continua como ambiente separado porque seu trajeto real no prédio não foi documentado. O elevador do Hall atende somente térreo e 1º andar e não atribui um pavimento ao Lab.
+O Lab de IA fica no **3º andar** (ático), que também é explorável: corredor, hall de estar, núcleo com elevador e escadas, salas das empresas vistas pelo vidro e um salão ao fundo. O jogo começa dentro do Lab, e o elevador leva ao térreo e ao 1º andar do Hall (o 2º andar ainda não existe). Veja `docs/continuidade/EXPANSAO-TERCEIRO-ANDAR.md`.
 
 **Jogar online:** <https://millerinds.github.io/Orvalho/> · **Repositório:** <https://github.com/millerinds/Orvalho>
 
@@ -78,6 +78,10 @@ src/
 ambientes/lab-ia/
   lab-ia.js                planta do lab: medidas reais × jogo, paredes, móveis, interativos
   conteudo.js              texto dos painéis (por enquanto, demonstrativo)
+ambientes/terceiro-andar/
+  terceiro-andar.js        planta do 3º andar (coordenadas da planta v0), com o Lab importado de lab-ia.js
+  moveis-terceiro.js       móveis e artes próprios do 3º andar (sofás, bancada, películas, portas adesivadas)
+  conteudo.js              textos dos painéis do 3º andar (demonstrativos onde indicado)
 ambientes/hall-inovale/
   hall-inovale.js          planta do hall: fachada, níveis, anexo, pilares, escada, móveis, interativos
   moveis-hall.js           móveis próprios do hall (mesa do café, recepção, arcos, plateia, telão…)
@@ -91,10 +95,11 @@ docs/                      regras de design, prompts, histórico e decisões (DE
 ```sh
 npm install                       # só o playwright-core, para os testes
 npm run teste:avatar              # provador: criar, cancelar, salvar e continuar
-npm run teste:navegacao           # Lab de IA, corpo Jujuba (também: teste:navegacao:gota, teste:navegacao:esguio)
+npm run teste:terceiro            # 3º andar com o Lab integrado (corpo Jujuba; --corpo=gota|esguio)
+npm run teste:navegacao           # Lab de IA avulso, corpo Jujuba (também: teste:lab, teste:navegacao:gota, teste:navegacao:esguio)
 npm run teste:hall                # Hall do Inovale, escada, térreo e primeiro andar
 npm run teste:primeiro            # matriz focada do 1º andar com Jujuba, Gota e Esguio
-npm run teste:tudo                # Lab e Hall com Jujuba, Gota e Esguio
+npm run teste:tudo                # 3º andar e Hall com Jujuba, Gota e Esguio, mais o Lab avulso
 ```
 
 Os testes cobrem o provador e dirigem o boneco pelo teclado pela sala inteira, medem corredores, conferem colisores, assentos, transições e, no Hall, sobem/descem a escada, testam guarda-corpos e restauram a altura salva. Os relatórios ficam em `testes/relatorio-*.json`. A suíte procura o Chromium do Playwright em `~/Library/Caches/ms-playwright`; em outro lugar, use `CHROMIUM=/caminho/do/chrome`.

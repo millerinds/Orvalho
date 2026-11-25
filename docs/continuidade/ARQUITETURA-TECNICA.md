@@ -89,6 +89,27 @@ O guarda-corpo visual é derivado das bordas do mezanino. A abertura da escada �
 - **Sombras:** móveis com `nivel: 'superior'` apoiados no piso do 1º andar também recebem sombra.
 - **Câmera:** os limites incluem as áreas do 1º andar, por isso a câmera não é travada em x = 44 na ala leste.
 
+## 3º andar e recursos novos da planta (25/11/2026)
+
+- **Um ambiente por andar:** o 3º andar é o ambiente `terceiro-andar` (piso em y = 0). O Hall continua com térreo e 1º andar.
+- **Elevador entre ambientes:**
+  - cada ambiente declara as paradas em `elevador.paradas[]` (`piso`, `y`, `z`, `chegada`);
+  - `jogo.abrirElevador` acha a parada atual pela cota;
+  - se o destino está no mesmo ambiente, só muda a cota;
+  - se está em outro, chama `irPara(id, chegada, aoChegar)`, que troca de ambiente com o véu e abre as portas no destino;
+  - os andares do painel ficam em `O.elevador.andares`.
+- **Entrada e saves:** `Orvalho.ambientes.inicial` define onde o jogo começa; `Orvalho.ambientes.migracoes[id](save)` converte saves de um ambiente que mudou de lugar (o Lab avulso → Lab do 3º andar).
+- **Recursos opcionais de `sala.js`** (o Hall e o Lab não precisam deles):
+  - `pilares[].cor` e `pilares[].fora` (pilar externo, sem colisão);
+  - `pisos: [{ r, cor, textura: 'madeira' }]`: piso sobreposto;
+  - `fechadas: [{ nome, r }]`: salas não navegáveis, excluídas de `limites.dentroDaSala` (usado pelos testes);
+  - `portasAnimadas[].trancada`: folha de verdade que não abre; `comPortasAbertas` também não a abre;
+  - painéis que chegam ao chão não colidem nos vãos de porta marcados `'vao'` (quem colide é a folha); vãos sem `'vao'` continuam sólidos;
+  - paredes com textura (`textura: 'madeira'`): cada pedaço mostra o seu trecho da textura da parede inteira (UV contínuo).
+- **Lab:**
+  - o 3º andar importa a mobília, os eletrodutos, as luminárias, os vãos das janelas e as interações de `ambientes/lab-ia/lab-ia.js` com uma rotação de −90° (`x = 30,2 − z_lab`, `z = 3,0 + x_lab`, na planta);
+  - itens marcados `fora`/`paisagem` e interações `soAvulso` são tratados à parte.
+
 ## Descarte e desempenho
 
 Geometrias, materiais e texturas criados por um ambiente são guardados e descartados na troca. Móveis repetidos usam `InstancedMesh`; peças compatíveis são mescladas. Não há sombras em tempo real nem pós-processamento.
