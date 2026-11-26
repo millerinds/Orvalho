@@ -21,8 +21,8 @@ Orvalho.conteudo['hall-inovale'] = {
     fonte: 'Edite em ambientes/hall-inovale/conteudo.js'
   },
   'expositores': {
-    demo: true, kicker: 'Acesso às salas 1, 2 e 3', titulo: 'Expositores e projetos',
-    texto: 'Espaço reservado para apresentar projetos e empresas do Polo (incubadas, graduadas e parceiras).',
+    demo: true, kicker: 'Acesso às salas 1, 2 e 3', titulo: 'Maquete do prédio',
+    texto: 'Maquete do prédio do Polo Inovale, na entrada das salas 1, 2 e 3: térreo com a fachada de vidro, o 1º e o 2º andar e o ático com a jardineira.',
     itens: [['Projeto', '—'], ['Equipe', '—'], ['Status', '—']],
     fonte: 'Edite em ambientes/hall-inovale/conteudo.js'
   },
@@ -71,6 +71,7 @@ Orvalho.conteudo['hall-inovale'] = {
     demo:false,kicker:'1º andar',titulo:'Administrativo',
     texto:'Em frente à chegada da escada. Na entrada fica a mesa de reuniões; ao fundo, a sala interna envidraçada onde trabalham Dagliê e Danimara (fotos E06–E08 e E19–E30).'
   },
+  'vivian': { demo:false,kicker:'Salas 1, 2 e 3 · conversa',titulo:'Vivian',texto:'Oi! Aqui é a entrada das salas 1, 2 e 3. À esquerda, o corredor leva às duas salas grandes junto à fachada; seguindo em frente, depois da maquete do prédio, fica a outra sala.' },
   'daglie': { demo:false,kicker:'Administrativo · conversa',titulo:'Dagliê',texto:'Oi! Aqui é o Administrativo do Polo Inovale. Fique à vontade para conhecer o 1º andar.' },
   'danimara': { demo:false,kicker:'Administrativo · conversa',titulo:'Danimara',texto:'Oi! Este é o meu posto, ao lado da Dagliê. Bom passeio pelo Polo!' },
   'salas-incubacao': { demo:false,kicker:'Incubadora Joaçaba',titulo:'Salas de incubação',texto:'Salas envidraçadas ocupadas pelas empresas do programa de incubação. A Incubadora funciona por ciclos, e as empresas entram e saem ao longo do tempo; por isso, o ambiente não identifica empresas específicas.' },

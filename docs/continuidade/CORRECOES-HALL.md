@@ -79,3 +79,16 @@
 - **"Bebedouro":** era a maquete, um expositor com três blocos azul-água, sem colisão (`colisao: false`). Foi refeita como em C12 (pedestal preto, tampo branco e maquete branca de prédios) e colide pela caixa real (1,2 × 0,75 m).
 - **Divergência:** em D02 a Nexo parece encostada no corredor das venezianas. Com a Nexo no canto do palco, como pedido e como mostram C12/H13/H15, sobra parede revestida entre os dois (x 33,5–39,4). Falta medida com trena para fechar a largura real da Nexo.
 - Planta v2 atualizada no gerador (`gerar-planta-v2.py`).
+
+### 2ª rodada de 26/11/2026 (salas 1, 2 e 3 e caixas de som)
+
+- **Caixas de som do Hall:** apareciam com o modelo de tripé da Unoesc. O tipo do 3º andar tinha o mesmo nome (`caixa-som`), era carregado depois e substituía o do Hall. Ele virou `caixa-som-tripe` e o Hall voltou à coluna sobre o subwoofer (H14, C12), com o colisor original.
+- **Salas 1, 2 e 3 sob a ala leste** (indicação do responsável; C12):
+  - **Entrada** (x 44–49, z 10–16,4): a maquete do prédio fica à direita de quem entra e o posto da Vivian (NPC com "Conversar") à esquerda.
+  - **Corredor à esquerda** (x 44,1–45,9) até o corredor das duas salas grandes junto à fachada (z 5,0–6,6). As salas grandes ocupam x 44,1–49,4 e x 49,4–54,9, z 0,1–5,0.
+  - **Sala em frente ao acesso** (x 49–54,9, z 6,6–19,9): fica seguindo reto depois da maquete.
+  - As salas são escritórios genéricos (postos de trabalho e armários), fechados e vistos pelo vidro, com portas de vidro fixas. Ficam em `fechadas`.
+  - A fachada e a lateral leste do térreo sob a ala ganharam janelas, no lugar dos blocos fechados.
+  - Anexo novo com `semParedes` (piso e forro sob a laje, a 3,1 m); as paredes vêm dos painéis.
+- **Maquete do prédio:** pedestal de 0,95 m e o prédio em escala (térreo e 2º andar com fachada de vidro, lajes, ático recuado com jardineira, árvores). Não parece mais uma mesa e colide pela peça inteira.
+- **Sem foto do interior:** a profundidade das salas e a posição exata das portas seguem a descrição do responsável. O vão do acesso continua onde está em C12.

@@ -89,7 +89,6 @@
     var c = cv(128, 290), x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 128, 290); g.addColorStop(0, '#2c343b'); g.addColorStop(1, '#1b2127');
     x.fillStyle = g; x.fillRect(0, 0, 128, 290); x.fillStyle = 'rgba(255,255,255,.07)'; x.beginPath(); x.moveTo(0, 0); x.lineTo(80, 0); x.lineTo(20, 290); x.lineTo(0, 290); x.closePath(); x.fill(); return tx(c);
   };
-  A['quadro-vidro'] = function(){ var c = cv(256, 128), x = c.getContext('2d'); x.fillStyle = 'rgba(214,236,232,.78)'; x.fillRect(0, 0, 256, 128); x.fillStyle = 'rgba(255,255,255,.35)'; x.fillRect(0, 0, 256, 6); return tx(c); };
   A['tela-aula'] = function(){   // tela de apresentação: slide genérico
     var c = cv(512, 288), x = c.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, 512, 288);
     txt(x, 'Inovação e tecnologia', 256, 34, '600 26px Figtree, Arial', '#3a4652', 'center');
@@ -268,12 +267,12 @@
     } };
   }
   T['mesa-treino-a'] = mesaTreino('plot-gleiser'); T['mesa-treino-b'] = mesaTreino('plot-laboratorio'); T['mesa-treino-c'] = mesaTreino('plot-globo');
-  /* mesa do instrutor (branca, com rodízios) e caixa de som em tripé */
+  /* mesa do instrutor (branca, com rodízios) e caixa de som em tripé (nome próprio: 'caixa-som' é a do Hall) */
   T['mesa-instrutor'] = { colisao: { caixa: [1.4, 0.6] }, sombra: [1.6, 0.8], partes: function(){
     return [parte(Q(1.4, 0.04, 0.6, 0.012), 'branco', 0.008, [M(0, 0.74, 0)]), parte(Q(1.36, 0.62, 0.025, 0.008), 'branco', 0.006, [M(0, 0.4, 0.27)]),
       parte(Q(0.025, 0.66, 0.56, 0.008), 'branco', 0.006, [M(-0.68, 0.39, 0), M(0.68, 0.39, 0)]), parte(Q(0.34, 0.02, 0.24, 0.006), 'grafite', 0.005, [M(0.2, 0.77, 0)])];
   } };
-  T['caixa-som'] = { colisao: { circulo: 0.3 }, sombra: [0.6, 0.6], partes: function(){
+  T['caixa-som-tripe'] = { colisao: { circulo: 0.3 }, sombra: [0.6, 0.6], partes: function(){
     var pes = []; for (var i = 0; i < 3; i++) { var a = i * Math.PI * 2 / 3; pes.push(M(Math.sin(a) * 0.17, 0.32, Math.cos(a) * 0.17, Math.cos(a) * 0.5, 0, -Math.sin(a) * 0.5)); }
     return [parte(new THREE.CylinderGeometry(0.012, 0.012, 0.7, 6), 'grafite', 0, pes), parte(F.cilindro(0.016, 1.0, 0.006, 8), 'grafite', 0, [M(0, 0.6, 0)]),
       parte(Q(0.3, 0.45, 0.28, 0.04), 'preto', 0.008, [M(0, 1.78, 0)])];
