@@ -166,3 +166,18 @@ Seis pontos marcados pelo responsável nas capturas da versão publicada, confer
 **Decisões sem confirmação fotográfica completa:** profundidade da sala X e do recuo (estimadas por T35), medidas internas da Sicredi, posição exata da porta da SCL (deslocada 0,85 m da quina para não cair no giro da porta dupla da Unoesc, que abre para o corredor) e a passagem "ENGENHARIA" (placa vista em T08). O vaso que ficava diante da nova porta da SCL foi para o lado da porta dupla (T04, T05).
 
 **Validação (rápida, a pedido):** carregamento do 3º andar, Hall e Lab avulso sem erros de console; pufe em área livre andou 1,27 m em 1,5 s de empurrão e parou ~3 cm depois de solto; contra o vidro da Athostec parou em z 9,44 (mínimo 9,40); Sicredi, SCL e Engenharia percorridas com o teclado; capturas das portas e batentes. A suíte completa (`npm run teste:tudo`) não foi rodada nesta etapa; as coordenadas do cenário do 3º andar que mudaram foram atualizadas em `testes/navegacao.js`.
+
+### 2ª rodada de 26/11/2026 (prevalece sobre a anterior)
+
+- **Unimed inteira:** retângulo contínuo x 3,0–8,9, z 9,0–14,5 (frente de 5,5 m, só um pouco menor que a original de 5,9 m), sem a ala em L.
+- **L só na sala X, menor:** corpo x 3,0–9,5, z 3,0–7,9 (frente e porta voltadas para o hall) e uma perna x 3,0–6,6, z 7,9–9,0 sob a Unimed. O recuo diante da porta da sala X (2,9 × 1,1 m) abre para o corredor da porta externa, que continua com 1,6 m.
+- **Portas:** só as do Lab e da Unoesc abrem. Sicredi, Unimed, sala X, salas da fachada, SCL (entrada e Engenharia) e as escadas de emergência ficam fechadas (`trancada`). SCL, Engenharia e Sicredi voltaram para `fechadas`.
+- **Sicredi:** porta de vidro escuro, sem plotagem e sem interação. A sala continua modelada atrás dela.
+- **Unoesc, sala de capacitação** (fotos 08.00.28 e 07.58.24):
+  - a frente fica na parede da porta, com o painel de vidro, a tela e a mesa do instrutor;
+  - na divisória ficam os quadros brancos e o painel azul;
+  - são três fileiras de mesas brancas (`mesa-treino-a/b/c`), duas mesas por bloco e dois blocos, com painel frontal plotado em azul-escuro (a frase de Marcelo Gleiser legível na foto e ilustrações simplificadas) e cadeiras amarelas de encosto perfurado;
+  - no fundo ficam a mesa de reunião com cadeiras pretas e a caixa de som;
+  - há persianas de rolo, dois ar-condicionados cassete e luminárias retangulares;
+  - corredores livres: junto à fachada 0,85 m, central 1,0 m, entre as fileiras 0,82 m, junto à divisória (da porta ao fundo) 1,85 m;
+  - percorrida com o teclado da porta ao fundo e entre as fileiras.

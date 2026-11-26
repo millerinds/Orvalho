@@ -14,7 +14,7 @@ Orvalho.conteudo['terceiro-andar'] = Object.assign({}, Orvalho.conteudo['lab-ia'
   },
   'scl': {
     demo: true, kicker: 'Empresa do 3º andar', titulo: 'SCL Automação',
-    texto: 'Escritório envidraçado ao lado da escada de emergência, com a recepção "Inteligência Industrial" e a sala da administração. A porta de entrada fica na ponta junto ao fim do corredor; pela recepção se chega à Engenharia, atrás da parede da Unoesc.',
+    texto: 'Escritório envidraçado ao lado da escada de emergência, com a recepção "Inteligência Industrial", a sala da administração e a Engenharia, atrás da parede da Unoesc. A sala é fechada; o interior aparece pelo vidro.',
     itens: [['Sobre a empresa', 'texto oficial pendente']]
   },
   'salus': {
@@ -39,7 +39,7 @@ Orvalho.conteudo['terceiro-andar'] = Object.assign({}, Orvalho.conteudo['lab-ia'
   },
   'salao': {
     demo: true, kicker: '3º andar', titulo: 'Unoesc',
-    texto: 'Sala da Unoesc no fim do corredor, atrás da porta dupla de vidro, com piso de madeira, bancadas, cadeiras e uma TV em pedestal. A parede divisória ao longo da sala a separa da Engenharia da SCL.',
+    texto: 'Sala de capacitação e treinamento da Unoesc, atrás da porta dupla de vidro: fileiras de mesas brancas com plotagens de ciência, tecnologia e inovação, cadeiras amarelas, tela de apresentação e mesa do instrutor.',
     itens: [['Sobre a sala', 'texto oficial pendente']]
   }
 });
