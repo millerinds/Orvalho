@@ -30,16 +30,17 @@ P = {
     ['Bancos "Dê um ... na fome"', 28.1, 0.25, 39.0, 0.9, '#d9b98c', 'confirmado (H08, H27-H29, C11)'],
     ['Palco + telão de LED', 39.0, 2.5, 42.5, 10.0, '#3a3a3a', 'confirmado (H04, H07, H14, C12)'],
     ['Estar (poltronas, tapete)', 26.6, 12.55, 29.3, 14.45, '#e6eef5', 'confirmado (C10, C11)'],
-    ['Sala de vidro Nexo', 34.0, 14.94, 38.2, 18.4, '#bfe6ff', 'corrigido (D02, H11, H15): alinhada à parede e seguindo para dentro do prédio'],
-    ['Corredor banheiros / Nexo', 31.5, 15.0, 33.5, 20.0, '#dce8ef', 'confirmado (D02, D05, D06, H11): veneziana, PCD e vidro no fundo'],
-    ['Balcões (banquetas + azul)', 37.3, 11.9, 39.6, 13.9, '#3f6fd8', 'confirmado (C12, C15, C16)'],
+    ['Sala de vidro Nexo', 39.4, 14.94, 43.8, 18.4, '#bfe6ff', 'corrigido 26/11/2026 (C12, D02, H13, H15): no canto do palco, junto ao acesso às salas'],
+    ['Corredor dos fundos', 31.5, 15.0, 33.5, 20.0, '#dce8ef', 'confirmado (D02, H11): duas venezianas e porta de vidro no fundo'],
+    ['Acesso às salas 1, 2 e 3 (vestíbulo)', 44.0, 12.6, 46.6, 14.4, '#dce8ef', 'corrigido 26/11/2026 (C12): aberto pela parede do palco, maquete dentro'],
+    ['Balcões (banquetas + azul)', 40.7, 12.3, 43.7, 14.9, '#3f6fd8', 'corrigido 26/11/2026 (C12, H13, H15): diante do acesso e do vidro da Nexo'],
   ],
   'portas': [
     ['Entrada principal (portas de vidro)', 14.75, 0, 3.4, 'h', 'confirmado'],
     ['Serviço da cafeteria', 9.15, 15, 0.9, 'h', 'confirmado (D04)'], ['Veneziana', 11.75, 15, 0.8, 'h', 'confirmado (C07)'], ['Escada de emergência', 12.75, 15, 0.9, 'h', 'confirmado (C07); núcleo do PDF'],
     ['Elevador', 14.6, 15, 1.1, 'h', 'confirmado (C04, C07)'], ['Banheiros (passagem)', 21.2, 15, 1.2, 'h', 'confirmado (C10); núcleo do PDF'],
-    ['Acesso restrito ×2', 29.6, 15, 2.0, 'h', 'confirmado (C11, C13, D06)'], ['Corredor banheiros', 32.5, 15, 2.0, 'h', 'confirmado (D02, D05, D06)'], ['Frente Nexo', 36.1, 15, 4.2, 'h', 'confirmado (D02, H15)'],
-    ['Acesso às salas 1, 2 e 3', 39.5, 15, 2.0, 'h', 'confirmado (C12, C15)'], ['Porta', 41.35, 15, 0.9, 'h', 'confirmado (C12)'],
+    ['Acesso restrito ×2', 29.6, 15, 2.0, 'h', 'confirmado (C11, C13, D06)'], ['Corredor dos fundos', 32.5, 15, 2.0, 'h', 'confirmado (D02, H11)'], ['Frente Nexo', 41.6, 15, 4.4, 'h', 'corrigido (C12, D02, H15)'],
+    ['Acesso às salas 1, 2 e 3', 44, 13.5, 1.8, 'v', 'corrigido (C12): na parede do palco'], ['Porta sob a escada', 44, 9.45, 0.9, 'v', 'confirmado (H14, C12)'],
     ['Saída envidraçada do café', 0, 10.5, 1.8, 'v', 'confirmado (D01, D03)'],
   ],
   'escada': {'r': [42.6, 3.4, 43.85, 12.45], 'sobe': '2 lances de 12 degraus com patamar (z 7,0–8,2), do lado da fachada para o interno, até +4,2 m', 'navegavel': True, 'conf': 'confirmado (H04, H07, H14); degraus estimados'},
@@ -67,7 +68,7 @@ P = {
     'npcs': [['Keila (térreo, atrás do balcão; atendimento em x 17,3, z 7,75)', 17.3, 9.2], ['Dagliê (entrada da sala)', 52.6, 15.65], ['Danimara (mais para dentro)', 52.6, 18.35]],
     'empresas_nomeadas': 'nenhuma: a Incubadora funciona por ciclos e o jogo não associa salas a empresas',
   },
-  'anexos': [{'nome': 'corredor banheiros / Nexo', 'r': [31.5, 15, 33.5, 20], 'pe': 3.0, 'fundo': 'porta envidraçada'}],
+  'anexos': [{'nome': 'corredor dos fundos', 'r': [31.5, 15, 33.5, 20], 'pe': 3.0, 'fundo': 'porta envidraçada'}, {'nome': 'acesso às salas 1, 2 e 3', 'r': [44.0, 12.6, 46.6, 14.4], 'pe': 2.6, 'fundo': 'porta das salas (fechada)'}],
   'fotos': [
     ['H04', 18, 6.5, 44, 6.5], ['H09', 38, 7, 0, 4], ['H22', 19.0, 5.0, 20, 12], ['H24', 5, 7, 25, 4], ['C01', 19.3, 4.9, 22.6, 1.3], ['C02', 24.5, 6.5, 24.5, 12.5],
     ['C07', 14.2, 11.3, 13.2, 15], ['C08', 16.8, 13.6, 17.5, 3], ['C11', 32, 10.2, 27.2, 14.5], ['C12', 40.8, 7.8, 36.5, 14.2], ['C20', 5.6, 9.8, 0, 9.7], ['C06', 14.6, 13.3, 24, 14.7],
@@ -134,7 +135,7 @@ for n, x, z, w, o, conf in P['portas']:
     else: s.append(f'<line x1="{X(x)}" y1="{Y(z - w/2)}" x2="{X(x)}" y2="{Y(z + w/2)}" stroke="#ff8a3d" stroke-width="9"{dash}/>')
 s.append(f'<text x="{X(14.75)}" y="{Y(0)+30}" font-size="12" font-weight="800" fill="#c2410c" text-anchor="middle">▲ ENTRADA</text>')
 s.append(f'<rect x="{X(9.85)}" y="{Y(15)}" width="{16.32*K}" height="{12}" fill="#7c3aed" opacity=".35"/><text x="{X(18)}" y="{Y(15)+40}" font-size="11" font-weight="700" fill="#5b21b6" text-anchor="middle">núcleo de circulação do PDF (2 escadas + banheiros) atrás da parede, x 9,85–26,17</text>')
-for n, x, t in [('c', 9.15, 'serviço café'), ('v', 11.75, 'ven.'), ('e', 12.75, 'esc.'), ('el', 14.6, 'elev.'), ('b', 21.2, 'banh.'), ('r', 29.6, 'restrito'), ('v2', 32.5, 'corredor'), ('n', 36.1, 'Nexo'), ('s', 39.5, 'salas 1–3')]:
+for n, x, t in [('c', 9.15, 'serviço café'), ('v', 11.75, 'ven.'), ('e', 12.75, 'esc.'), ('el', 14.6, 'elev.'), ('b', 21.2, 'banh.'), ('r', 29.6, 'restrito'), ('v2', 32.5, 'corredor'), ('n', 41.6, 'Nexo')]:
     s.append(f'<text x="{X(x)}" y="{Y(D)-6}" font-size="10" fill="#c2410c" text-anchor="middle">{t}</text>')
 # pilares
 for x, z, d, conf in P['pilares']:

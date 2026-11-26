@@ -56,12 +56,16 @@
   add('caixa-som', 38.6, 2.15); add('caixa-som', 38.6, 10.35);
   add('palmeira', 43.3, 0.75); add('palmeira', 40.3, 10.75);                  // vasos junto ao palco (C12, C13)
 
-  /* ---------- acesso às salas, balcões e sala Nexo (C12, C13, C15, C16) ---------- */
-  add('balcao-banquetas', 39.0, 13.3, { rot: PI });
-  add('balcao-info', 37.85, 12.2, { rot: PI });
-  add('mesa-reuniao', 36.0, 16.45);                                            // só o interior documentado pelas fotos, atrás do vidro
-  add('ar', 37.6, 17.75, { y: 2.6, rot: PI });
-  add('maquete', 32.5, 17.1, { colisao:false });                                // expositor visto dentro da passagem E03; base estreita não fecha a rota
+  /* ---------- canto do palco: acesso às salas 1, 2 e 3, balcões e sala Nexo (C12, C13, C15, C16, D02, H13–H15) ----------
+     Correção de 26/11/2026: o conjunto fica no canto junto à escada. Em C12, numa mesma parede (a do palco, x 44), aparecem em
+     sequência o palco, a caixa de som e a palmeira, a porta branca sob a escada (H14), os quadros elétricos e o acesso às salas,
+     com a maquete logo dentro; a Nexo fica à direita, com a frente de vidro voltada para o hall. O balcão branco com as
+     banquetas amarelas fica diante do acesso e o balcão azul INOVALE diante do vidro da Nexo (C12, H13, H15). */
+  add('balcao-banquetas', 41.3, 12.9);                                         // banquetas viradas para o acesso (+z)
+  add('balcao-info', 43.4, 14.35, { rot: -PI / 2 });                           // painel INOVALE voltado para o hall
+  add('maquete', 45.55, 13.0);                                                  // expositor logo dentro do acesso (C12); passagem livre até a porta do fundo
+  add('mesa-reuniao', 41.75, 16.45);                                           // só o interior documentado pelas fotos, atrás do vidro
+  add('ar', 42.6, 18.25, { y: 2.6, rot: PI });
 
   /* ---------- 1º andar (E06–E45, X46, X47) ----------
      Faixa interna (z 11,7–20), de oeste para leste: ACIOC Hub sobre o café; núcleo (escada de emergência, elevador, banheiros,
@@ -165,7 +169,8 @@
       ] },
       /* parede do palco: termina na laje da ala leste do 1º andar (X47); acima dela há piso, então só colide no térreo */
       { lado: 'leste', cor: 'madeira', textura: 'madeira', altura: 3.2, soTerreo: true, vaos: [
-        { tipo: 'porta', de: 9.0, ate: 9.9, base: 0, topo: 2.1, altura: 2.1 }                                     // porta sob a escada (H14)
+        { tipo: 'porta', de: 9.0, ate: 9.9, base: 0, topo: 2.1, altura: 2.1 },                                    // porta sob a escada (H14)
+        { tipo: 'abertura', de: 12.6, ate: 14.4, base: 0, topo: 2.4, altura: 2.35 }                               // acesso às salas 1, 2 e 3 (C12, H13, H15)
       ] },
       /* parede interna sob o mezanino, do café para o palco (C03, C04, C06, C07, C10, C11, C12, C13) */
       { lado: 'sul', cor: 'madeira', textura: 'madeira', altura: 3.2, soTerreo: true, vaos: [
@@ -176,9 +181,8 @@
         { tipo: 'abertura', de: 20.4, ate: 24.2, base: 0, topo: 2.4, altura: 2.35 },                              // distribuição real dos banheiros (E01)
         { tipo: 'porta', de: 28.6, ate: 29.5, base: 0, topo: 2.1, altura: 2.1, arte: 'restrito' },
         { tipo: 'porta', de: 29.7, ate: 30.6, base: 0, topo: 2.1, altura: 2.1, arte: 'restrito' },
-        { tipo: 'abertura', de: 31.5, ate: 33.5, base: 0, topo: 2.4, altura: 2.35 },                              // acesso às salas à esquerda da Nexo (E02–E04)
-        { tipo: 'abertura', de: 34.0, ate: 38.2, base: 0, topo: 3.15, altura: 3.1 },                              // frente envidraçada da Nexo, alinhada à parede
-        { tipo: 'porta', de: 40.9, ate: 41.8, base: 0, topo: 2.1, altura: 2.1 }
+        { tipo: 'abertura', de: 31.5, ate: 33.5, base: 0, topo: 2.4, altura: 2.35 },                              // corredor com venezianas até a porta de vidro dos fundos (H11, D02)
+        { tipo: 'abertura', de: 39.4, ate: 43.8, base: 0, topo: 3.15, altura: 3.1 }                               // frente envidraçada da Nexo, no canto do palco
       ] }
     ],
 
@@ -198,8 +202,10 @@
       { r: [15.9, 8.86, 18.5, 9.9], y0: 0, y1: 0.45, cor: '#8e9196' },                                       // estrado atrás do balcão (posto da Keila)
       { r: [44.12, 0, 55, 0.12], y0: 0, y1: 3.2, cor: '#d9d6d0' },                                            // térreo sob a ala leste (fechado, sem referência)
       { r: [54.88, 0, 55, 20], y0: 0, y1: 3.2, cor: '#d9d6d0' },
-      { r: [34.0, 15.0, 38.2, 18.4], y0: 0, y1: 0.04, cor: '#aaa398' },                                      // piso visível da Nexo
-      { r: [34.0, 15.0, 38.2, 18.4], y0: 3.1, y1: 3.2, cor: '#e2e1dc' }                                     // forro visível da Nexo
+      { r: [39.4, 15.0, 43.8, 18.4], y0: 0, y1: 0.04, cor: '#aaa398' },                                      // piso visível da Nexo
+      { r: [39.4, 15.0, 43.8, 18.4], y0: 3.1, y1: 3.2, cor: '#e2e1dc' },                                    // forro visível da Nexo
+      { r: [43.94, 10.15, 44.0, 10.55], y0: 1.25, y1: 1.85, cor: '#eeeeec' },                              // quadros elétricos entre a porta e o acesso (C12, H13)
+      { r: [43.94, 10.75, 44.0, 11.2], y0: 1.35, y1: 1.75, cor: '#eeeeec' }
     ],
     /* escada aberta junto à parede do palco: 2 lances de 12 degraus com patamar, sobe do lado da fachada para o lado interno (H04, H07, H14) */
     escadas: [{ x0: 42.6, x1: 43.85, ladoSalao: 'min', navegavel: true, topo: 12.45,
@@ -263,16 +269,23 @@
       { a: [51.6, 0.06], b: [51.6, 14.6], y0: 4.2, y1: 8, modulo: 1.45, portas: [[1.79, 2.79, 2.2, 'vao'], [4.69, 5.69, 2.2, 'vao'], [7.59, 8.59, 2.2, 'vao'], [10.49, 11.49, 2.2, 'vao'], [11.94, 12.94, 2.2, 'vao']], travessas: [2.35], faixas: [{ y0: 4.95, y1: 5.65, arte: 'fosca' }] },
       { a: [51.6, 3.0], b: [54.95, 3.0], y0: 4.2, y1: 8, modulo: 1.2 }, { a: [51.6, 5.9], b: [54.95, 5.9], y0: 4.2, y1: 8, modulo: 1.2 },
       { a: [51.6, 8.8], b: [54.95, 8.8], y0: 4.2, y1: 8, modulo: 1.2 }, { a: [51.6, 11.7], b: [54.95, 11.7], y0: 4.2, y1: 8, modulo: 1.2 },
-      /* Nexo encostada na parede do acesso às salas; o volume segue para dentro do prédio, não para o centro do hall. */
-      { a: [34.0, 14.94], b: [38.2, 14.94], y0: 0, y1: 3.15, modulo: 1.05, portas: [[2.25, 4.05, 2.15]], faixas: [{ y0: 0.98, y1: 1.18, arte: 'nexo' }, { y0: 1.25, y1: 1.6, arte: 'fosca' }] },
-      { a: [34.0, 14.94], b: [34.0, 18.4], y0: 0, y1: 3.15, modulo: 1.15, faixas: [{ y0: 1.25, y1: 1.6, arte: 'fosca' }] },
-      { a: [38.2, 14.94], b: [38.2, 18.4], y0: 0, y1: 3.15, modulo: 1.15, faixas: [{ y0: 1.25, y1: 1.6, arte: 'fosca' }] },
-      { a: [34.0, 18.4], b: [38.2, 18.4], y0: 0, y1: 3.15, modulo: 1.05 }
+      /* Nexo no canto do palco: frente de vidro alinhada à parede interna, porta dupla na ponta oeste (C12: puxadores altos
+         do lado de quem vem do hall), volume para dentro do prédio */
+      { a: [39.4, 14.94], b: [43.8, 14.94], y0: 0, y1: 3.15, modulo: 1.1, portas: [[0.25, 2.05, 2.15]], faixas: [{ y0: 0.98, y1: 1.18, arte: 'nexo' }, { y0: 1.25, y1: 1.6, arte: 'fosca' }] },
+      { a: [39.4, 14.94], b: [39.4, 18.4], y0: 0, y1: 3.15, modulo: 1.15, faixas: [{ y0: 1.25, y1: 1.6, arte: 'fosca' }] },
+      { a: [43.8, 14.94], b: [43.8, 18.4], y0: 0, y1: 3.15, modulo: 1.15, faixas: [{ y0: 1.25, y1: 1.6, arte: 'fosca' }] },
+      { a: [39.4, 18.4], b: [43.8, 18.4], y0: 0, y1: 3.15, modulo: 1.1 }
     ],
     anexos: [
       { r: [20.4, 15.0, 24.2, 19.5], pe: 3.0, textura: 'madeira',
         portas: [{ lado:'x0',de:15.8,ate:16.7,arte:'banheiro-feminino' },{ lado:'x1',de:15.8,ate:16.7,arte:'banheiro-masculino' },{ lado:'x0',de:17.35,ate:18.25,arte:'banheiro-pcd' }] },
-      { r: [31.5, 15.0, 33.5, 20.0], pe: 3.0, fundoVidro: true },
+      /* corredor até a porta de vidro dos fundos, com as duas venezianas (H11, D02) */
+      { r: [31.5, 15.0, 33.5, 20.0], pe: 3.0, fundoVidro: true,
+        portas: [{ lado: 'x1', de: 15.9, ate: 16.7, arte: 'veneziana' }, { lado: 'x1', de: 16.9, ate: 17.7, arte: 'veneziana' }] },
+      /* acesso às salas 1, 2 e 3 (C12): vestíbulo sob a ala leste, aberto para o hall pela parede do palco, com a maquete e a
+         porta das salas no fundo (as salas não foram fotografadas: porta fechada) */
+      { r: [44.0, 12.6, 46.6, 14.4], pe: 2.6, cor: '#f1f0ec', aberto: 'x0',
+        portas: [{ lado: 'x1', de: 13.05, ate: 13.95, arte: 'porta-lisa' }] },
       /* escada de emergência do térreo: a porta abre para uma antecâmara curta, fechada por uma segunda porta corta-fogo;
          os lances internos não foram fotografados e não foram modelados */
       { r: [12.2, 15.0, 13.6, 16.4], pe: 2.6, cor: '#e7e6e2',
@@ -339,9 +352,9 @@
     elevador: { x: 14.6, largura: 1.1, altura: 2.2, fundo: 1.4, paradas: [{ piso: 0, y: 0, z: 15.0, chegada: { x: 14.6, y: 0, z: 13.75, rumo: PI } },
                                                                            { piso: 1, y: 4.2, z: 14.6, chegada: { x: 14.6, y: 4.2, z: 13.15, rumo: PI } }] },
     placas: [
-      { arte: 'salas', x: 32.5, y: 2.45, z: 14.96, w: 1.3, h: 0.24, rot: PI },
+      { arte: 'salas', x: 43.985, y: 2.62, z: 13.5, w: 1.3, h: 0.24, rot: -PI / 2 },                          // sobre o acesso, na parede do palco
       { arte: 'incendio', x: 16.0, y: 1.65, z: 14.96, w: 0.5, h: 0.21, rot: PI },
-      { arte: 'saida', x: 36.4, y: 2.4, z: 12.37, w: 0.36, h: 0.14, rot: PI },
+      { arte: 'saida', x: 40.3, y: 2.55, z: 14.9, w: 0.36, h: 0.14, rot: PI },                                // sobre o vidro da Nexo (D02, H15)
       { arte: 'saida', x: 14.75, y: 2.62, z: 0.08, w: 0.36, h: 0.14 },
       /* ===== 1º andar ===== */
       { arte: 'rede-centros', x: 13.6, y: 3.7, z: 11.69, w: 5.0, h: 0.62, rot: PI, transparente: true },        // faixa na laje (X46)
@@ -376,7 +389,9 @@
       [[24.0, 15.2], [26.5, 15.2]].forEach(function(p){ l.push({ x: p[0], z: p[1], y: 6.6 }); });                // nichos dos banheiros
       [[35.0, 16.6], [35.0, 18.6], [39.9, 16.4], [39.9, 18.5]].forEach(function(p){ l.push({ x: p[0], z: p[1], y: 7.1 }); }); // reuniões e podcast
       [[12.9, 15.7, 2.6], [12.72, 15.3, 6.8], [31.05, 15.3, 6.8]].forEach(function(p){ l.push({ x: p[0], z: p[1], y: p[2] }); }); // antecâmaras
-      [[1.8, 8], [3.6, 8], [1.8, 10.5], [3.6, 10.5]].forEach(function(p){ l.push({ x: p[0], z: p[1], y: 3.2 }); });
+      /* (26/11/2026) saíram 4 luminárias em y 3,2 sobre o café (z 8 e 10,5): sobra do mezanino projetado sobre as mesas, removido
+         na correção D01–D04. Ali o forro é o do pé-direito duplo (8 m); sob o mezanino (z ≥ 11,7) fica a fileira em y 3,2. */
+      l.push({ x: 42.75, z: 13.5, y: 3.2 }, { x: 45.3, z: 13.6, y: 2.6 });                                    // canto e vestíbulo do acesso às salas
       return l;
     })(),
     moveis: moveis,
@@ -404,8 +419,8 @@
       { id: 'totem', x: 22.63, y: 1.4, z: 8.4, raio: 1.6, rotulo: 'Totem de orientação', conteudo: 'totem' },
       { id: 'painel', x: 22.4, y: 1.4, z: 3.5, raio: 2.0, rotulo: 'Painel institucional', conteudo: 'painel' },
       { id: 'telao', x: 41.6, y: 2.2, z: 6.25, raio: 4.2, rotulo: 'Telão', conteudo: 'telao' },
-      { id: 'expositores', x: 37.85, y: 1.1, z: 11.9, raio: 1.9, rotulo: 'Expositores', conteudo: 'expositores' },
-      { id: 'nexo', x: 36.1, y: 1.3, z: 14.7, raio: 1.7, rotulo: 'Sala Nexo', conteudo: 'nexo' },
+      { id: 'expositores', x: 44.6, y: 1.1, z: 13.5, raio: 1.6, rotulo: 'Acesso às salas 1, 2 e 3', conteudo: 'expositores' },
+      { id: 'nexo', x: 41.0, y: 1.3, z: 14.7, raio: 1.7, rotulo: 'Sala Nexo', conteudo: 'nexo' },
       { id: 'cafeteria', x: 4.3, y: 1.2, z: 13.25, raio: 2.4, rotulo: 'Cafeteria Pin', conteudo: 'cafeteria' },
       { id: 'escada', x: 43.2, y: 1.4, z: 3.1, raio: 1.9, rotulo: '1º andar', conteudo: 'escada' },
       /* pessoas: (x, z) é o ponto de atendimento, que o jogador alcança; "alvo" é onde a pessoa está (cabeça) */

@@ -62,3 +62,20 @@
 - `src/mundo/formas.js`
 - `testes/navegacao.js`
 - `testes/fluxo-avatar.js`
+
+## Correções de 26/11/2026 (térreo)
+
+- **Luminárias flutuantes:** saíram quatro luminárias em y 3,2 sobre o café (x 1,8–3,6, z 8 e 10,5). Eram sobra do mezanino projetado sobre as mesas, removido na correção D01–D04, e ficavam soltas no vão do pé-direito duplo. No vazio as luminárias ficam no forro de 8 m; sob o mezanino (z ≥ 11,7), no forro de 3,2 m.
+- **Acesso às salas 1, 2 e 3 e Nexo no canto do palco** (C12, D02, H13–H15):
+  - em C12, na parede do palco (x 44), aparecem em sequência a caixa de som e a palmeira, a porta branca sob a escada (H14), os quadros elétricos e o acesso;
+  - o acesso agora é um vão nessa parede (z 12,6–14,4), com um vestíbulo navegável sob a ala leste (`aberto: 'x0'`), a maquete e a porta das salas (fechada);
+  - a Nexo foi para x 39,4–43,8, com a frente de vidro na parede interna e a porta dupla na ponta oeste;
+  - o balcão com banquetas fica diante do acesso e o balcão azul INOVALE diante do vidro da Nexo;
+  - a placa "Acesso às salas" fica sobre o vão e a placa SAÍDA sobre o vidro da Nexo;
+  - a porta que existia na parede interna em x 40,9–41,8 saiu (ficava dentro da Nexo).
+- **Região desocupada:**
+  - a passagem x 31,5–33,5 voltou a ser o corredor dos fundos (H11, D02), com duas venezianas e a porta de vidro no fundo, sem a placa e sem a maquete;
+  - o antigo vão da Nexo (x 34,0–38,2) virou parede revestida.
+- **"Bebedouro":** era a maquete, um expositor com três blocos azul-água, sem colisão (`colisao: false`). Foi refeita como em C12 (pedestal preto, tampo branco e maquete branca de prédios) e colide pela caixa real (1,2 × 0,75 m).
+- **Divergência:** em D02 a Nexo parece encostada no corredor das venezianas. Com a Nexo no canto do palco, como pedido e como mostram C12/H13/H15, sobra parede revestida entre os dois (x 33,5–39,4). Falta medida com trena para fechar a largura real da Nexo.
+- Planta v2 atualizada no gerador (`gerar-planta-v2.py`).
