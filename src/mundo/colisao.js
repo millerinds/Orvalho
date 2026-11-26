@@ -25,7 +25,7 @@
       caixa: function(x0, z0, x1, z1, cam){ caixas.push(marca({ x0: Math.min(x0, x1), z0: Math.min(z0, z1), x1: Math.max(x0, x1), z1: Math.max(z0, z1), cam: !!cam })); },
       /* os colisores criados entre nivel([y0, y1]) e nivel(null) valem só nessa faixa de altura */
       nivel: function(faixa){ nivelAtual = faixa; },
-      circulo: function(x, z, r){ circulos.push(marca({ x: x, z: z, r: r })); },
+      circulo: function(x, z, r){ var c = marca({ x: x, z: z, r: r }); circulos.push(c); return c; },   // devolve o círculo: móveis empurráveis o movem (c.x, c.z) e desligam (c.off)
       /* devolve o segmento: quem o criou pode ligá-lo e desligá-lo (s.off), como as portas que abrem */
       segmento: function(ax, az, bx, bz){ var s = marca({ ax: ax, az: az, bx: bx, bz: bz }); segs.push(s); return s; },
 

@@ -14,7 +14,7 @@ Orvalho.conteudo['terceiro-andar'] = Object.assign({}, Orvalho.conteudo['lab-ia'
   },
   'scl': {
     demo: true, kicker: 'Empresa do 3º andar', titulo: 'SCL Automação',
-    texto: 'Sala envidraçada ao lado da escada de emergência, com a recepção "Inteligência Industrial" e a sala da administração. A sala é fechada; o interior aparece pelo vidro.',
+    texto: 'Escritório envidraçado ao lado da escada de emergência, com a recepção "Inteligência Industrial" e a sala da administração. A porta de entrada fica na ponta junto ao fim do corredor; pela recepção se chega à Engenharia, atrás da parede da Unoesc.',
     itens: [['Sobre a empresa', 'texto oficial pendente']]
   },
   'salus': {
@@ -32,9 +32,14 @@ Orvalho.conteudo['terceiro-andar'] = Object.assign({}, Orvalho.conteudo['lab-ia'
     texto: 'Sala no fim do hall de estar, ao lado da escada de emergência. O vidro é jateado e o interior não foi fotografado.',
     itens: [['Sobre a sala', 'texto oficial pendente']]
   },
+  'sicredi': {
+    demo: true, kicker: '3º andar · sala de reuniões', titulo: 'Sicredi',
+    texto: 'Sala de reuniões do Sicredi, entre a escada de emergência e a Unimed. A porta de vidro escuro abre ao chegar perto.',
+    itens: [['Sobre a sala', 'texto oficial pendente']]
+  },
   'salao': {
-    demo: false, kicker: '3º andar', titulo: 'Salão',
-    texto: 'Salão com piso de madeira no fim do corredor. Nas fotos aparecem bancadas, cadeiras e uma TV em pedestal, mas o uso do espaço ainda não foi confirmado.',
-    itens: [['A confirmar', 'uso, nome e extensão do salão']]
+    demo: true, kicker: '3º andar', titulo: 'Unoesc',
+    texto: 'Sala da Unoesc no fim do corredor, atrás da porta dupla de vidro, com piso de madeira, bancadas, cadeiras e uma TV em pedestal. A parede divisória ao longo da sala a separa da Engenharia da SCL.',
+    itens: [['Sobre a sala', 'texto oficial pendente']]
   }
 });

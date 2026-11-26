@@ -147,3 +147,22 @@ Ficam em `docs/terceiro-andar/comparacoes/fase-b/`, fora do Git:
   - o andar segue a primeira regra do guia do VR (é carregado à parte) e mede ~200–430 chamadas de desenho e ~0,95 M triângulos no desktop (o Hall mede ~470 e 1,57 M);
   - a otimização específica de VR (compartilhar materiais da estrutura, células e zonas) não foi feita;
   - ao juntar os ramos, conferir `sala.js` e `jogo.js`, que os dois alteraram.
+
+## Correções de 26/11/2026 (inspeção visual da versão publicada)
+
+Seis pontos marcados pelo responsável nas capturas da versão publicada, conferidos com as fotos T04, T08, T15, T35–T37, T39, T44, T46 e o PDF do ático.
+
+| # | Correção | Onde |
+|---|---|---|
+| 1 | **Pufes empurráveis:** os três almofadões junto à Unimed têm física dinâmica simplificada (empurrão do boneco, atrito com o piso, amortecimento, giro, colisão entre eles e com paredes, pilares e móveis; ficam no piso, sem quicar nem voar) | `src/mundo/fisica-moveis.js`; itens com `dinamico: true` |
+| 2 | **Unimed e sala X:** frente da Unimed em x 8,9 e Unimed em L (ala junto à janela lateral); sala X horizontal (x 3,0–9,5, z 3,0–7,9) com frente e porta voltadas para o hall, recuada 1,5 m; lateral da Athostec no corredor da porta externa virou divisória de vidro com película | `terceiro-andar.js` |
+| 3 | **Sala de reuniões Sicredi:** porta de vidro escuro na quina do núcleo (x 8,95–9,8), entre as venezianas (mantidas: aparecem em T37/T46) e a porta da Unimed; sala navegável de 4,25 × 3,0 m atrás da Unimed (anexo), com mesa para seis e a marca | anexo + `porta-sicredi` |
+| 4 | **Cintilação dos batentes:** a moldura dos vãos `abertura` (nicho PCD, escadas, Sicredi) tinha a face interna no mesmo plano da cabeça da parede e da parede do anexo; agora fica 8 mm para dentro e cobre toda a espessura. Marcos de porta: 4 mm para dentro; batente das portas dos anexos com 3 mm de folga da folha | `sala.js` (`abertura`, marcos, anexos) |
+| 5 | **Porta do Lab:** a arte é a textura da própria folha (`porta-lab`, mesma arte, proporção preservada) e gira com ela; o painel fixo ao lado saiu e o módulo voltou a ser vidro com película | `terceiro-andar.js`, `moveis-terceiro.js` |
+| 6 | **Unoesc e SCL:** o "salão" é a Unoesc; a parede divisória corre na fileira de pilares (z 11,96), com a boneca de alvenaria entre o batente da porta dupla (z 11,4) e a divisória. Atrás dela fica a Engenharia da SCL (postos de trabalho). A SCL ganhou porta de entrada no vidro (x 31,85–32,75, abre) e passagem "ENGENHARIA" na parede do fundo da recepção; deixou de ser sala fechada | `terceiro-andar.js` |
+
+**Motor (opcional, o Hall não usa):** `colisao.circulo` devolve o círculo; `st.raio` expõe o raio do boneco; `amb.dinamicos` dá o estado dos móveis empurráveis; vão `abertura` aceita `cor`.
+
+**Decisões sem confirmação fotográfica completa:** profundidade da sala X e do recuo (estimadas por T35), medidas internas da Sicredi, posição exata da porta da SCL (deslocada 0,85 m da quina para não cair no giro da porta dupla da Unoesc, que abre para o corredor) e a passagem "ENGENHARIA" (placa vista em T08). O vaso que ficava diante da nova porta da SCL foi para o lado da porta dupla (T04, T05).
+
+**Validação (rápida, a pedido):** carregamento do 3º andar, Hall e Lab avulso sem erros de console; pufe em área livre andou 1,27 m em 1,5 s de empurrão e parou ~3 cm depois de solto; contra o vidro da Athostec parou em z 9,44 (mínimo 9,40); Sicredi, SCL e Engenharia percorridas com o teclado; capturas das portas e batentes. A suíte completa (`npm run teste:tudo`) não foi rodada nesta etapa; as coordenadas do cenário do 3º andar que mudaram foram atualizadas em `testes/navegacao.js`.
