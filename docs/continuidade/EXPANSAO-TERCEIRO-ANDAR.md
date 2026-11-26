@@ -181,3 +181,14 @@ Seis pontos marcados pelo responsável nas capturas da versão publicada, confer
   - há persianas de rolo, dois ar-condicionados cassete e luminárias retangulares;
   - corredores livres: junto à fachada 0,85 m, central 1,0 m, entre as fileiras 0,82 m, junto à divisória (da porta ao fundo) 1,85 m;
   - percorrida com o teclado da porta ao fundo e entre as fileiras.
+
+### 3ª rodada de 26/11/2026 (prevalece sobre as anteriores)
+
+- **SCL:** saiu a porta lateral de vidro que tinha sido criada na frente lida do corredor (z 12,0). O vidro é contínuo e sólido. A entrada da SCL continua sendo a porta dupla de vidro junto ao pilar (T17, T18).
+- **Unoesc reorientada** (seta do responsável na captura 08.19.10):
+  - a frente da sala é a parede divisória (z 11,9), com um único quadro branco e a TV embutida nele;
+  - saíram a TV, o painel de vidro da parede da porta, os outros quadros brancos e o painel azul;
+  - as três fileiras (z 9,15 / 7,35 / 5,55; dois blocos de duas mesas) olham para +z, e a mesa do instrutor fica diante do quadro;
+  - as mesas de reunião com cadeiras pretas ficam no canto do fundo, junto à janela lateral, e a caixa de som no outro canto;
+  - corredores: junto à parede da porta 0,85 m, central 0,95 m, entre as fileiras 0,8 m, diante das mesas de reunião 0,75 m e no fundo (fachada) 2,0 m;
+  - percorrida com o teclado.

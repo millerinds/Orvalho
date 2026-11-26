@@ -103,10 +103,9 @@
   vidroFrente(30.3, 9.0, 33.6, 9.0, { n: 3, pelicula: 'pelicula-vermelha' });
 
   /* ================= SCL Automação (T01–T03, T07, T08, T17–T20, T23–T25) ================= */
-  /* frente lida do corredor; a porta de entrada da SCL fica perto do fim do corredor (indicação do responsável, 26/11/2026),
-     abre para dentro. Fica 0,85 m antes da quina para não cair no giro da porta dupla da Unoesc, que abre para o corredor */
-  vidroFrente(33.6, 12.0, 26.17, 12.0, { n: 7, pelicula: 'pelicula-tri', portas: [[0.85, 1.75, 2.25, 'vao']] });
-  porta('scl-entrada', 31.85, 12.0, 32.75, 12.0, { altura: 2.25, trancada: true });
+  /* frente lida do corredor: vidro fechado, sem porta (a porta lateral de vidro criada em 26/11/2026 foi retirada a pedido
+     do responsável; a entrada da SCL é a porta dupla de vidro junto ao pilar, T17/T18) */
+  vidroFrente(33.6, 12.0, 26.17, 12.0, { n: 7, pelicula: 'pelicula-tri' });
   vidroFrente(26.17, 12.0, 26.17, 14.5, { n: 2, pelicula: 'pelicula-tri', portas: [[1.0, 2.4, 2.25, 'vao']] });
   porta('scl-1', 26.17, 13.0, 26.17, 13.7, { altura: 2.25, trancada: true });                       // porta dupla de vidro, fechada
   porta('scl-2', 26.17, 14.4, 26.17, 13.7, { altura: 2.25, trancada: true, abre: 'direita' });
@@ -210,23 +209,22 @@
   add('mesa-empresa', 4.7, 4.0); add('mesa-empresa', 7.2, 4.0); add('mesa-empresa', 4.7, 6.95, { rot: PI }); add('mesa-empresa', 7.2, 6.95, { rot: PI }); add('armario', 4.2, 8.7, { rot: PI });
   /* Unimed (interior não fotografado; vidro jateado): postos genéricos */
   add('mesa-empresa', 4.9, 10.0); add('mesa-empresa', 7.3, 10.0); add('mesa-empresa', 6.1, 13.4, { rot: PI });
-  /* Unoesc: sala de capacitação (fotos 08.00.28 e 07.58.24, 26/11/2026). Frente na parede da porta (x 33,9): painel de vidro
-     com a tela e a mesa do instrutor; quadros brancos e painel azul na divisória (lado esquerdo de quem olha a tela); fundo
-     com janelas, mesa de reunião com cadeiras pretas e caixa de som. Três fileiras de mesas brancas plotadas (duas mesas
-     por bloco, dois blocos), corredor central e corredores junto à fachada e à divisória (este liga a porta ao fundo). */
+  /* Unoesc: sala de capacitação (fotos 08.00.28 e 07.58.24, 26/11/2026; orientação corrigida pela seta do responsável).
+     Frente = parede divisória (z 11,9): um único quadro branco com a TV embutida e a mesa do instrutor diante dele. Os alunos
+     olham para +z: três fileiras de mesas brancas plotadas (painel azul voltado para a frente), em dois blocos de duas mesas
+     com corredor central; corredores junto à parede da porta e no fundo (fachada); mesa de reunião com cadeiras pretas no
+     canto do fundo junto à janela lateral; caixa de som no outro canto do fundo. */
   var plots = ['mesa-treino-a', 'mesa-treino-b', 'mesa-treino-c'];
-  [36.6, 38.45, 40.3].forEach(function(fx, f){
-    [4.5, 5.8, 8.1, 9.4].forEach(function(fz, k){ add(plots[(f + k) % 3], fx, fz, { rot: -PI / 2 }); });   // painel plotado voltado para a tela
+  [9.15, 7.35, 5.55].forEach(function(fz, f){
+    [35.4, 36.7, 38.95, 40.25].forEach(function(fx, k){ add(plots[(f + k) % 3], fx, fz); });   // rot 0: painel plotado voltado para a frente (+z)
   });
-  add('mesa-instrutor', 35.2, 8.2, { rot: PI / 2 }); add('cadeira', 34.55, 8.2, { rot: PI / 2 });
-  add('mesa-reuniao-6', 42.6, 8.2, { rot: PI / 2 }); add('mesa-reuniao-6', 42.6, 10.0, { rot: PI / 2 });
-  add('caixa-som', 42.9, 3.7);
+  add('mesa-instrutor', 39.0, 10.85, { rot: PI }); add('cadeira', 39.0, 11.45, { rot: PI });
+  add('mesa-reuniao-6', 42.62, 4.1, { rot: PI / 2 }); add('mesa-reuniao-6', 42.62, 5.9, { rot: PI / 2 });
+  add('caixa-som', 34.35, 3.55);
   add('ar-cassete', 37.3, 6.9, { y: PE }); add('ar-cassete', 41.2, 6.9, { y: PE });
   add('extintor', 35.3, 11.84, { y: 0.85, rot: PI });                                              // na divisória, junto à porta (T04)
-  placa('quadro-vidro', 33.915, 1.55, 6.6, 4.6, 1.5, PI / 2);                                      // painel de vidro da parede da frente
-  placa('tela-aula', 33.93, 1.6, 6.6, 1.95, 1.1, PI / 2);                                         // tela de apresentação
-  [36.0, 37.55, 39.1].forEach(function(qx){ placa('quadro-branco', qx, 1.55, 11.885, 1.5, 1.0, PI); });   // quadros brancos na divisória
-  placa('faixa-inovale', 37.4, 0.62, 11.88, 4.4, 0.6, PI);
+  placa('quadro-branco', 38.5, 1.5, 11.885, 4.4, 1.25, PI);                                        // quadro branco único da frente
+  placa('tela-aula', 38.5, 1.52, 11.872, 1.6, 0.9, PI, { moldura: '#20262c' });                    // TV embutida no quadro
   /* persianas de rolo meio abaixadas nas janelas da Unoesc (fachada e lateral) */
   (function(){ var n = 6, w = (43.6 - 33.9) / n; for (var i = 0; i < n; i++) placa('persiana-rolo', 33.9 + (i + 0.5) * w, 2.0, 3.06, w - 0.14, 1.15 - (i % 3) * 0.15, 0, { transparente: true });
     w = (14.5 - 3.0) / 6; for (i = 0; i < 4; i++) placa('persiana-rolo', 43.54, 2.0, 3.0 + (i + 0.5) * w, w - 0.14, 1.1 - (i % 2) * 0.2, -PI / 2, { transparente: true }); })();
