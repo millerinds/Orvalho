@@ -128,16 +128,20 @@
       if (v.tipo === 'elevador') { elevador(Ld, v, w, cu, poe); return; }
       if (v.tipo === 'passagem') { passagem(p, Ld, v, w, cu, poe); return; }
       if (v.tipo === 'abertura') { // só a moldura: o vão leva a um anexo navegável
-        var hpa = v.altura || 2.4;
-        poe(gel(F.caixa(0.1, hpa + 0.1, 0.18, 0.02), 'branco', 0.008), v.u0 - 0.05, (hpa + 0.1) / 2, 0); poe(gel(F.caixa(0.1, hpa + 0.1, 0.18, 0.02), 'branco', 0.008), v.u1 + 0.05, (hpa + 0.1) / 2, 0);
-        poe(gel(F.caixa(w + 0.2, 0.1, 0.18, 0.02), 'branco', 0.008), cu, hpa + 0.05, 0);
+        /* sem z-fighting: a face interna dos montantes e a de baixo da verga ficam 8 mm para dentro do vão, à frente da
+           cabeça da parede, da parede lateral do anexo e do forro dele (antes as três ocupavam o mesmo plano), e a moldura
+           cobre toda a espessura da parede (T) */
+        var hpa = v.altura || 2.4, ins = 0.008, dm = 0.18 + T, wm = -T / 2, cm = v.cor || 'branco';
+        poe(gel(F.caixa(0.1, hpa + 0.1, dm, 0.02), cm, 0.008), v.u0 - 0.05 + ins, (hpa + 0.1) / 2, wm); poe(gel(F.caixa(0.1, hpa + 0.1, dm, 0.02), cm, 0.008), v.u1 + 0.05 - ins, (hpa + 0.1) / 2, wm);
+        poe(gel(F.caixa(w + 0.2, 0.1, dm, 0.02), cm, 0.008), cu, hpa + 0.05 - ins, wm);
         return;
       }
       var corMold = v.tipo === 'porta' ? (v.cor || 'branco') : 'metal';
-      poe(gel(F.caixa(w + fr * 2, fr, 0.08, 0.018), corMold, 0.008), cu, v.topo + fr / 2, -0.02);
-      if (v.base) poe(gel(F.caixa(w + fr * 2, fr, 0.14, 0.018), corMold, 0.008), cu, v.base - fr / 2, 0);
-      poe(gel(F.caixa(fr, h, 0.08, 0.018), corMold, 0.008), v.u0 - fr / 2, cv, -0.02);
-      poe(gel(F.caixa(fr, h, 0.08, 0.018), corMold, 0.008), v.u1 + fr / 2, cv, -0.02);
+      var im = 0.004;   // faces internas do marco 4 mm para dentro do vão: não coincidem com a cabeça da parede (z-fighting)
+      poe(gel(F.caixa(w + fr * 2, fr, 0.08, 0.018), corMold, 0.008), cu, v.topo + fr / 2 - im, -0.02);
+      if (v.base) poe(gel(F.caixa(w + fr * 2, fr, 0.14, 0.018), corMold, 0.008), cu, v.base - fr / 2 + im, 0);
+      poe(gel(F.caixa(fr, h, 0.08, 0.018), corMold, 0.008), v.u0 - fr / 2 + im, cv, -0.02);
+      poe(gel(F.caixa(fr, h, 0.08, 0.018), corMold, 0.008), v.u1 + fr / 2 - im, cv, -0.02);
       if (v.tipo === 'porta') {
         /* folha branca com maçaneta e bandeira de vidro em cima */
         var hp = v.altura || 2.1;
@@ -147,7 +151,7 @@
         } else poe(gel(F.caixa(w - 0.02, hp - 0.01, 0.045, 0.012), v.cor || 'branco', 0.01), cu, hp / 2, -0.03);
         if (v.faixa) poe(gel(F.caixa(w * 0.18, hp * 0.8, 0.05, 0.01), v.faixa, 0.006), cu + w * 0.3, hp * 0.45, -0.01); // faixa colorida (porta do elevador)
         else poe(gel(F.caixa(0.14, 0.022, 0.03, 0.01), 'metal', 0.006), v.u1 - 0.14, 1.02, 0.01);
-        poe(gel(F.caixa(w, 0.04, 0.07, 0.015), v.cor || 'branco', 0.008), cu, hp + 0.02, -0.03);
+        poe(gel(F.caixa(w - 0.012, 0.04, 0.07, 0.015), v.cor || 'branco', 0.008), cu, hp + 0.016, -0.034);
         if (v.topo - hp > 0.12) { var tr = new THREE.Mesh(guarda(new THREE.PlaneGeometry(w, v.topo - hp - 0.04)), vidroMat); poe(tr, cu, (hp + 0.04 + v.topo) / 2, -0.04); }
         return;
       }
@@ -510,8 +514,10 @@
     (def.obstaculos || []).forEach(function(o){ col.caixa(o.caixa[0], o.caixa[1], o.caixa[2], o.caixa[3]); });
 
     /* ---------- móveis: um InstancedMesh por peça de cada tipo ---------- */
-    var porTipo = {};
-    (def.moveis || []).forEach(function(it){ (porTipo[it.tipo] = porTipo[it.tipo] || []).push(it); });
+    var porTipo = {}, dinamicos = [];
+    /* "dinamico: true": móvel empurrável (ex.: puffs do 3º andar). Fica fora do InstancedMesh e dos colisores fixos;
+       ganha malha própria e física simplificada (src/mundo/fisica-moveis.js) */
+    (def.moveis || []).forEach(function(it){ if (it.dinamico && O.fisicaMoveis) { dinamicos.push(it); return; } (porTipo[it.tipo] = porTipo[it.tipo] || []).push(it); });
     var sombras = [], assentos = [], tmpM = new THREE.Matrix4();
     function matrizItem(it){ return MV.M(it.x, it.y || 0, it.z, 0, it.rot || 0, 0); }
     Object.keys(porTipo).forEach(function(tipo){
@@ -576,6 +582,30 @@
       var si = new THREE.InstancedMesh(sg, sm, sombras.length);
       sombras.forEach(function(s, i){ si.setMatrixAt(i, tmpM.compose(new THREE.Vector3(s.x, (s.y || 0) + 0.006, s.z), new THREE.Quaternion(), new THREE.Vector3(s.w, 1, s.d))); });
       si.renderOrder = -1; si.frustumCulled = false; grupo.add(si);
+    }
+
+    /* ---------- móveis empurráveis: uma malha por móvel (gelatina com contorno), sombra própria e colisores móveis ---------- */
+    var fis = null;
+    if (dinamicos.length) {
+      var dsg = guarda(new THREE.PlaneGeometry(1, 1)); dsg.rotateX(-Math.PI / 2);
+      var dsm = guarda(new THREE.MeshBasicMaterial({ map: guarda(F.sombra()), transparent: true, depthWrite: false, opacity: 0.85 }));
+      var corposD = dinamicos.map(function(it){
+        var TP = MV.TIPOS[it.tipo], g = new THREE.Group(), porPal = {};
+        TP.partes().forEach(function(pt){ var k = pt.pal + '|' + (pt.esp || 0); (porPal[k] = porPal[k] || { pal: pt.pal, esp: pt.esp, geos: [] }); pt.ms.forEach(function(ml){ porPal[k].geos.push(pt.geo.clone().applyMatrix4(ml)); }); guarda(pt.geo); });
+        Object.keys(porPal).forEach(function(k){
+          var pp = porPal[k], geo = guarda(F.mesclar(pp.geos)); geo.computeBoundingBox();
+          var bb = geo.boundingBox, mt = guarda(G.jelly({ top: bb.max.y - (bb.max.y - bb.min.y) * 0.35, bot: bb.min.y })), mesh = new THREE.Mesh(geo, mt), om = null;
+          if (pp.esp) om = guarda(G.outline(mesh, pp.esp));
+          G.pintar(mt, pal(pp.pal), om); g.add(mesh);
+        });
+        if (TP.sombra) { var sh = new THREE.Mesh(dsg, dsm); sh.position.y = 0.006; sh.scale.set(TP.sombra[0], 1, TP.sombra[1]); sh.renderOrder = -1; g.add(sh); }
+        g.position.set(it.x, 0, it.z); g.rotation.y = it.rot || 0; g.name = 'dinamico:' + (it.id || it.tipo); grupo.add(g);
+        var cx2 = (it.colisao || TP.colisao || {}).caixa || [0.8, 0.8], circ = O.fisicaMoveis.circulosDaPegada(cx2[0], cx2[1]);
+        return { id: it.id || it.tipo, x: it.x, z: it.z, rot: it.rot || 0, w: cx2[0], d: cx2[1], g: g, circ: circ, cols: circ.map(function(k){ return col.circulo(it.x, it.z, k.r); }) };
+      });
+      fis = O.fisicaMoveis.criar(corposD, col); var tFis = null;
+      fis.corpos.forEach(function(c){ c.circ.forEach(function(k){ var cs = Math.cos(c.rot), sn = Math.sin(c.rot); k.col.x = c.x + k.lx * cs + k.lz * sn; k.col.z = c.z - k.lx * sn + k.lz * cs; }); });
+      animados.push(function(t, cam, jog){ var dt = tFis == null ? 0.016 : t - tFis; tFis = t; fis.passo(dt, jog); });
     }
 
     /* ---------- tubos (eletrodutos pretos das fotos) ---------- */
@@ -688,9 +718,9 @@
         grupo.add(fl);
         /* batente branco completo em volta da folha (verga + dois montantes), como nas portas do hall */
         var fundo = pt.lado === 'fundo', bt = gel(F.caixa(fundo ? wl + 0.12 : 0.06, 0.06, fundo ? 0.06 : wl + 0.12, 0.01), 'branco', 0.006);
-        bt.position.set(fl.position.x, y0 + 2.13, fl.position.z); grupo.add(bt);
-        [-1, 1].forEach(function(sg){ var mt = gel(F.caixa(fundo ? 0.06 : 0.06, 2.16, 0.06, 0.01), 'branco', 0.006);
-          mt.position.set(fl.position.x + (fundo ? sg * (wl / 2 + 0.03) : 0), y0 + 1.08, fl.position.z + (fundo ? 0 : sg * (wl / 2 + 0.03))); grupo.add(mt); });
+        bt.position.set(fl.position.x, y0 + 2.133, fl.position.z - (fundo ? 0.004 : 0)); if (!fundo) bt.position.x += pt.lado === 'x1' ? -0.004 : 0.004; grupo.add(bt);
+        [-1, 1].forEach(function(sg){ var mt = gel(F.caixa(fundo ? 0.06 : 0.06, 2.16, 0.06, 0.01), 'branco', 0.006), fo = wl / 2 + 0.033;   // 3 mm de folga da folha
+          mt.position.set(fl.position.x + (fundo ? sg * fo : 0), y0 + 1.08, fl.position.z + (fundo ? 0 : sg * fo)); grupo.add(mt); });
         if (pt.placa) { var pq = new THREE.Mesh(guarda(new THREE.PlaneGeometry(pt.placa.w || 0.5, pt.placa.h || 0.16)), std('#ffffff', { map: artePor(pt.placa.arte), roughness: 0.6 }));
           pq.position.set(fl.position.x, y0 + 2.32, fl.position.z + (fundo ? -0.025 : 0)); if (!fundo) pq.rotation.y = pt.lado === 'x1' ? -Math.PI / 2 : Math.PI / 2; else pq.rotation.y = Math.PI; grupo.add(pq); }
       });
@@ -790,6 +820,8 @@
       /* estado das portas que abrem (testes e depuração): ângulo 0 = fechada, 1 = aberta */
       portas: function(){ return portasA.map(function(p){ return { id: p.id, x: p.cx, z: p.cz, y: p.y, aberta: +p.ang.toFixed(3), solida: !p.segFechada.off, trancada: p.trancada }; }); },
       temNiveis: !!NIV,
+      /* móveis empurráveis (testes e depuração): corpos, estado() */
+      dinamicos: fis,
       atualizar: function(t, camPos, jogador){ for (var i = 0; i < animados.length; i++) animados[i](t, camPos, jogador); },
       dispose: function(){
         if (npcs) npcs.dispose();

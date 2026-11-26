@@ -59,6 +59,33 @@
     txt(x, 'INOVALE', 34, 770, '800 22px Nunito, Figtree, Arial', '#6a7078'); txt(x, 'fapesc', 150, 770, '700 22px Figtree, Arial', '#6a7078');
     return tx(c);
   };
+  /* porta do Lab (T15): a arte é uma plotagem aplicada na própria folha da porta, não um painel ao lado. A arte do painel
+     (360 × 880) entra inteira, sem distorção, numa folha de 0,97 × 2,08 m: centrada, com margem lateral da mesma cor */
+  A['porta-lab'] = function(){
+    var c = cv(410, 880), x = c.getContext('2d'); x.fillStyle = '#f7f8fa'; x.fillRect(0, 0, 410, 880);
+    x.drawImage(A['lab-cartaz']().image, 25, 0);
+    return tx(c);
+  };
+  /* Sicredi (sala de reuniões entre a escada de emergência e a Unimed, T37, T39, T46): porta de vidro escuro com a marca
+     no vidro. Composição simplificada: nome e cor da marca, sem reproduzir o desenho original do logotipo (DECISOES.md) */
+  A['porta-sicredi'] = function(){
+    var c = cv(256, 580), x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 256, 580);
+    g.addColorStop(0, '#2a3138'); g.addColorStop(1, '#1b2126'); x.fillStyle = g; x.fillRect(0, 0, 256, 580);
+    x.fillStyle = 'rgba(255,255,255,.06)'; x.beginPath(); x.moveTo(0, 0); x.lineTo(150, 0); x.lineTo(40, 580); x.lineTo(0, 580); x.closePath(); x.fill();
+    x.fillStyle = 'rgba(220,232,236,.55)'; x.fillRect(0, 300, 256, 64);
+    x.strokeStyle = '#3fa535'; x.lineWidth = 7; x.beginPath(); x.arc(128, 170, 30, 0, Math.PI * 2); x.stroke();
+    x.fillStyle = '#3fa535'; x.beginPath(); x.arc(128, 170, 11, 0, Math.PI * 2); x.fill();
+    txt(x, 'Sicredi', 128, 236, '800 40px Figtree, Arial', '#5cc04a', 'center');
+    txt(x, 'SALA DE REUNIÕES', 128, 332, '700 16px Figtree, Arial', '#2c3a2a', 'center');
+    return tx(c);
+  };
+  A['sicredi-placa'] = function(){
+    var c = cv(560, 160), x = c.getContext('2d'); x.clearRect(0, 0, 560, 160);
+    x.strokeStyle = '#3fa535'; x.lineWidth = 12; x.beginPath(); x.arc(84, 80, 46, 0, Math.PI * 2); x.stroke(); x.fillStyle = '#3fa535'; x.beginPath(); x.arc(84, 80, 17, 0, Math.PI * 2); x.fill();
+    txt(x, 'Sicredi', 160, 80, '800 96px Figtree, Arial', '#3fa535');
+    return tx(c);
+  };
+  A['engenharia'] = function(){ var c = cv(400, 60), x = c.getContext('2d'); x.clearRect(0, 0, 400, 60); txt(x, 'ENGENHARIA', 200, 32, '700 34px Figtree, Arial', '#33363b', 'center'); return tx(c); };
   A['porta-salus'] = function(){   // T12, T24–T29: azul-marinho, triângulo laranja, "SALUS · MÉTODO SALUS"
     var c = cv(256, 580), x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 0, 580);
     g.addColorStop(0, '#0f1730'); g.addColorStop(0.7, '#14224a'); g.addColorStop(1, '#1d4fa8'); x.fillStyle = g; x.fillRect(0, 0, 256, 580);
@@ -160,6 +187,16 @@
   /* tapete cinza felpudo do estar (T30–T34) */
   T['tapete-grande'] = { colisao: false, partes: function(){ return [parte(F.caixa(4.2, 0.025, 2.9, 0.01), 'cinza', 0, [M(0, 0.012, 0)])]; } };
   /* almofadões azul-marinho no chão, junto ao vidro da Unimed (T35–T39, T46) */
+  /* mesa de reunião da sala Sicredi: tampo branco 1,8 × 0,9 e seis cadeiras pretas encaixadas (o colisor cobre tudo) */
+  T['mesa-reuniao-6'] = { colisao: { caixa: [2.0, 1.9] }, sombra: [2.3, 2.1], partes: function(){
+    var cad = [-0.55, 0, 0.55].map(function(x){ return M(x, 0, -0.72); }).concat([-0.55, 0, 0.55].map(function(x){ return M(x, 0, 0.72, 0, Math.PI, 0); }));
+    function comp(bs, ls){ var out = []; bs.forEach(function(b){ ls.forEach(function(l){ out.push(b.clone().multiply(l)); }); }); return out; }
+    return [
+      parte(Q(1.8, 0.05, 0.9, 0.03), 'branco', 0.008, [M(0, 0.74, 0)]), parte(Q(0.08, 0.72, 0.6, 0.02), 'grafite', 0, [M(-0.72, 0.36, 0), M(0.72, 0.36, 0)]),
+      parte(Q(0.46, 0.08, 0.44, 0.03), 'preto', 0.006, comp(cad, [M(0, 0.46, 0)])), parte(Q(0.44, 0.42, 0.05, 0.02), 'preto', 0.006, comp(cad, [M(0, 0.75, -0.2)])),
+      parte(new THREE.CylinderGeometry(0.02, 0.02, 0.42, 6), 'metal', 0, comp(cad, [M(0, 0.21, 0)]))
+    ];
+  } };
   T['almofadao'] = { colisao: { caixa: [1.1, 0.8] }, sombra: [1.3, 1.0], partes: function(){ return [parte(Q(1.1, 0.24, 0.8, 0.1), 'marinho', 0.012, [M(0, 0.12, 0)])]; } };
   /* sofá azul em bloco com encosto azul-claro e mesinha de pés finos (T11–T14) */
   T['sofa-azul'] = { colisao: { caixa: [1.9, 0.74] }, sombra: [2.1, 0.95],

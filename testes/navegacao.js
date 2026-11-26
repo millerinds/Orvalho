@@ -207,7 +207,7 @@ const CONF = {
       { nome: '→ SCL Automação (vista do corredor)', alvo: [26.9, 7.3], olhar: [26.9, 8.95], interativo: 'SCL Automação' },
       { nome: '→ atravessa a porta dupla do salão', alvo: [32.2, 7.5] },
       { nome: '→ salão: diante da TV', alvo: [38.3, 5.75] },
-      { nome: '→ salão: entre as bancadas e o pilar', alvo: [36.0, 9.6] },
+      { nome: '→ Unoesc: entre as cadeiras e a parede divisória', alvo: [36.0, 8.3] },
       { nome: '→ volta ao corredor', alvo: [25.0, 7.4] },
       { nome: '→ escada de emergência (lado do palco): porta abre e dá na antecâmara', alvo: [22.2, 12.3] },
       { nome: '→ de volta ao hall de estar', alvo: [19.5, 10.0] },
@@ -215,7 +215,7 @@ const CONF = {
       { nome: '→ Salus (porta adesivada)', alvo: [18.7, 7.2], olhar: [18.7, 6.05], interativo: 'Salus' },
       { nome: '→ Athostec', alvo: [14.2, 6.7], olhar: [13.3, 6.05], interativo: 'Athostec' },
       { nome: '→ hall de estar: entre o sofá e a mesa de centro', alvo: [10.65, 7.75] },
-      { nome: '→ Unimed (porta)', alvo: [7.6, 10.4], olhar: [6.55, 10.7], interativo: 'Unimed Meio Oeste SC' },
+      { nome: '→ Unimed (porta)', alvo: [7.4, 10.4], olhar: [5.95, 10.7], interativo: 'Unimed Meio Oeste SC' },
       { nome: '→ elevador', alvo: [11.3, 10.4], olhar: [11.3, 11.4], interativo: 'Térreo, 1º e 3º andar' },
       { nome: '→ escada de emergência (lado do café): antecâmara', alvo: [9.5, 12.3] },
       { nome: '→ passagem da porta externa', alvo: [7.3, 1.6] },
@@ -641,9 +641,9 @@ async function virarPara(page, x, z) {
     };
     await empurra('vidro do Lab fora da porta', L(26.5, 10.2), 0, 'z', 6.0, 1);
     await empurra('vidro da sala A (película vermelha)', L(31.9, 10.0), 0, 'z', 6.0, 1);
-    await empurra('vidro da SCL Automação', L(32.8, 11.0), Math.PI, 'z', 9.0, -1);
+    await empurra('vidro da SCL Automação', L(30.0, 11.0), Math.PI, 'z', 9.0, -1);
     await empurra('porta adesivada da Salus (fechada)', L(21.7, 10.0), 0, 'z', 6.0, 1);
-    await empurra('vidro jateado da Unimed', L(11.2, 12.8), Math.PI / 2, 'x', 6.5, 1);
+    await empurra('vidro jateado da Unimed', L(11.2, 12.8), Math.PI / 2, 'x', 5.9, 1);
     /* sem paredes invisíveis: pontos abertos do corredor, do estar, do salão e do Lab comportam o colisor */
     const abertos = [[12.0, 12.8], [20.0, 11.0], [24.0, 12.5], [28.0, 10.4], [32.9, 10.5], [36.0, 8.0], [41.0, 6.0], [28.2, 7.2], [28.6, 4.5], [10.3, 6.0], [14.3, 13.2]];
     const folgas = await page.evaluate(ps => ps.map(p => Orvalho.jogo._debug().amb.colisao.folga({ x: p[0] - 3, z: p[1] - 3 }, 0)), abertos);

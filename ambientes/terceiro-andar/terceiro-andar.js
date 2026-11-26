@@ -60,24 +60,32 @@
   painel(LX, 9.0, LX, 3.0, { tipo: 'parede', cor: LAB.cores.azul }); parede(LX + 0.1, 3.0, LX + 0.1, 9.0); parede(LX, 9.0, LX + 0.1, 9.0);
   painel(25.4, 3.0, 25.4, 9.0, { tipo: 'parede', cor: LAB.cores.cinza }); parede(25.3, 9.0, 25.3, 3.0); parede(25.3, 9.0, 25.4, 9.0);
   rodape(LX - 0.006, 3.0, LX - 0.006, 9.0); rodape(25.406, 3.0, 25.406, 9.0);
-  /* frente do Lab (T15, T16): dois vidros com a mesma película de triângulos do corredor (é a que se vê do corredor em T15;
+  /* frente do Lab (T15, T16): vidros com a mesma película de triângulos do corredor (é a que se vê do corredor em T15;
      o degradê azul na base, visto de dentro na foto 09.27.12 (1), pode ser o verso da película ou o reflexo do pufe:
-     a confirmar), o painel "Laboratório de Inteligência Artificial" e a porta branca junto à parede azul, que abre para
-     dentro e encosta nela */
-  vidroFrente(25.4, 9.0, LX, 9.0, { n: 4, portas: [[3.55, 4.55, 2.1, 'vao']],
-    faixas: faixasMod(2.5, 2, 'pelicula-tri', 0.05, 1.65).concat([{ de: 2.62, ate: 3.48, y0: 0.12, y1: 2.24, arte: 'lab-cartaz' }]) });
-  porta('lab-ia', 29.95, 9.0, 28.95, 9.0, { altura: 2.1, arte: 'porta-lisa' });
+     a confirmar) e a porta junto à parede azul, que abre para dentro e encosta nela. A arte "Laboratório de Inteligência
+     Artificial" é uma plotagem aplicada na própria folha da porta (T15): faz parte da textura da folha e gira com ela.
+     (Antes era um painel fixo ao lado da porta.) */
+  vidroFrente(25.4, 9.0, LX, 9.0, { n: 4, portas: [[3.55, 4.55, 2.1, 'vao']], faixas: faixasMod(3.5, 3, 'pelicula-tri', 0.05, 1.65) });
+  porta('lab-ia', 29.95, 9.0, 28.95, 9.0, { altura: 2.1, arte: 'porta-lab' });
 
   /* ================= frentes de vidro do corredor (z 9,0), da sala X à sala A ================= */
-  /* sala X (sem identificação, T35, T36, T44): porta escura, interior genérico; Unimed ao lado (T37–T39, T46) */
-  vidroFrente(9.5, 8.6, 9.5, 3.0, { n: 5, pelicula: 'pelicula-tri', portas: [[1.15, 2.05, 2.25, 'vao']] });
-  porta('sala-x', 9.5, 7.45, 9.5, 6.55, { altura: 2.25, arte: 'porta-escura', trancada: true });
-  vidroFrente(9.5, 14.5, 9.5, 8.6, { n: 5, pelicula: 'pelicula-unimed', portas: [[0.35, 1.25, 2.25, 'vao']] });
-  porta('unimed', 9.5, 14.15, 9.5, 13.25, { altura: 2.25, arte: 'porta-unimed', trancada: true });
-  parede(3.0, 8.6, 9.5, 8.6, null, 0.1);
-  placa('unimed-logo', 9.53, 1.95, 10.5, 1.45, 0.52, PI / 2);
-  /* passagem para a porta externa (T34–T36): parede lateral da Athostec */
-  parede(11.1, 3.0, 11.1, 9.0, null, 0.1);
+  /* Unimed e sala X (correção de 26/11/2026, T35–T37, T39, T44, T46 + indicação do responsável):
+     - Unimed: frente de vidro jateado em x 8,9 (T46: os pufes cabem entre o vidro e o pilar bege de x 10,03; ao lado da
+       porta, na quina do núcleo, fica a porta da sala Sicredi). Ficou mais estreita e em L: a ala junto à janela lateral
+       desce até a sala X, e o recuo diante da sala X fica livre;
+     - sala X: horizontal (6,5 × 4,9 m), com a frente e a porta voltadas para o hall (T35: vê-se a frente de vidro de quem
+       está no pilar dos pufes), recuada 1,5 m em relação à quina da Unimed; a lateral de vidro segue o corredor da porta externa. */
+  vidroFrente(8.9, 14.5, 8.9, 9.4, { n: 4, pelicula: 'pelicula-unimed', portas: [[0.35, 1.25, 2.25, 'vao']] });
+  porta('unimed', 8.9, 14.15, 8.9, 13.25, { altura: 2.25, arte: 'porta-unimed', trancada: true });
+  vidroFrente(8.9, 9.4, 6.2, 9.4, { n: 2, pelicula: 'pelicula-unimed' });                        // Unimed voltada para o recuo
+  vidroFrente(6.2, 9.4, 6.2, 7.9, { n: 1, pelicula: 'pelicula-unimed' });                        // ala da Unimed (esquina do L)
+  placa('unimed-logo', 8.93, 1.95, 11.0, 1.45, 0.52, PI / 2);
+  vidroFrente(6.2, 7.9, 9.5, 7.9, { n: 3, pelicula: 'pelicula-tri', portas: [[2.3, 3.2, 2.25, 'vao']] });   // frente da sala X
+  porta('sala-x', 9.4, 7.9, 8.5, 7.9, { altura: 2.25, arte: 'porta-escura', trancada: true });
+  vidroFrente(9.5, 7.9, 9.5, 3.0, { n: 4, pelicula: 'pelicula-tri' });                          // lateral da sala X, no corredor
+  parede(3.0, 7.9, 6.2, 7.9, null, 0.1);                                                      // divisa sala X / Unimed
+  /* corredor da porta externa (T34–T36): a lateral da Athostec é divisória de vidro com a película, como a frente */
+  vidroFrente(11.1, 3.0, 11.1, 9.0, { n: 5, pelicula: 'pelicula-tri' });
   /* Athostec (T30, T31, T44, T45): vidro com película e a porta adesivada no lado da Salus */
   vidroFrente(11.1, 9.0, 16.8, 9.0, { n: 5, pelicula: 'pelicula-tri', portas: [[4.7, 5.68, 2.25, 'vao']] });
   porta('athostec', 15.8, 9.0, 16.78, 9.0, { altura: 2.25, arte: 'porta-athostec', trancada: true });
@@ -94,7 +102,10 @@
   vidroFrente(30.3, 9.0, 33.6, 9.0, { n: 3, pelicula: 'pelicula-vermelha' });
 
   /* ================= SCL Automação (T01–T03, T07, T08, T17–T20, T23–T25) ================= */
-  vidroFrente(33.6, 12.0, 26.17, 12.0, { n: 7, pelicula: 'pelicula-tri' });                       // lida do corredor
+  /* frente lida do corredor; a porta de entrada da SCL fica perto do fim do corredor (indicação do responsável, 26/11/2026),
+     abre para dentro. Fica 0,85 m antes da quina para não cair no giro da porta dupla da Unoesc, que abre para o corredor */
+  vidroFrente(33.6, 12.0, 26.17, 12.0, { n: 7, pelicula: 'pelicula-tri', portas: [[0.85, 1.75, 2.25, 'vao']] });
+  porta('scl-entrada', 31.85, 12.0, 32.75, 12.0, { altura: 2.25 });
   vidroFrente(26.17, 12.0, 26.17, 14.5, { n: 2, pelicula: 'pelicula-tri', portas: [[1.0, 2.4, 2.25, 'vao']] });
   porta('scl-1', 26.17, 13.0, 26.17, 13.7, { altura: 2.25, trancada: true });                       // porta dupla de vidro, fechada
   porta('scl-2', 26.17, 14.4, 26.17, 13.7, { altura: 2.25, trancada: true, abre: 'direita' });
@@ -105,19 +116,31 @@
   placa('administracao', 30.25, 2.33, 14.45, 0.8, 0.12, PI, { transparente: true });
   placa('porta-escura', 30.25, 1.06, 14.45, 0.9, 2.1, PI);
   pisos.push({ r: [X(26.2), Z(12.02), X(33.6), Z(14.47)], cor: '#e6c49b', textura: 'madeira' });
+  /* "ENGENHARIA" (T08): passagem na parede do fundo da recepção para a faixa da SCL atrás da parede da Unoesc */
+  placa('engenharia', 33.585, 2.38, 13.35, 0.8, 0.12, -PI / 2);
 
   /* ================= parede do fim do corredor, porta dupla de vidro "PUXE" (T04, T05) e salão ================= */
-  parede(33.75, 3.0, 33.75, 9.6, null, 0.3); parede(33.75, 11.4, 33.75, 14.5, null, 0.3);
-  blocos.push({ r: [X(33.6), Z(9.6), X(33.9), Z(11.4)], y0: 2.3, y1: PE, cor: BRANCA });
-  obstaculos.push({ caixa: [X(33.6), Z(3.0), X(33.9), Z(9.6)], motivo: 'parede grossa do fim do corredor' }, { caixa: [X(33.6), Z(11.4), X(33.9), Z(14.5)], motivo: 'parede grossa do fim do corredor' });
+  parede(33.75, 3.0, 33.75, 9.6, null, 0.3); parede(33.75, 11.4, 33.75, 12.9, null, 0.3); parede(33.75, 13.8, 33.75, 14.5, null, 0.3);
+  blocos.push({ r: [X(33.6), Z(9.6), X(33.9), Z(11.4)], y0: 2.3, y1: PE, cor: BRANCA }, { r: [X(33.6), Z(12.9), X(33.9), Z(13.8)], y0: 2.25, y1: PE, cor: BRANCA });
+  obstaculos.push({ caixa: [X(33.6), Z(3.0), X(33.9), Z(9.6)], motivo: 'parede grossa do fim do corredor' }, { caixa: [X(33.6), Z(11.4), X(33.9), Z(12.9)], motivo: 'parede grossa do fim do corredor' },
+    { caixa: [X(33.6), Z(13.8), X(33.9), Z(14.5)], motivo: 'parede grossa do fim do corredor' });
   porta('salao-1', 33.6, 9.6, 33.6, 10.5, { altura: 2.3 });                                        // abrem para o corredor (puxe)
   porta('salao-2', 33.6, 11.4, 33.6, 10.5, { altura: 2.3, abre: 'direita' });
-  pisos.push({ r: [X(33.9), Z(3.0), X(43.6), Z(14.5)], cor: '#c99f73', textura: 'madeira' });
+  porta('scl-engenharia', 33.6, 13.75, 33.6, 12.95, { altura: 2.25, arte: 'porta-lisa' });        // recepção da SCL → Engenharia (abre para a Engenharia)
+  /* Unoesc (o salão do fim do corredor) e SCL (26/11/2026, T04 + indicação do responsável): a parede divisória da Unoesc
+     corre ao longo do salão na fileira de pilares (z 11,96), um pouco para dentro em relação ao batente da porta dupla
+     (que termina em z 11,4). Entre o batente e a divisória fica a boneca de alvenaria. Atrás dela, a faixa z 11,96–14,5
+     é da SCL (Engenharia), não da Unoesc. */
+  parede(33.9, 11.96, 34.45, 11.96, null, 0.22);                                                   // boneca de alvenaria
+  parede(34.45, 11.96, 43.6, 11.96, null, 0.12);                                                   // divisória Unoesc / SCL
+  rodape(34.45, 11.894, 43.6, 11.894); rodape(34.45, 12.026, 43.6, 12.026);
+  pisos.push({ r: [X(33.9), Z(3.0), X(43.6), Z(11.93)], cor: '#c99f73', textura: 'madeira' }, { r: [X(33.9), Z(11.99), X(43.6), Z(14.47)], cor: '#e6c49b', textura: 'madeira' });
   painel(43.6, 14.47, 33.9, 14.47, { tipo: 'parede', cor: BRANCA });                               // fundo do salão (cobre a madeira do núcleo)
-  painel(9.5, 14.47, 3.0, 14.47, { tipo: 'parede', cor: BRANCA });                                 // fundo da Unimed
+  painel(8.9, 14.47, 3.0, 14.47, { tipo: 'parede', cor: BRANCA });                                 // fundo da Unimed
 
   /* ================= núcleo (PDF + T07, T17–T22, T32, T33, T37–T48) ================= */
   var nucleoVaos = [
+    { tipo: 'abertura', de: 8.95, ate: 9.8, base: 0, topo: 2.25, altura: 2.25, cor: 'metal' },     // sala Sicredi (porta de vidro escuro)
     { tipo: 'porta', de: 10.15, ate: 10.86, base: 0, topo: 2.1, altura: 2.1, arte: 'veneziana' }, { tipo: 'porta', de: 10.89, ate: 11.6, base: 0, topo: 2.1, altura: 2.1, arte: 'veneziana' },
     { tipo: 'abertura', de: 12.02, ate: 12.96, base: 0, topo: 2.1, altura: 2.1 },                   // escada de emergência (lado do café)
     { tipo: 'elevador', de: 13.75, ate: 14.85, base: 0, topo: 2.2, altura: 2.2, animado: true },   // "INOVAÇÃO ABRE PORTAS"
@@ -126,8 +149,14 @@
     { tipo: 'abertura', de: 24.7, ate: 25.7, base: 0, topo: 2.1, altura: 2.1 }                      // escada de emergência (lado do palco)
   ];
   porta('emergencia-cafe', 12.02, 14.5, 12.96, 14.5, { altura: 2.1, arte: 'emergencia' });
+  porta('sicredi', 8.98, 14.5, 9.77, 14.5, { altura: 2.24, arte: 'porta-sicredi' });                // abre para dentro da sala
   porta('emergencia-palco', 24.7, 14.5, 25.7, 14.5, { altura: 2.1, arte: 'emergencia' });
+  /* sala de reuniões Sicredi (26/11/2026; T37, T39, T46 + indicação do responsável): entre a escada de emergência do lado do
+     café e a Unimed. A porta de vidro escuro fica na quina do núcleo, ao lado da porta da Unimed; a sala ocupa o fundo atrás
+     da Unimed (faixa nordeste do PDF, até então sem uso no jogo). As venezianas do núcleo existem nas fotos e foram mantidas.
+     Medidas internas estimadas: 4,25 × 3,0 m. */
   var anexos = [
+    { r: [X(5.6), Z(14.5), X(9.85), Z(17.5)], pe: 2.7, cor: '#e9e7e2' },
     { r: [X(11.95), Z(14.5), X(13.05), Z(15.9)], pe: 2.6, cor: '#e7e6e2',
       portas: [{ lado: 'fundo', de: X(12.07), ate: X(12.93), arte: 'porta-lisa', placa: { arte: 'escada-emergencia', w: 0.62, h: 0.16 } }] },
     { r: [X(24.6), Z(14.5), X(25.8), Z(15.9)], pe: 2.6, cor: '#e7e6e2',
@@ -147,15 +176,24 @@
   add('tapete-grande', 14.5, 10.75);
   add('sofa-branco', 12.75, 10.75, { rot: PI / 2, id: 'sofa-estar-1' }); add('sofa-branco', 16.25, 10.75, { rot: -PI / 2, id: 'sofa-estar-2' });   // ~1 m livre até a mesa de centro
   add('mesa-centro', 14.5, 10.75, { rot: PI / 2 });
-  add('almofadao', 10.1, 10.45); add('almofadao', 10.1, 11.25); add('almofadao', 11.15, 10.65, { rot: PI / 2 });   // junto ao vidro da Unimed, fora da boca da passagem
+  /* almofadões (pufes) junto ao vidro da Unimed: empurráveis (física simplificada, src/mundo/fisica-moveis.js) */
+  add('almofadao', 9.5, 10.45, { dinamico: true, id: 'pufe-1' }); add('almofadao', 9.5, 11.25, { dinamico: true, id: 'pufe-2' }); add('almofadao', 10.55, 10.65, { rot: PI / 2, dinamico: true, id: 'pufe-3' });
   add('mesinha', 10.82, 3.45, { id: 'mesinha-porta-externa' });
   add('sofa-azul', 25.0, 9.42, { id: 'sofa-azul' }); add('mesinha-azul', 23.75, 9.33);
   add('floreira', 27.9, 11.55); add('poltrona-branca', 29.3, 11.4, { rot: PI }); add('poltrona-branca', 30.55, 11.4, { rot: PI });
-  add('planta', 32.1, 11.55, { colisao: { circulo: 0.47 } });                         // colisor no alcance das folhas
+  add('planta', 33.25, 11.75, { colisao: { circulo: 0.4 } });                         // ao lado da porta dupla (T04, T05), fora da entrada da SCL
 
   /* ================= interiores (vistos pelo vidro; salas fechadas) ================= */
   /* SCL: cadeiras pretas e planta na recepção (T08, T18) */
-  add('cadeira', 31.3, 12.85, { rot: 0.5 }); add('cadeira', 32.1, 12.9, { rot: -0.4 }); add('planta', 27.0, 13.95, { colisao: { circulo: 0.47 } });
+  add('cadeira', 30.9, 13.35, { rot: 0.5 }); add('cadeira', 31.7, 13.45, { rot: -0.4 }); add('planta', 27.0, 13.95, { colisao: { circulo: 0.47 } });
+  /* SCL · Engenharia (faixa atrás da parede da Unoesc): postos de trabalho junto à parede do fundo */
+  add('mesa-empresa', 35.6, 13.85, { rot: PI }); add('mesa-empresa', 37.3, 13.85, { rot: PI }); add('mesa-empresa', 39.0, 13.85, { rot: PI }); add('mesa-empresa', 40.7, 13.85, { rot: PI });
+  add('armario-alto', 42.85, 13.2, { rot: -PI / 2 });
+  /* sala Sicredi: mesa de reunião para seis e a marca na parede do fundo */
+  add('mesa-reuniao-6', 7.25, 16.05);
+  placa('sicredi-placa', 7.25, 1.85, 17.48, 1.3, 0.37, PI, { transparente: true });
+  painel(5.6, 14.63, 8.93, 14.63, { tipo: 'parede', cor: '#e9e7e2', y1: 2.7 });                    // face interna da parede do núcleo
+  painel(8.93, 14.63, 9.85, 14.63, { tipo: 'parede', cor: '#e9e7e2', y0: 2.27, y1: 2.7 });
   /* Athostec (T44): painel escuro com a marca, mesas junto às janelas e de frente para o painel */
   add('painel-logo', 13.95, 5.6, { id: 'painel-athostec' });
   add('mesa-empresa', 12.35, 3.9); add('mesa-empresa', 15.45, 3.9); add('mesa-empresa', 12.35, 7.45, { rot: PI }); add('mesa-empresa', 15.45, 7.45, { rot: PI });
@@ -167,14 +205,14 @@
   /* sala A (genérica): dois postos virados para as janelas e um armário */
   add('mesa-empresa', 31.2, 4.0); add('mesa-empresa', 32.75, 4.0); add('armario', 32.9, 8.6, { rot: PI });
   /* sala X (genérica, T44): quatro postos */
-  add('mesa-empresa', 4.7, 4.0); add('mesa-empresa', 7.2, 4.0); add('mesa-empresa', 4.7, 7.5, { rot: PI }); add('mesa-empresa', 7.2, 7.5, { rot: PI });
+  add('mesa-empresa', 4.7, 4.0); add('mesa-empresa', 7.2, 4.0); add('mesa-empresa', 4.7, 6.95, { rot: PI }); add('mesa-empresa', 7.2, 6.95, { rot: PI });
   /* Unimed (interior não fotografado; vidro jateado): postos genéricos */
-  add('mesa-empresa', 4.9, 10.2); add('mesa-empresa', 7.3, 10.2); add('mesa-empresa', 6.1, 13.4, { rot: PI });
+  add('mesa-empresa', 4.6, 8.65, { rot: PI / 2 }); add('mesa-empresa', 4.9, 10.25); add('mesa-empresa', 7.3, 10.25); add('mesa-empresa', 6.1, 13.4, { rot: PI });
   /* salão: interior neutro (uso não identificado). Só o que se vê pelas portas: TV em pedestal, bancadas, cadeiras amarelas */
   add('tv-pedestal', 42.6, 8.75, { rot: -PI / 2 });
-  add('bancada-baixa', 37.0, 3.55); add('bancada-baixa', 39.4, 3.55); add('bancada-baixa', 37.0, 13.95, { rot: PI }); add('bancada-baixa', 39.4, 13.95, { rot: PI });
-  [[36.3, 6.0], [37.1, 6.0], [36.3, 11.6], [37.1, 11.6]].forEach(function(p, i){ add('cadeira-amarela', p[0], p[1], { rot: i < 2 ? 0 : PI }); });
-  add('extintor', 34.0, 13.2, { y: 0.85, rot: PI / 2 });
+  add('bancada-baixa', 37.0, 3.55); add('bancada-baixa', 39.4, 3.55);
+  [[36.3, 6.0], [37.1, 6.0], [36.3, 10.6], [37.1, 10.6]].forEach(function(p, i){ add('cadeira-amarela', p[0], p[1], { rot: i < 2 ? 0 : PI }); });
+  add('extintor', 35.3, 11.84, { y: 0.85, rot: PI });                                              // na divisória, junto à porta (T04)
 
   /* ================= iluminação ================= */
   for (var lx = 10.6; lx <= 33.0; lx += 2.2) lum(lx, 10.5);                    // corredor e estar
@@ -183,6 +221,7 @@
   gradeLum(11.2, 3.2, 16.7, 8.8, 2.3); gradeLum(16.9, 3.2, 22.1, 8.8, 2.3); gradeLum(22.3, 3.2, 25.2, 8.8, 2.3); gradeLum(30.4, 3.2, 33.5, 8.8, 2.3);
   gradeLum(26.3, 12.1, 33.5, 14.4, 2.4); gradeLum(34.0, 3.2, 43.5, 14.4, 2.6); lum(10.3, 6.0);
   lum(12.5, 15.2, 2.6); lum(25.2, 15.2, 2.6); lum(20.3, 15.1, 2.4);              // antecâmaras e nicho
+  lum(6.6, 16.0, 2.7); lum(8.6, 16.0, 2.7);                                        // sala Sicredi
 
   /* ================= lá fora: jardineira, pilares da fachada, guarda-corpo e a cidade lá embaixo ================= */
   blocos.push(
@@ -227,8 +266,8 @@
       .concat([2.02, 10.03, 18.04, 26.02, 34.06, 42.04].map(function(x){ return { x: X(x), z: Z(1.96), d: 0.6, cor: CONCRETO, fora: true }; }))
       .concat([{ x: X(2.02), z: Z(11.96), d: 0.6, cor: CONCRETO, fora: true }]),
     /* salas fechadas (portas trancadas; o interior é visto pelo vidro): fora da malha de navegação dos testes */
-    fechadas: [['sala X', 3.0, 3.0, 9.5, 8.6], ['Unimed', 3.0, 8.6, 9.5, 14.5], ['Athostec', 11.1, 3.0, 16.8, 9.0], ['Salus', 16.8, 3.0, 22.2, 9.0],
-               ['sala B', 22.2, 3.0, 25.3, 9.0], ['sala A', 30.3, 3.0, 33.6, 9.0], ['SCL Automação', 26.17, 12.0, 33.6, 14.5]]
+    fechadas: [['sala X', 3.0, 3.0, 9.5, 7.9], ['Unimed', 3.0, 9.4, 8.9, 14.5], ['Unimed', 3.0, 7.9, 6.2, 9.4], ['Athostec', 11.1, 3.0, 16.8, 9.0], ['Salus', 16.8, 3.0, 22.2, 9.0],
+               ['sala B', 22.2, 3.0, 25.3, 9.0], ['sala A', 30.3, 3.0, 33.6, 9.0]]
       .map(function(f){ return { nome: f[0], r: [X(f[1]), Z(f[2]), X(f[3]), Z(f[4])] }; }),
     blocos: blocos,
     obstaculos: obstaculos,
@@ -260,8 +299,9 @@
       { id: 'scl', x: X(29.9), y: 1.4, z: Z(11.95), raio: 1.9, rotulo: 'SCL Automação', conteudo: 'scl' },
       { id: 'salus', x: X(21.7), y: 1.4, z: Z(9.05), raio: 1.5, rotulo: 'Salus', conteudo: 'salus' },
       { id: 'athostec', x: X(16.3), y: 1.4, z: Z(9.05), raio: 1.5, rotulo: 'Athostec', conteudo: 'athostec' },
-      { id: 'unimed', x: X(9.55), y: 1.4, z: Z(13.7), raio: 1.5, rotulo: 'Unimed Meio Oeste SC', conteudo: 'unimed' },
-      { id: 'salao', x: X(35.4), y: 1.4, z: Z(10.5), raio: 2.0, rotulo: 'Salão', conteudo: 'salao' }
+      { id: 'unimed', x: X(8.95), y: 1.4, z: Z(13.7), raio: 1.5, rotulo: 'Unimed Meio Oeste SC', conteudo: 'unimed' },
+      { id: 'sicredi', x: X(9.4), y: 1.4, z: Z(14.1), raio: 1.2, rotulo: 'Sicredi · sala de reuniões', conteudo: 'sicredi' },
+      { id: 'salao', x: X(35.4), y: 1.4, z: Z(10.5), raio: 2.0, rotulo: 'Unoesc', conteudo: 'salao' }
     ])
   });
 

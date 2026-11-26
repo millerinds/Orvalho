@@ -14,7 +14,7 @@
   var renderer = null, scene, camera, cam3, amb, player, inter, clock;
   var running = false, ativo = false, raf = 0, t = 0;
   /* y é a altura do piso atual (0 no térreo, 4,2 m no 1º andar e valores intermediários na escada). */
-  var st = { x: 0, y: 0, z: 0, rumo: 0, vx: 0, vz: 0, jy: 0, vy: 0 };
+  var st = { x: 0, y: 0, z: 0, rumo: 0, vx: 0, vz: 0, jy: 0, vy: 0, raio: RAIO };
   /* pulo: jy = altura acima do piso (o piso continua vindo de alturaPiso), vy = velocidade vertical.
      A colisão é em x/z e vale em toda a altura do pavimento: no ar o boneco segue barrado por paredes, vidros e muretas. */
   var GRAV = 15, PULO = 0.42, VPULO = Math.sqrt(2 * GRAV * PULO), PREP = 0.09;
@@ -193,7 +193,7 @@
 
   /* colisor = tronco do corpo escolhido, na escala do mundo (Jujuba ≈ 0,33 m; Gota ≈ 0,37; Esguio ≈ 0,26) */
   function raioDoCorpo(){
-    RAIO = +(player.raioTronco() * ESCALA * 0.96).toFixed(3);
+    RAIO = +(player.raioTronco() * ESCALA * 0.96).toFixed(3); st.raio = RAIO;   // móveis empurráveis (puffs) leem o raio do jogador
     if (amb) { var p = { x: st.x, z: st.z }; amb.colisao.resolver(p, RAIO, st.y); st.x = p.x; st.z = p.z; }
   }
 
