@@ -32,7 +32,10 @@ P = {
     ['Estar (poltronas, tapete)', 26.6, 12.55, 29.3, 14.45, '#e6eef5', 'confirmado (C10, C11)'],
     ['Sala de vidro Nexo', 39.4, 14.94, 43.8, 18.4, '#bfe6ff', 'corrigido 26/11/2026 (C12, D02, H13, H15): no canto do palco, junto ao acesso às salas'],
     ['Corredor dos fundos', 31.5, 15.0, 33.5, 20.0, '#dce8ef', 'confirmado (D02, H11): duas venezianas e porta de vidro no fundo'],
-    ['Acesso às salas 1, 2 e 3 (vestíbulo)', 44.0, 12.6, 46.6, 14.4, '#dce8ef', 'corrigido 26/11/2026 (C12): aberto pela parede do palco, maquete dentro'],
+    ['Salas 1–3: entrada (maquete à direita, Vivian à esquerda)', 44.0, 10.0, 49.0, 16.4, '#dce8ef', 'corrigido 26/11/2026 (C12 + indicação do responsável)'],
+    ['Salas 1–3: corredor à esquerda', 44.1, 5.0, 45.9, 10.0, '#dce8ef', 'indicação do responsável'], ['Salas 1–3: corredor das salas grandes', 44.1, 5.0, 51.6, 6.6, '#dce8ef', 'indicação do responsável'],
+    ['Sala grande (oeste)', 44.1, 0.12, 49.4, 5.0, '#eef3f6', 'indicação do responsável; interior genérico'], ['Sala grande (leste)', 49.4, 0.12, 54.88, 5.0, '#eef3f6', 'indicação do responsável; interior genérico'],
+    ['Sala em frente ao acesso', 49.0, 6.6, 54.88, 19.88, '#eef3f6', 'indicação do responsável; interior genérico'],
     ['Balcões (banquetas + azul)', 40.7, 12.3, 43.7, 14.9, '#3f6fd8', 'corrigido 26/11/2026 (C12, H13, H15): diante do acesso e do vidro da Nexo'],
   ],
   'portas': [
@@ -68,7 +71,7 @@ P = {
     'npcs': [['Keila (térreo, atrás do balcão; atendimento em x 17,3, z 7,75)', 17.3, 9.2], ['Dagliê (entrada da sala)', 52.6, 15.65], ['Danimara (mais para dentro)', 52.6, 18.35]],
     'empresas_nomeadas': 'nenhuma: a Incubadora funciona por ciclos e o jogo não associa salas a empresas',
   },
-  'anexos': [{'nome': 'corredor dos fundos', 'r': [31.5, 15, 33.5, 20], 'pe': 3.0, 'fundo': 'porta envidraçada'}, {'nome': 'acesso às salas 1, 2 e 3', 'r': [44.0, 12.6, 46.6, 14.4], 'pe': 2.6, 'fundo': 'porta das salas (fechada)'}],
+  'anexos': [{'nome': 'corredor dos fundos', 'r': [31.5, 15, 33.5, 20], 'pe': 3.0, 'fundo': 'porta envidraçada'}, {'nome': 'salas 1, 2 e 3 (sob a ala leste)', 'r': [44.0, 0.12, 54.88, 19.88], 'pe': 3.1, 'fundo': 'paredes e divisórias nos painéis'}],
   'fotos': [
     ['H04', 18, 6.5, 44, 6.5], ['H09', 38, 7, 0, 4], ['H22', 19.0, 5.0, 20, 12], ['H24', 5, 7, 25, 4], ['C01', 19.3, 4.9, 22.6, 1.3], ['C02', 24.5, 6.5, 24.5, 12.5],
     ['C07', 14.2, 11.3, 13.2, 15], ['C08', 16.8, 13.6, 17.5, 3], ['C11', 32, 10.2, 27.2, 14.5], ['C12', 40.8, 7.8, 36.5, 14.2], ['C20', 5.6, 9.8, 0, 9.7], ['C06', 14.6, 13.3, 24, 14.7],

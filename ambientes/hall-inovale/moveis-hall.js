@@ -565,13 +565,19 @@
   } }; }
   T['nicho-banheiro'] = nicho(1.8, 2.4);
   T['nicho-banheiro-pcd'] = nicho(1.6, 2.4);
-  /* maquete do acesso às salas (C12, H13): pedestal preto, tampo branco e maquete branca de prédios
-     (antes eram três blocos azul-água sobre uma base escura, que pareciam um bebedouro e não colidiam) */
+  /* maquete do prédio do Polo Inovale na entrada das salas 1, 2 e 3 (C12, H13): pedestal preto alto e, sobre o tampo branco,
+     o prédio em escala (~1:45): térreo com a fachada de vidro (frente = +z), faixa da laje do 1º andar, 2º andar, ático recuado
+     com a jardineira e árvores no terreno. Não é mesa: o pedestal tem 0,95 m e o colisor cobre a peça inteira. */
   T.maquete = { colisao: { caixa: [1.2, 0.75] }, sombra: [1.4, 0.95], partes: function(){
-    var predios = [[-0.38, -0.12, 0.16, 0.12], [-0.15, 0.1, 0.12, 0.2], [0.05, -0.1, 0.2, 0.1], [0.25, 0.12, 0.14, 0.16], [0.4, -0.08, 0.1, 0.24], [-0.02, 0.15, 0.1, 0.08]];
-    return [parte(Q(1.0, 0.86, 0.6, 0.02), 'preto', 0.008, [M(0, 0.43, 0)]),
-      parte(Q(1.2, 0.05, 0.75, 0.015), 'branco', 0.006, [M(0, 0.885, 0)]),
-      parte(Q(1.0, 0.012, 0.55, 0.004), 'cinza', 0, [M(0, 0.916, 0)]),
-      parte(new THREE.BoxGeometry(1, 1, 1), 'branco', 0.004, predios.map(function(p){ var m = M(p[0], 0.922 + p[3] / 2, p[1]); m.scale(new THREE.Vector3(p[2], p[3], p[2] * 0.8)); return m; }))];
+    var y0 = 0.975;
+    return [parte(Q(1.05, 0.93, 0.62, 0.02), 'preto', 0.008, [M(0, 0.465, 0)]),
+      parte(Q(1.2, 0.045, 0.75, 0.015), 'branco', 0.006, [M(0, 0.952, 0)]),
+      parte(Q(1.1, 0.008, 0.65, 0.003), 'areia', 0, [M(0, y0 + 0.004, 0)]),
+      parte(Q(0.98, 0.17, 0.44, 0.006), 'branco', 0.005, [M(0, y0 + 0.085, -0.03), M(0, y0 + 0.26, -0.03)]),          // térreo/1º e 2º andar
+      parte(Q(0.97, 0.15, 0.012, 0.003), 'vidro', 0, [M(0, y0 + 0.085, 0.196), M(0, y0 + 0.26, 0.196)]),              // fachadas de vidro
+      parte(Q(0.99, 0.02, 0.45, 0.004), 'areia', 0, [M(0, y0 + 0.175, -0.03), M(0, y0 + 0.35, -0.03)]),               // lajes
+      parte(Q(0.74, 0.07, 0.26, 0.005), 'branco', 0.005, [M(-0.05, y0 + 0.395, -0.09)]),                              // ático recuado
+      parte(Q(0.86, 0.02, 0.04, 0.004), 'folha', 0, [M(-0.05, y0 + 0.37, 0.07)]),                                     // jardineira do ático
+      parte(new THREE.SphereGeometry(0.035, 10, 8), 'copa', 0.003, [M(-0.45, y0 + 0.05, 0.27), M(-0.2, y0 + 0.05, 0.28), M(0.1, y0 + 0.05, 0.27), M(0.38, y0 + 0.05, 0.28)])];
   } };
 })(window.Orvalho);

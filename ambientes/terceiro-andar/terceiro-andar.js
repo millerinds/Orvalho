@@ -220,7 +220,7 @@
   });
   add('mesa-instrutor', 39.0, 10.85, { rot: PI }); add('cadeira', 39.0, 11.45, { rot: PI });
   add('mesa-reuniao-6', 42.62, 4.1, { rot: PI / 2 }); add('mesa-reuniao-6', 42.62, 5.9, { rot: PI / 2 });
-  add('caixa-som', 34.35, 3.55);
+  add('caixa-som-tripe', 34.35, 3.55);
   add('ar-cassete', 37.3, 6.9, { y: PE }); add('ar-cassete', 41.2, 6.9, { y: PE });
   add('extintor', 35.3, 11.84, { y: 0.85, rot: PI });                                              // na divisória, junto à porta (T04)
   placa('quadro-branco', 38.5, 1.5, 11.885, 4.4, 1.25, PI);                                        // quadro branco único da frente

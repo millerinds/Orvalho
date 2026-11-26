@@ -63,7 +63,18 @@
      banquetas amarelas fica diante do acesso e o balcão azul INOVALE diante do vidro da Nexo (C12, H13, H15). */
   add('balcao-banquetas', 41.3, 12.9);                                         // banquetas viradas para o acesso (+z)
   add('balcao-info', 43.4, 14.35, { rot: -PI / 2 });                           // painel INOVALE voltado para o hall
-  add('maquete', 45.55, 13.0);                                                  // expositor logo dentro do acesso (C12); passagem livre até a porta do fundo
+  /* salas 1, 2 e 3 sob a ala leste (indicação do responsável, 26/11/2026; C12): quem entra pelo acesso tem a maquete do
+     prédio à direita e a Vivian à esquerda; à esquerda sai o corredor que, no fim, dá nas duas salas grandes junto às janelas
+     da fachada; seguindo reto depois da maquete fica a outra sala. Interiores sem foto: escritórios simples, fechados e vistos
+     pelo vidro (portas de vidro fixas). */
+  add('maquete', 46.4, 15.6);                                                   // à direita de quem entra
+  add('mesa-branca-pc', 47.4, 10.95, { rot: PI }); add('cadeira', 47.4, 10.35); // posto da Vivian, à esquerda de quem entra
+  [[45.6, 1.6, 0], [47.8, 1.6, 0], [45.6, 3.4, PI], [47.8, 3.4, PI],              // sala grande junto à fachada (oeste)
+   [50.9, 1.6, 0], [53.3, 1.6, 0], [50.9, 3.4, PI], [53.3, 3.4, PI],              // sala grande junto à fachada (leste)
+   [50.6, 8.2, 0], [53.2, 8.2, 0], [50.6, 9.9, PI], [53.2, 9.9, PI],              // sala em frente ao acesso
+   [50.6, 12.3, 0], [53.2, 12.3, 0], [50.6, 14.0, PI], [53.2, 14.0, PI],
+   [50.6, 16.6, 0], [53.2, 16.6, 0]].forEach(function(m){ add('mesa-empresa', m[0], m[1], { rot: m[2] }); });
+  add('armario-alto', 54.45, 19.2, { rot: -PI / 2 }); add('armario-alto', 44.55, 0.75, { rot: PI / 2 }); add('armario-alto', 54.45, 0.75, { rot: -PI / 2 });
   add('mesa-reuniao', 41.75, 16.45);                                           // só o interior documentado pelas fotos, atrás do vidro
   add('ar', 42.6, 18.25, { y: 2.6, rot: PI });
 
@@ -200,8 +211,6 @@
       { r: [39, 2.5, 42.5, 10], y0: 0, y1: 0.6, cor: '#1f2125', rugosidade: 0.95, colide: true },            // palco
       { r: [38.6, 4.6, 39, 7.9], y0: 0, y1: 0.3, cor: '#1f2125', rugosidade: 0.95, colide: true },           // degrau
       { r: [15.9, 8.86, 18.5, 9.9], y0: 0, y1: 0.45, cor: '#8e9196' },                                       // estrado atrás do balcão (posto da Keila)
-      { r: [44.12, 0, 55, 0.12], y0: 0, y1: 3.2, cor: '#d9d6d0' },                                            // térreo sob a ala leste (fechado, sem referência)
-      { r: [54.88, 0, 55, 20], y0: 0, y1: 3.2, cor: '#d9d6d0' },
       { r: [39.4, 15.0, 43.8, 18.4], y0: 0, y1: 0.04, cor: '#aaa398' },                                      // piso visível da Nexo
       { r: [39.4, 15.0, 43.8, 18.4], y0: 3.1, y1: 3.2, cor: '#e2e1dc' },                                    // forro visível da Nexo
       { r: [43.94, 10.15, 44.0, 10.55], y0: 1.25, y1: 1.85, cor: '#eeeeec' },                              // quadros elétricos entre a porta e o acesso (C12, H13)
@@ -212,8 +221,12 @@
       lances: [{ a0: 3.4, a1: 7.0, h0: 0, h1: 2.1 }, { a0: 8.2, a1: 11.8, h0: 2.1, h1: 4.2 }] }],
     obstaculos: [
       { caixa: [29.1, 2.05, 36.9, 5.55], motivo: 'bloco de cadeiras (lado da fachada)' },
-      { caixa: [29.1, 6.95, 36.9, 10.45], motivo: 'bloco de cadeiras (lado interno)' }
+      { caixa: [29.1, 6.95, 36.9, 10.45], motivo: 'bloco de cadeiras (lado interno)' },
+      { caixa: [46.5, 10.05, 48.3, 10.65], motivo: 'posto da Vivian (atrás da mesa)' }
     ],
+    /* salas fechadas (vistas pelo vidro) e áreas sem acesso sob a ala leste: fora da malha de navegação dos testes */
+    fechadas: [[44.13, 0.12, 49.4, 5.0], [49.4, 0.12, 54.88, 5.0], [51.6, 5.0, 54.88, 6.6], [49.0, 6.6, 54.88, 19.88], [45.9, 6.6, 49.0, 10.0], [44.13, 16.4, 49.0, 19.88]]
+      .map(function(r){ return { nome: 'sala sob a ala leste', r: r }; }),
     paineis: [
       /* ===== 1º andar ===== */
       /* ACIOC Hub: vidro na borda da laje com o grafismo verde no centro da fachada (X46), parede de vidro com porta no fim do corredor (E12) */
@@ -269,6 +282,27 @@
       { a: [51.6, 0.06], b: [51.6, 14.6], y0: 4.2, y1: 8, modulo: 1.45, portas: [[1.79, 2.79, 2.2, 'vao'], [4.69, 5.69, 2.2, 'vao'], [7.59, 8.59, 2.2, 'vao'], [10.49, 11.49, 2.2, 'vao'], [11.94, 12.94, 2.2, 'vao']], travessas: [2.35], faixas: [{ y0: 4.95, y1: 5.65, arte: 'fosca' }] },
       { a: [51.6, 3.0], b: [54.95, 3.0], y0: 4.2, y1: 8, modulo: 1.2 }, { a: [51.6, 5.9], b: [54.95, 5.9], y0: 4.2, y1: 8, modulo: 1.2 },
       { a: [51.6, 8.8], b: [54.95, 8.8], y0: 4.2, y1: 8, modulo: 1.2 }, { a: [51.6, 11.7], b: [54.95, 11.7], y0: 4.2, y1: 8, modulo: 1.2 },
+      /* ===== térreo sob a ala leste: salas 1, 2 e 3 (ver os móveis) ===== */
+      { a: [44.13, 0.12], b: [44.13, 12.6], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea' },                   // verso da parede do palco
+      { a: [44.13, 14.4], b: [44.13, 19.88], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea' },
+      { a: [44.0, 15.0], b: [44.0, 19.88], y0: 0, y1: 3.1, tipo: 'parede', cor: '#e7e4de', esp: 0.12 },          // divisa com o fundo da Nexo
+      { a: [44.12, 0.12], b: [54.88, 0.12], y0: 0, y1: 3.1, tipo: 'janelas', cor: '#e9e7e2', persiana: 0.5 },     // fachada (janelas)
+      { a: [54.88, 0.12], b: [54.88, 19.88], y0: 0, y1: 3.1, tipo: 'janelas', cor: '#e9e7e2', persiana: 0.5 },    // lateral leste (janelas)
+      { a: [44.0, 19.88], b: [54.88, 19.88], y0: 0, y1: 3.1, tipo: 'parede', cor: '#e7e4de' },
+      /* entrada: parede do posto da Vivian, fundo atrás da maquete e frente da sala em frente ao acesso */
+      { a: [45.9, 10.0], b: [49.0, 10.0], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
+      { a: [44.13, 16.4], b: [49.0, 16.4], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
+      { a: [49.0, 6.6], b: [49.0, 10.0], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
+      { a: [49.0, 10.0], b: [49.0, 16.4], y0: 0, y1: 3.1, modulo: 1.1, portas: [[3.05, 3.95, 2.2]], travessas: [2.25], faixas: [{ y0: 1.0, y1: 1.5, arte: 'fosca' }] },
+      { a: [49.0, 16.4], b: [49.0, 19.88], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
+      /* corredor à esquerda e corredor das duas salas grandes */
+      { a: [45.9, 6.6], b: [45.9, 10.0], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
+      { a: [45.9, 6.6], b: [49.0, 6.6], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
+      { a: [49.0, 6.6], b: [54.88, 6.6], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
+      { a: [44.13, 5.0], b: [49.4, 5.0], y0: 0, y1: 3.1, modulo: 1.05, portas: [[2.47, 3.37, 2.2]], travessas: [2.25], faixas: [{ y0: 1.0, y1: 1.5, arte: 'fosca' }] },
+      { a: [49.4, 5.0], b: [51.6, 5.0], y0: 0, y1: 3.1, modulo: 1.1, portas: [[0.8, 1.7, 2.2]], travessas: [2.25], faixas: [{ y0: 1.0, y1: 1.5, arte: 'fosca' }] },
+      { a: [51.6, 5.0], b: [51.6, 6.6], y0: 0, y1: 3.1, modulo: 1.6, travessas: [2.25], faixas: [{ y0: 1.0, y1: 1.5, arte: 'fosca' }] },
+      { a: [49.4, 0.12], b: [49.4, 5.0], y0: 0, y1: 3.1, tipo: 'parede', cor: '#efeeea', esp: 0.1 },
       /* Nexo no canto do palco: frente de vidro alinhada à parede interna, porta dupla na ponta oeste (C12: puxadores altos
          do lado de quem vem do hall), volume para dentro do prédio */
       { a: [39.4, 14.94], b: [43.8, 14.94], y0: 0, y1: 3.15, modulo: 1.1, portas: [[0.25, 2.05, 2.15]], faixas: [{ y0: 0.98, y1: 1.18, arte: 'nexo' }, { y0: 1.25, y1: 1.6, arte: 'fosca' }] },
@@ -282,10 +316,9 @@
       /* corredor até a porta de vidro dos fundos, com as duas venezianas (H11, D02) */
       { r: [31.5, 15.0, 33.5, 20.0], pe: 3.0, fundoVidro: true,
         portas: [{ lado: 'x1', de: 15.9, ate: 16.7, arte: 'veneziana' }, { lado: 'x1', de: 16.9, ate: 17.7, arte: 'veneziana' }] },
-      /* acesso às salas 1, 2 e 3 (C12): vestíbulo sob a ala leste, aberto para o hall pela parede do palco, com a maquete e a
-         porta das salas no fundo (as salas não foram fotografadas: porta fechada) */
-      { r: [44.0, 12.6, 46.6, 14.4], pe: 2.6, cor: '#f1f0ec', aberto: 'x0',
-        portas: [{ lado: 'x1', de: 13.05, ate: 13.95, arte: 'porta-lisa' }] },
+      /* térreo sob a ala leste: entrada das salas 1, 2 e 3, corredor e salas. Só piso e forro (abaixo da laje do 1º andar);
+         as paredes e divisórias estão nos painéis */
+      { r: [44.0, 0.12, 54.88, 19.88], pe: 3.1, semParedes: true },
       /* escada de emergência do térreo: a porta abre para uma antecâmara curta, fechada por uma segunda porta corta-fogo;
          os lances internos não foram fotografados e não foram modelados */
       { r: [12.2, 15.0, 13.6, 16.4], pe: 2.6, cor: '#e7e6e2',
@@ -391,7 +424,11 @@
       [[12.9, 15.7, 2.6], [12.72, 15.3, 6.8], [31.05, 15.3, 6.8]].forEach(function(p){ l.push({ x: p[0], z: p[1], y: p[2] }); }); // antecâmaras
       /* (26/11/2026) saíram 4 luminárias em y 3,2 sobre o café (z 8 e 10,5): sobra do mezanino projetado sobre as mesas, removido
          na correção D01–D04. Ali o forro é o do pé-direito duplo (8 m); sob o mezanino (z ≥ 11,7) fica a fileira em y 3,2. */
-      l.push({ x: 42.75, z: 13.5, y: 3.2 }, { x: 45.3, z: 13.6, y: 2.6 });                                    // canto e vestíbulo do acesso às salas
+      l.push({ x: 42.75, z: 13.5, y: 3.2 });                                                                   // canto do acesso às salas
+      [[45.4, 12.0], [45.4, 15.0], [47.8, 13.5], [47.8, 15.6], [45.0, 8.3], [45.0, 5.8], [47.5, 5.8], [50.4, 5.8],   // entrada e corredores
+       [45.6, 1.6], [48.0, 1.6], [45.6, 3.8], [48.0, 3.8], [50.9, 1.6], [53.4, 1.6], [50.9, 3.8], [53.4, 3.8], [53.3, 5.8],
+       [50.6, 8.4], [53.2, 8.4], [50.6, 11.4], [53.2, 11.4], [50.6, 14.4], [53.2, 14.4], [50.6, 17.4], [53.2, 17.4]]
+        .forEach(function(p){ l.push({ x: p[0], z: p[1], y: 3.1 }); });                                           // salas sob a ala leste
       return l;
     })(),
     moveis: moveis,
@@ -401,6 +438,7 @@
        de frente para a porta dela: Dagliê logo na entrada, Danimara mais para dentro. */
     npcs: [
       { nome:'Keila', x:17.3, y:0.45, z:9.2, rot:PI, cor:'violeta', olhos:'feliz', acessorio:'fone', corAcessorio:'lilas', acena:true },
+      { nome:'Vivian', x:47.4, y:0, z:10.35, rot:0, cor:'azul', olhos:'feliz', acessorio:'tiara', corAcessorio:'sol', sentada:true },   // entrada das salas 1, 2 e 3
       { nome:'Dagliê', x:52.6, y:4.2, z:15.65, rot:-PI / 2, cor:'rosa', olhos:'feliz', acessorio:'flor', corAcessorio:'sol', sentada:true },
       { nome:'Danimara', x:53.1, y:4.2, z:18.75, rot:-PI / 2, cor:'rosa-claro', olhos:'feliz', acessorio:'tiara', corAcessorio:'lilas', sentada:true, tatuagem:true }
     ],
@@ -419,7 +457,8 @@
       { id: 'totem', x: 22.63, y: 1.4, z: 8.4, raio: 1.6, rotulo: 'Totem de orientação', conteudo: 'totem' },
       { id: 'painel', x: 22.4, y: 1.4, z: 3.5, raio: 2.0, rotulo: 'Painel institucional', conteudo: 'painel' },
       { id: 'telao', x: 41.6, y: 2.2, z: 6.25, raio: 4.2, rotulo: 'Telão', conteudo: 'telao' },
-      { id: 'expositores', x: 44.6, y: 1.1, z: 13.5, raio: 1.6, rotulo: 'Acesso às salas 1, 2 e 3', conteudo: 'expositores' },
+      { id: 'expositores', x: 46.4, y: 1.2, z: 14.9, raio: 1.5, rotulo: 'Maquete do prédio', conteudo: 'expositores' },
+      { id:'vivian', x:47.4, y:1.1, z:11.85, piso:0, raio:1.35, rotulo:'Conversar', conteudo:'vivian', npc:'Vivian', alvo:[47.4, 1.3, 10.35] },
       { id: 'nexo', x: 41.0, y: 1.3, z: 14.7, raio: 1.7, rotulo: 'Sala Nexo', conteudo: 'nexo' },
       { id: 'cafeteria', x: 4.3, y: 1.2, z: 13.25, raio: 2.4, rotulo: 'Cafeteria Pin', conteudo: 'cafeteria' },
       { id: 'escada', x: 43.2, y: 1.4, z: 3.1, raio: 1.9, rotulo: '1º andar', conteudo: 'escada' },
