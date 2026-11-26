@@ -39,7 +39,7 @@ Orvalho.conteudo['terceiro-andar'] = Object.assign({}, Orvalho.conteudo['lab-ia'
   },
   'salao': {
     demo: true, kicker: '3º andar', titulo: 'Unoesc',
-    texto: 'Sala de capacitação e treinamento da Unoesc, atrás da porta dupla de vidro: fileiras de mesas brancas com plotagens de ciência, tecnologia e inovação, cadeiras amarelas, tela de apresentação e mesa do instrutor.',
+    texto: 'Sala de capacitação e treinamento da Unoesc, atrás da porta dupla de vidro: fileiras de mesas brancas com plotagens de ciência, tecnologia e inovação, cadeiras amarelas, quadro branco com a TV embutida e mesa do instrutor.',
     itens: [['Sobre a sala', 'texto oficial pendente']]
   }
 });
