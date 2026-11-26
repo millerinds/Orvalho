@@ -565,9 +565,13 @@
   } }; }
   T['nicho-banheiro'] = nicho(1.8, 2.4);
   T['nicho-banheiro-pcd'] = nicho(1.6, 2.4);
+  /* maquete do acesso às salas (C12, H13): pedestal preto, tampo branco e maquete branca de prédios
+     (antes eram três blocos azul-água sobre uma base escura, que pareciam um bebedouro e não colidiam) */
   T.maquete = { colisao: { caixa: [1.2, 0.75] }, sombra: [1.4, 0.95], partes: function(){
-    return [parte(Q(1.2, 0.82, 0.75, 0.025), 'grafite', 0.008, [M(0, 0.41, 0)]),
-      parte(Q(1.1, 0.05, 0.65, 0.018), 'branco', 0.006, [M(0, 0.86, 0)]),
-      parte(Q(0.18, 0.24, 0.16, 0.015), 'agua', 0.004, [M(-0.3, 1.0, -0.1), M(0.1, 0.96, 0.12), M(0.34, 1.08, -0.16)])];
+    var predios = [[-0.38, -0.12, 0.16, 0.12], [-0.15, 0.1, 0.12, 0.2], [0.05, -0.1, 0.2, 0.1], [0.25, 0.12, 0.14, 0.16], [0.4, -0.08, 0.1, 0.24], [-0.02, 0.15, 0.1, 0.08]];
+    return [parte(Q(1.0, 0.86, 0.6, 0.02), 'preto', 0.008, [M(0, 0.43, 0)]),
+      parte(Q(1.2, 0.05, 0.75, 0.015), 'branco', 0.006, [M(0, 0.885, 0)]),
+      parte(Q(1.0, 0.012, 0.55, 0.004), 'cinza', 0, [M(0, 0.916, 0)]),
+      parte(new THREE.BoxGeometry(1, 1, 1), 'branco', 0.004, predios.map(function(p){ var m = M(p[0], 0.922 + p[3] / 2, p[1]); m.scale(new THREE.Vector3(p[2], p[3], p[2] * 0.8)); return m; }))];
   } };
 })(window.Orvalho);

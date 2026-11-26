@@ -40,7 +40,7 @@ Orvalho.conteudo['hall-inovale'] = {
   },
   'nexo': {
     demo: true, kicker: 'Sala de vidro', titulo: 'Sala Nexo',
-    texto: 'Sala de reunião envidraçada. A passagem para as salas 1, 2 e 3 fica imediatamente à esquerda, conforme as fotos E02–E04.',
+    texto: 'Sala de reunião envidraçada no canto do palco. O acesso às salas 1, 2 e 3 fica ao lado, na parede do palco, depois da porta sob a escada (fotos C12, H13, H15).',
     itens: [['Uso', 'a preencher'], ['Capacidade', 'a preencher']],
     fonte: 'Edite em ambientes/hall-inovale/conteudo.js'
   },

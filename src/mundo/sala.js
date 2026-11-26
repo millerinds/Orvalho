@@ -701,7 +701,9 @@
       var fg = new THREE.Mesh(guarda(new THREE.PlaneGeometry(w, d)), std(S.corForro || '#ffffff', { map: guarda(F.forro([w / placaForro, d / placaForro])), roughness: 0.9 }));
       fg.rotation.x = Math.PI / 2; fg.position.set(r[0] + w / 2, y0 + pe, r[1] + d / 2); grupo.add(fg);
       function paredeA(ax, az, bx, bz){ var L2 = Math.hypot(bx - ax, bz - az), m2 = new THREE.Mesh(guarda(new THREE.PlaneGeometry(L2, pe)), mp); m2.position.set((ax + bx) / 2, y0 + pe / 2, (az + bz) / 2); m2.rotation.y = Math.atan2(-(bz - az), bx - ax); grupo.add(m2); col.segmento(ax, az, bx, bz); }
-      paredeA(r[0], r[1], r[0], r[3]); paredeA(r[2], r[1], r[2], r[3]);
+      /* "aberto: 'x0'": o anexo se abre pela lateral x0 (vão numa parede leste/oeste); então fecha a frente z0 */
+      if (a.aberto === 'x0') paredeA(r[0], r[1], r[2], r[1]); else paredeA(r[0], r[1], r[0], r[3]);
+      paredeA(r[2], r[1], r[2], r[3]);
       if (!a.fundoVidro) paredeA(r[0], r[3], r[2], r[3]);
       else { // fundo de vidro com porta (fechada): caixilho e puxadores
         var vf = new THREE.Mesh(guarda(new THREE.PlaneGeometry(w, pe)), vidroMat); vf.position.set(r[0] + w / 2, pe / 2, r[3]); vf.renderOrder = 2; grupo.add(vf); col.segmento(r[0], r[3], r[2], r[3]);
