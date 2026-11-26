@@ -188,7 +188,7 @@ const CONF = {
       'corredor junto ao sofá azul e ao pilar': [[20.0, 7.4], [23.3, 7.4], 1.40],
       'hall de estar: entre os sofás e o núcleo': [[8.0, 10.0], [22.5, 10.0], 1.40],
       'passagem para a porta externa': [[7.3, 1.0], [7.3, 5.8], 1.40, 'x'],
-      'salão: da porta dupla à TV': [[31.2, 5.75], [38.6, 5.75], 2.00],
+      'Unoesc: corredor junto à divisória (da porta ao fundo)': [[31.2, 7.95], [38.6, 7.95], 1.70],
       'Lab: corredor principal (entre as fileiras)': [[25.25, 0.4], [25.25, 5.6], 1.30],
       'Lab: corredor de fundo (atrás das cadeiras 2 e 3)': [[22.9, 1.5], [22.9, 4.6], 0.90],
       'Lab: zona da janela': [[26.8, 0.62], [23.2, 0.62], 1.20],
@@ -206,7 +206,7 @@ const CONF = {
       { nome: '→ painel do Lab no corredor', alvo: [25.45, 7.1], olhar: [25.45, 6.2], interativo: 'Laboratório de Inteligência Artificial' },
       { nome: '→ SCL Automação (vista do corredor)', alvo: [26.9, 7.3], olhar: [26.9, 8.95], interativo: 'SCL Automação' },
       { nome: '→ atravessa a porta dupla do salão', alvo: [32.2, 7.5] },
-      { nome: '→ salão: diante da TV', alvo: [38.3, 5.75] },
+      { nome: '→ Unoesc: corredor central entre as fileiras', alvo: [36.3, 3.95] },
       { nome: '→ Unoesc: entre as cadeiras e a parede divisória', alvo: [36.0, 8.3] },
       { nome: '→ volta ao corredor', alvo: [25.0, 7.4] },
       { nome: '→ escada de emergência (lado do palco): porta abre e dá na antecâmara', alvo: [22.2, 12.3] },
@@ -645,7 +645,7 @@ async function virarPara(page, x, z) {
     await empurra('porta adesivada da Salus (fechada)', L(21.7, 10.0), 0, 'z', 6.0, 1);
     await empurra('vidro jateado da Unimed', L(11.2, 12.8), Math.PI / 2, 'x', 5.9, 1);
     /* sem paredes invisíveis: pontos abertos do corredor, do estar, do salão e do Lab comportam o colisor */
-    const abertos = [[12.0, 12.8], [20.0, 11.0], [24.0, 12.5], [28.0, 10.4], [32.9, 10.5], [36.0, 8.0], [41.0, 6.0], [28.2, 7.2], [28.6, 4.5], [10.3, 6.0], [14.3, 13.2]];
+    const abertos = [[12.0, 12.8], [20.0, 11.0], [24.0, 12.5], [28.0, 10.4], [32.9, 10.5], [36.0, 6.95], [41.2, 6.95], [28.2, 7.2], [28.6, 4.5], [10.3, 6.0], [14.3, 13.2]];
     const folgas = await page.evaluate(ps => ps.map(p => Orvalho.jogo._debug().amb.colisao.folga({ x: p[0] - 3, z: p[1] - 3 }, 0)), abertos);
     ok(folgas.every(f => f >= base.raio + 0.05), `nenhuma colisão invisível nos ${abertos.length} pontos abertos (folga mínima ${Math.min(...folgas).toFixed(2)} m)`);
     /* nenhuma sala fechada tem vão sem folha: cada porta 'vao' das frentes de vidro tem uma folha (que abre ou trancada) */

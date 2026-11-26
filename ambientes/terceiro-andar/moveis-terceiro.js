@@ -85,6 +85,26 @@
     txt(x, 'Sicredi', 160, 80, '800 96px Figtree, Arial', '#3fa535');
     return tx(c);
   };
+  A['vidro-escuro'] = function(){   // folha de vidro escuro sem plotagem (sala Sicredi)
+    var c = cv(128, 290), x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 128, 290); g.addColorStop(0, '#2c343b'); g.addColorStop(1, '#1b2127');
+    x.fillStyle = g; x.fillRect(0, 0, 128, 290); x.fillStyle = 'rgba(255,255,255,.07)'; x.beginPath(); x.moveTo(0, 0); x.lineTo(80, 0); x.lineTo(20, 290); x.lineTo(0, 290); x.closePath(); x.fill(); return tx(c);
+  };
+  A['quadro-vidro'] = function(){ var c = cv(256, 128), x = c.getContext('2d'); x.fillStyle = 'rgba(214,236,232,.78)'; x.fillRect(0, 0, 256, 128); x.fillStyle = 'rgba(255,255,255,.35)'; x.fillRect(0, 0, 256, 6); return tx(c); };
+  A['tela-aula'] = function(){   // tela de apresentação: slide genérico
+    var c = cv(512, 288), x = c.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, 512, 288);
+    txt(x, 'Inovação e tecnologia', 256, 34, '600 26px Figtree, Arial', '#3a4652', 'center');
+    x.strokeStyle = '#5a6a7a'; x.lineWidth = 2; x.strokeRect(30, 66, 190, 70); x.strokeRect(290, 66, 190, 70); x.beginPath(); x.moveTo(230, 101); x.lineTo(280, 101); x.stroke();
+    x.lineWidth = 4; x.strokeStyle = '#2b2f36'; rr(x, 30, 160, 450, 100, 10); x.stroke(); x.fillStyle = '#2b2f36'; x.beginPath(); x.moveTo(80, 180); x.lineTo(110, 235); x.lineTo(50, 235); x.closePath(); x.fill();
+    for (var i = 0; i < 4; i++) { x.fillStyle = '#9aa6b2'; x.fillRect(140, 185 + i * 16, 280 - i * 30, 6); }
+    return tx(c);
+  };
+  A['quadro-branco'] = function(){ var c = cv(256, 128), x = c.getContext('2d'); x.fillStyle = '#f7f8f9'; x.fillRect(0, 0, 256, 128); x.strokeStyle = '#c4c9ce'; x.lineWidth = 6; x.strokeRect(3, 3, 250, 122); return tx(c); };
+  A['faixa-inovale'] = function(){   // painel azul baixo na parede lateral (foto 08.00.28): triângulos claros sobre azul
+    var c = cv(512, 128), x = c.getContext('2d'); x.fillStyle = '#23466e'; x.fillRect(0, 0, 512, 128); semente = 3;
+    for (var i = 0; i < 26; i++) tri(x, 280 + rnd() * 230, 10 + rnd() * 40, 12 + rnd() * 14, 'rgba(255,255,255,' + (0.4 + rnd() * 0.5).toFixed(2) + ')');
+    return tx(c);
+  };
+  A['persiana-rolo'] = function(){ var c = cv(64, 128), x = c.getContext('2d'); x.fillStyle = 'rgba(214,218,214,.9)'; x.fillRect(0, 0, 64, 128); x.fillStyle = 'rgba(160,166,160,.9)'; x.fillRect(0, 120, 64, 8); return tx(c); };
   A['engenharia'] = function(){ var c = cv(400, 60), x = c.getContext('2d'); x.clearRect(0, 0, 400, 60); txt(x, 'ENGENHARIA', 200, 32, '700 34px Figtree, Arial', '#33363b', 'center'); return tx(c); };
   A['porta-salus'] = function(){   // T12, T24–T29: azul-marinho, triângulo laranja, "SALUS · MÉTODO SALUS"
     var c = cv(256, 580), x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 0, 580);
@@ -197,6 +217,69 @@
       parte(new THREE.CylinderGeometry(0.02, 0.02, 0.42, 6), 'metal', 0, comp(cad, [M(0, 0.21, 0)]))
     ];
   } };
+  /* ---------- Unoesc: sala de capacitação (fotos 26/11/2026 08.00.28 e 07.58.24) ----------
+     Mesa branca de treinamento 1,30 × 0,55 com rodízios e painel frontal plotado em azul-escuro (frases e ilustrações de
+     ciência, tecnologia e inovação) e duas cadeiras amarelas de encosto perfurado. Frente (+z) = painel plotado, voltado
+     para a parede da tela; cadeiras atrás (−z). O colisor cobre mesa + cadeiras. */
+  function plotagem(desenho){
+    return function(){
+      var c = cv(520, 240), x = c.getContext('2d'); x.fillStyle = '#2f4a6b'; x.fillRect(0, 0, 520, 240);
+      x.fillStyle = 'rgba(255,255,255,.06)'; x.fillRect(0, 0, 520, 10); desenho(x); return tx(c);
+    };
+  }
+  MV.TEXTURAS['plot-gleiser'] = plotagem(function(x){   // a frase legível na foto 07.58.24
+    txt(x, '“O mapa do que', 26, 46, '500 24px Figtree, Arial', '#ffffff'); txt(x, 'chamamos de realidade é um', 26, 76, '500 24px Figtree, Arial', '#ffffff');
+    txt(x, 'mosaico de ideias em constante', 26, 106, '800 24px Figtree, Arial', '#ffffff'); txt(x, 'mutação.”', 26, 136, '800 24px Figtree, Arial', '#ffffff');
+    txt(x, 'Marcelo Gleiser', 26, 186, '500 20px Figtree, Arial', '#e6edf5');
+    x.strokeStyle = '#ffffff'; x.lineWidth = 4; x.beginPath(); x.moveTo(440, 40); x.lineTo(410, 210); x.moveTo(440, 40); x.lineTo(470, 210); x.stroke();   // torre (ilustração)
+    for (var i = 0; i < 5; i++) { x.beginPath(); x.moveTo(436 - i * 5, 70 + i * 28); x.lineTo(444 + i * 5, 70 + i * 28); x.stroke(); }
+    x.fillStyle = '#4caf50'; x.fillRect(395, 205, 90, 18);
+  });
+  MV.TEXTURAS['plot-laboratorio'] = plotagem(function(x){   // ilustração de pesquisadoras no laboratório (simplificada)
+    x.fillStyle = '#eef3f7'; x.beginPath(); x.ellipse(160, 130, 120, 100, 0, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#b8c4cf'; x.fillRect(70, 80, 70, 110); x.fillStyle = '#ffffff'; x.fillRect(150, 110, 34, 90); x.fillRect(200, 104, 34, 96);
+    x.fillStyle = '#3d4a58'; x.beginPath(); x.arc(167, 92, 15, 0, 7); x.arc(217, 86, 15, 0, 7); x.fill();
+    x.fillStyle = '#4caf50'; x.beginPath(); x.arc(250, 120, 12, 0, 7); x.fill(); x.fillRect(244, 130, 12, 40);
+    txt(x, 'ciência que', 320, 96, '700 26px Figtree, Arial', '#ffffff'); txt(x, 'transforma', 320, 130, '800 28px Figtree, Arial', '#7fd36e');
+  });
+  MV.TEXTURAS['plot-globo'] = plotagem(function(x){   // emblema com o globo e louros (simplificado)
+    x.fillStyle = '#eef3f7'; rr(x, 190, 30, 140, 160, 20); x.fill();
+    x.fillStyle = '#4caf50'; x.beginPath(); x.arc(260, 110, 50, 0, 7); x.fill(); x.fillStyle = '#2f7d3a'; x.beginPath(); x.ellipse(245, 100, 22, 30, 0.4, 0, 7); x.ellipse(282, 124, 16, 20, -0.3, 0, 7); x.fill();
+    x.strokeStyle = '#7fd36e'; x.lineWidth = 5; x.beginPath(); x.arc(260, 110, 80, 2.2, 4.1); x.stroke(); x.beginPath(); x.arc(260, 110, 80, -0.95, 0.95); x.stroke();
+    txt(x, 'inovação', 34, 120, '800 26px Figtree, Arial', '#ffffff'); txt(x, 'tecnologia', 360, 120, '800 26px Figtree, Arial', '#ffffff');
+  });
+  function mesaTreino(plot){
+    /* origem no centro da pegada (mesa + cadeiras): mesa em z +0,21, cadeiras em z −0,29 */
+    return { colisao: { caixa: [1.3, 1.0] }, sombra: [1.5, 1.2], partes: function(){
+      var D = 0.21, cad = [M(-0.33, 0, -0.29), M(0.33, 0, -0.29)];
+      function comp(bs, ls){ var out = []; bs.forEach(function(b){ ls.forEach(function(l){ out.push(b.clone().multiply(l)); }); }); return out; }
+      var furo = []; for (var i = 0; i < 4; i++) for (var j = 0; j < 3; j++) furo.push(M(-0.12 + i * 0.08, 0.6 + j * 0.08, -0.18));
+      return [
+        parte(Q(1.3, 0.04, 0.55, 0.012), 'branco', 0.008, [M(0, 0.74, D)]),                                   // tampo
+        parte(Q(1.28, 0.62, 0.025, 0.008), 'branco', 0.006, [M(0, 0.4, D + 0.255)]),                         // painel frontal
+        parte(Q(0.025, 0.66, 0.52, 0.008), 'branco', 0.006, [M(-0.635, 0.39, D), M(0.635, 0.39, D)]),        // laterais
+        parte(new THREE.PlaneGeometry(1.2, 0.56), plot, 0, [M(0, 0.4, D + 0.27)]),                           // plotagem azul
+        parte(new THREE.SphereGeometry(0.025, 10, 8), 'grafite', 0, [M(-0.6, 0.025, D + 0.22), M(0.6, 0.025, D + 0.22), M(-0.6, 0.025, D - 0.22), M(0.6, 0.025, D - 0.22)]),
+        parte(Q(0.42, 0.05, 0.4, 0.02), 'amarelo', 0.008, comp(cad, [M(0, 0.45, 0)])),                        // cadeiras amarelas
+        parte(Q(0.4, 0.34, 0.03, 0.03), 'amarelo', 0.008, comp(cad, [M(0, 0.7, -0.2, -0.12, 0, 0)])),
+        parte(new THREE.CylinderGeometry(0.014, 0.014, 0.45, 6), 'amarelo', 0, comp(cad, [M(-0.17, 0.22, 0.15), M(0.17, 0.22, 0.15), M(-0.17, 0.22, -0.16), M(0.17, 0.22, -0.16)])),
+        parte(new THREE.SphereGeometry(0.014, 6, 4), 'grafite', 0, comp(cad, furo))                            // encosto perfurado
+      ];
+    } };
+  }
+  T['mesa-treino-a'] = mesaTreino('plot-gleiser'); T['mesa-treino-b'] = mesaTreino('plot-laboratorio'); T['mesa-treino-c'] = mesaTreino('plot-globo');
+  /* mesa do instrutor (branca, com rodízios) e caixa de som em tripé */
+  T['mesa-instrutor'] = { colisao: { caixa: [1.4, 0.6] }, sombra: [1.6, 0.8], partes: function(){
+    return [parte(Q(1.4, 0.04, 0.6, 0.012), 'branco', 0.008, [M(0, 0.74, 0)]), parte(Q(1.36, 0.62, 0.025, 0.008), 'branco', 0.006, [M(0, 0.4, 0.27)]),
+      parte(Q(0.025, 0.66, 0.56, 0.008), 'branco', 0.006, [M(-0.68, 0.39, 0), M(0.68, 0.39, 0)]), parte(Q(0.34, 0.02, 0.24, 0.006), 'grafite', 0.005, [M(0.2, 0.77, 0)])];
+  } };
+  T['caixa-som'] = { colisao: { circulo: 0.3 }, sombra: [0.6, 0.6], partes: function(){
+    var pes = []; for (var i = 0; i < 3; i++) { var a = i * Math.PI * 2 / 3; pes.push(M(Math.sin(a) * 0.17, 0.32, Math.cos(a) * 0.17, Math.cos(a) * 0.5, 0, -Math.sin(a) * 0.5)); }
+    return [parte(new THREE.CylinderGeometry(0.012, 0.012, 0.7, 6), 'grafite', 0, pes), parte(F.cilindro(0.016, 1.0, 0.006, 8), 'grafite', 0, [M(0, 0.6, 0)]),
+      parte(Q(0.3, 0.45, 0.28, 0.04), 'preto', 0.008, [M(0, 1.78, 0)])];
+  } };
+  /* ar-condicionado cassete no forro (y do item = forro) */
+  T['ar-cassete'] = { colisao: false, partes: function(){ return [parte(Q(0.84, 0.05, 0.84, 0.02), 'branco', 0.006, [M(0, -0.025, 0)]), parte(Q(0.5, 0.012, 0.5, 0.004), 'cinza', 0, [M(0, -0.054, 0)])]; } };
   T['almofadao'] = { colisao: { caixa: [1.1, 0.8] }, sombra: [1.3, 1.0], partes: function(){ return [parte(Q(1.1, 0.24, 0.8, 0.1), 'marinho', 0.012, [M(0, 0.12, 0)])]; } };
   /* sofá azul em bloco com encosto azul-claro e mesinha de pés finos (T11–T14) */
   T['sofa-azul'] = { colisao: { caixa: [1.9, 0.74] }, sombra: [2.1, 0.95],
